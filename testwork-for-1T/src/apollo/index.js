@@ -7,7 +7,7 @@ export /* async */ function getClientOptions(/* {app, router, ...} */ options) {
         uri:
           // process.env.GRAPHQL_URI ||
           // Change to your graphql endpoint.
-          'https://app.stud.druid.1t.ru',
+          'https://app.dev.druid.1t.ru/graphql',
       }),
       cache: new InMemoryCache(),
     },
