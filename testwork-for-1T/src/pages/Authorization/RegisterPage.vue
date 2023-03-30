@@ -25,7 +25,7 @@
                         lazy-rules
                         :rules="[ val => val && val.length > 0 || 'Введите что нибудь']">
                 </q-input>
-                <q-dialog v-model="prompt" persistent>
+                <q-dialog v-model="prompt" persistent @submit="SetPassword">
                     <q-card>
                         <q-card-section>
                             <div class="text-h6">Код отправлен вам на почту</div>
@@ -59,7 +59,7 @@
                         </q-card-section>
                         <q-card-actions align="right" class="text-primary">
                             <q-btn flat label="Отменить" v-close-popup />
-                            <q-btn flat label="Отправить" v-close-popup />
+                            <q-btn flat label="Отправить" v-close-popup @click="SetPassword"/>
                         </q-card-actions>
                     </q-card>
                 </q-dialog>
@@ -74,15 +74,16 @@
 </template>
 
 <script>
-import { defineComponent,ref } from 'vue'
+import { defineComponent, ref} from 'vue'
 import { UserSignUp, UserSignUpSetPassword } from 'src/api/authorization/mutations'
-import { useQuery, useMutation } from '@vue/apollo-composable'
-import { errorMonitor } from 'events'
+import { useMutation } from '@vue/apollo-composable'
 
 export default defineComponent({
     setup() {
         const { mutate: UserSignUpMutation } = useMutation(UserSignUp)
+        const { mutate: UserSignUpSetPasswordMutation, error } = useMutation(UserSignUpSetPassword)
         const prompt = ref(false)
+        const id = ref(0)
         const email = ref("")
         const password  = ref("")
         const password_repeat = ref("")
@@ -97,13 +98,29 @@ export default defineComponent({
             password_repeat,
             name,
             surname,
-            RegisterSubmit(){
-                UserSignUpMutation({"input":{"name":name.value,"surname":surname.value,"email":email.value}})
+            async RegisterSubmit(){
+                await UserSignUpMutation({"input":{"name":name.value,"surname":surname.value,"email":email.value}})
                     .then(mutationResult => {
-                    console.log(mutationResult.data);
+                    id.value = mutationResult.data.userSignUp.recordId;
                 })
-                prompt.value = true
-
+                if(id.value!==0){
+                    prompt.value = true
+                }
+                else{
+                    alert("Почта уже занята")
+                }
+            },
+            async SetPassword(){
+                await UserSignUpSetPasswordMutation({"input":{"user_id":id.value,"code":code.value,"password":password.value}})
+                    .then(mutationResult => {
+                        console.log(mutationResult.data);
+                        if(mutationResult.data.userSignUpSetPassword.status == 200){
+                            $router.push({path: '/app'})
+                        }
+                        else{
+                            alert("Неверный код")
+                        }
+                    })
             },
             RegisterReset(){
                 email.value = ""
