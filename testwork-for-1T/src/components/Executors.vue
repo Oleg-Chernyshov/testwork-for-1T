@@ -1,15 +1,21 @@
 <template>
-  <div>Исполнители</div>
+  <div>
+    <h5>Исполнители</h5>
+    <div v-for="executor in executors.values" :key="executor.id">
+      {{ executor }}
+    </div>
+  </div>
 </template>
 
 <script>
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, reactive } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { useMutation } from "@vue/apollo-composable";
 
 export default defineComponent({
   setup(props, { emit }) {
+    const executors = reactive([]);
     const { onResult } = useQuery(
       gql`
         query {
@@ -31,10 +37,13 @@ export default defineComponent({
       `
     );
     onResult((queryResult) => {
-      console.log("execute", queryResult);
+      executors.values = queryResult.data.get_group.subject;
+      console.log("execute", executors.values);
     });
 
-    return {};
+    return {
+      executors,
+    };
   },
 });
 </script>

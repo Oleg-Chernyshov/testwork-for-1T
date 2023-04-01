@@ -43,7 +43,13 @@
     <q-page-container>
       <div v-if="isAdmin">It's admin!</div>
       <div v-else>It's user!</div>
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <transition name="bounce">
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
+        </transition>
+      </router-view>
     </q-page-container>
   </q-layout>
 </template>
@@ -201,6 +207,8 @@ export default defineComponent({
             input: {
               // login: "korolevidmitriy@mail.ru",
               // password: "qwerty1234",
+              // login: "dkorolyov631@mail.ru",
+              // password: "fdcsasalgqe",
               login: "dmitrij.korolyov.0303@mail.ru",
               password: "qwerty123",
             },
