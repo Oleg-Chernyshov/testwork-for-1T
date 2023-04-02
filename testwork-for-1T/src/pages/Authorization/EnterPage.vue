@@ -31,11 +31,13 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useMutation } from '@vue/apollo-composable'
 import { UserSignIn } from 'src/api/authorization/mutations'
 
 export default defineComponent({
     setup() {
+        const router = useRouter()
         const email = ref("")
         const password = ref("")
         const {mutate:UserSignInMutation} = useMutation(UserSignIn)
@@ -47,6 +49,11 @@ export default defineComponent({
                         "token",
                         MutationResult.data.userSignIn.record.access_token
                     );
+                    sessionStorage.setItem(
+                        "user_id",
+                        MutationResult.data.userSignIn.recordId
+                    );
+                    router.push("/user")
                 })    
             },
             EnterReset(){

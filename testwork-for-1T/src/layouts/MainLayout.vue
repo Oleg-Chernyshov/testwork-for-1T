@@ -162,73 +162,73 @@ export default defineComponent({
       });
     }
 
-    {
-      const { onResult } = useQuery(
-        gql`
-          query {
-            space(id: "727") {
-              id
-              author_id
-              name
-              description
-              config
-              created_at
-              updated_at
-            }
-          }
-        `
-      );
-      onResult((queryResult) => {
-        space.value = "&space=" + queryResult.data.space.id;
-        authorId.value = queryResult.data.space.author_id;
-        console.log("space: ", space.value);
-        console.log("authorId: ", authorId.value);
-      });
-    }
+    // {
+    //   const { onResult } = useQuery(
+    //     gql`
+    //       query {
+    //         space(id: "727") {
+    //           id
+    //           author_id
+    //           name
+    //           description
+    //           config
+    //           created_at
+    //           updated_at
+    //         }
+    //       }
+    //     `
+    //   );
+    //   onResult((queryResult) => {
+    //     space.value = "&space=" + queryResult.data.space.id;
+    //     authorId.value = queryResult.data.space.author_id;
+    //     console.log("space: ", space.value);
+    //     console.log("authorId: ", authorId.value);
+    //   });
+    // }
 
-    {
-      const { mutate } = useMutation(
-        gql`
-          mutation UserSignIn($input: UserSignInInput!) {
-            userSignIn(input: $input) {
-              recordId
-              record {
-                token_type
-                expires_in
-                access_token
-                refresh_token
-              }
-              status
-            }
-          }
-        `,
-        () => ({
-          variables: {
-            input: {
-              // login: "korolevidmitriy@mail.ru",
-              // password: "qwerty1234",
-              // login: "dkorolyov631@mail.ru",
-              // password: "fdcsasalgqe",
-              login: "dmitrij.korolyov.0303@mail.ru",
-              password: "qwerty123",
-            },
-          },
-        })
-      );
-      const response = mutate();
-      response.then(function (result) {
-        sessionStorage.setItem(
-          "token",
-          result.data.userSignIn.record.access_token + space.value
-        );
-        UserSignInId.value = result.data.userSignIn.recordId;
-        console.log(
-          "token: ",
-          result.data.userSignIn.record.access_token + space.value
-        );
-        console.log("UserSignInId: ", UserSignInId.value);
-      });
-    }
+    // {
+    //   const { mutate } = useMutation(
+    //     gql`
+    //       mutation UserSignIn($input: UserSignInInput!) {
+    //         userSignIn(input: $input) {
+    //           recordId
+    //           record {
+    //             token_type
+    //             expires_in
+    //             access_token
+    //             refresh_token
+    //           }
+    //           status
+    //         }
+    //       }
+    //     `,
+    //     () => ({
+    //       variables: {
+    //         input: {
+    //           // login: "korolevidmitriy@mail.ru",
+    //           // password: "qwerty1234",
+    //           // login: "dkorolyov631@mail.ru",
+    //           // password: "fdcsasalgqe",
+    //           login: "dmitrij.korolyov.0303@mail.ru",
+    //           password: "qwerty123",
+    //         },
+    //       },
+    //     })
+    //   );
+    //   const response = mutate();
+    //   response.then(function (result) {
+    //     sessionStorage.setItem(
+    //       "token",
+    //       result.data.userSignIn.record.access_token + space.value
+    //     );
+    //     UserSignInId.value = result.data.userSignIn.recordId;
+    //     console.log(
+    //       "token: ",
+    //       result.data.userSignIn.record.access_token + space.value
+    //     );
+    //     console.log("UserSignInId: ", UserSignInId.value);
+    //   });
+    // }
 
     return {
       isAdmin,
