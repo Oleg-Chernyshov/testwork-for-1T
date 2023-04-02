@@ -39,7 +39,7 @@
               {{
                 module.property8.reduce(function (a, b) {
                   if (b.property5 == "9117798227215343609") {
-                    return a++;
+                    return ++a;
                   } else return 0;
                 }, 0)
               }}
@@ -48,7 +48,7 @@
               {{
                 module.property8.reduce(function (a, b) {
                   if (b.property5 == "4106452242288243072") {
-                    return (a = a + 1);
+                    return ++a;
                   } else return 0;
                 }, 0)
               }}
@@ -56,25 +56,60 @@
           </tr>
         </tbody>
       </table>
+      {{ current_module.values }}
     </div>
   </div>
 </template>
 
 <script>
-import { useMutation } from "@vue/apollo-composable";
-import { ref, computed, reactive } from "vue";
+import { ref, computed, reactive, watch, watchEffect } from "vue";
 import { useStore } from "vuex";
+import { useQuery } from "@vue/apollo-composable";
+import gql from "graphql-tag";
 
 export default {
   components: {},
 
-  setup() {
+  setup(props) {
+    console.log("props", props);
     const store = useStore();
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
+    const module_index = computed(() => store.getters.MODULE_INDEX);
+    const current_module = reactive({});
+
+    const get_module = function (module_index) {
+      // const { onResult } = useQuery(
+      //   gql`
+      //     {
+      //       get_type1(id: MODULES[module_index]) {
+      //         id
+      //         name
+      //         author_id
+      //         property8 {
+      //           name
+      //           property4
+      //           property5
+      //         }
+      //       }
+      //     }
+      //   `
+      // );
+      // onResult((queryResult) => {
+      //   current_module.values = queryResult.data;
+      // });
+      current_module.values = MODULES.value[module_index.value];
+      console.log(MODULES.value[module_index.value]);
+    };
+
+    watch(
+      () => store.getters.MODULE_INDEX,
+      () => get_module(module_index)
+    );
 
     return {
       MODULES,
+      current_module,
     };
   },
 };
@@ -83,18 +118,37 @@ export default {
 <style lang="scss">
 .table {
   width: 100%;
+  border: none;
   margin-bottom: 20px;
-  border: 1px solid #dddddd;
-  border-collapse: collapse;
 }
-.table th {
+.table thead th {
   font-weight: bold;
-  padding: 5px;
-  background: #efefef;
-  border: 1px solid #dddddd;
+  text-align: left;
+  border: none;
+  padding: 10px 15px;
+  background: #d8d8d8;
+  font-size: 14px;
 }
-.table td {
-  border: 1px solid #dddddd;
-  padding: 5px;
+.table thead tr th:first-child {
+  border-radius: 8px 0 0 8px;
+}
+.table thead tr th:last-child {
+  border-radius: 0 8px 8px 0;
+}
+.table tbody td {
+  text-align: left;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  vertical-align: top;
+}
+.table tbody tr:nth-child(even) {
+  background: #f3f3f3;
+}
+.table tbody tr td:first-child {
+  border-radius: 8px 0 0 8px;
+}
+.table tbody tr td:last-child {
+  border-radius: 0 8px 8px 0;
 }
 </style>

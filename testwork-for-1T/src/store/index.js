@@ -5,6 +5,7 @@ import * as mutations from './mutations'
 
 export const state = {
   modules: [],
+  module_index: -1,
 }
 
 const store = createStore({

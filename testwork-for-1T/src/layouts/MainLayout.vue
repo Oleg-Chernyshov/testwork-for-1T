@@ -42,9 +42,15 @@
             label="МОДУЛИ"
             caption=""
             default-opened
+            @click="get_module_index(-1)"
           >
-            <q-tabs v-for="module in MODULES" :key="module.id" align="left">
-              <q-route-tab to="/1">{{ module.name }}</q-route-tab>
+            <q-tabs
+              v-for="(module, index) in MODULES"
+              :key="module.id"
+              align="left"
+              @click="get_module_index(index)"
+            >
+              <q-route-tab>{{ module.name }}</q-route-tab>
             </q-tabs>
           </q-expansion-item>
         </q-list>
@@ -66,7 +72,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, reactive } from "vue";
+import { defineComponent, ref, computed, reactive, watch } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { useMutation } from "@vue/apollo-composable";
@@ -74,14 +80,16 @@ import { useStore } from "vuex";
 
 export default defineComponent({
   name: "MainLayout",
-
   setup() {
     const leftDrawerOpen = ref(false);
     const authorId = ref("");
     const UserSignInId = ref("");
     const space = ref("");
-
     const store = useStore();
+    const get_module_index = function (index) {
+      store.commit("setModuleIndex", index);
+    };
+
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
 
@@ -249,6 +257,7 @@ export default defineComponent({
     return {
       isAdmin,
       leftDrawerOpen,
+      get_module_index,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
