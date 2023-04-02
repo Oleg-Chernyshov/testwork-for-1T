@@ -4,8 +4,14 @@ const routes = [
     path: '/',
     component: () => import('layouts/AuthorizationLayout.vue'),
     children: [
+<<<<<<< HEAD
       { path: '', component: () => import('pages/Authorization/EnterPage.vue') },
       { path: '/register', component: () => import('pages/Authorization/RegisterPage.vue') },
+=======
+      { path: '/Team', component: () => import('pages/Team.vue') },
+      { path: '/Executors', component: () => import('components/Executors.vue') },
+      { path: '/Responsible', component: () => import('components/Responsible.vue') }
+>>>>>>> origin/Dmitriy-Korolev
     ]
   },
   {
