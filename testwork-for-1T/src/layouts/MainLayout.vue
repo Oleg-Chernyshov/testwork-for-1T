@@ -43,6 +43,13 @@
             caption=""
             default-opened
           >
+            <q-tabs
+              v-for="module in MODULES.values"
+              :key="module.id"
+              align="left"
+            >
+              <q-route-tab to="/Responsible">{{ module.name }}</q-route-tab>
+            </q-tabs>
           </q-expansion-item>
         </q-list>
       </q-list>
@@ -63,7 +70,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, reactive } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { useMutation } from "@vue/apollo-composable";
@@ -238,12 +245,50 @@ export default defineComponent({
       });
     }
 
+    const MODULES = reactive([]);
+
+    //Получение всех модулей
+    {
+      const { onResult } = useQuery(
+        gql`
+          {
+            paginate_type1(page: 1, perPage: 100) {
+              data {
+                id
+                type_id
+                author_id
+                level
+                position
+                created_at
+                updated_at
+                name
+              }
+              paginatorInfo {
+                perPage
+                currentPage
+                lastPage
+                total
+                count
+                from
+                to
+                hasMorePages
+              }
+            }
+          }
+        `
+      );
+      onResult((queryResult) => {
+        MODULES.values = queryResult.data["paginate_type1"].data;
+      });
+    }
+
     return {
       isAdmin,
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
+      MODULES,
     };
   },
 });
