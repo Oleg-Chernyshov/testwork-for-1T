@@ -1,4 +1,3 @@
-
-export const PRODUCTS = (state) => {
-	return state.products
+export const MODULES = (state) => {
+	return state.modules
 }

@@ -43,12 +43,8 @@
             caption=""
             default-opened
           >
-            <q-tabs
-              v-for="module in MODULES.values"
-              :key="module.id"
-              align="left"
-            >
-              <q-route-tab to="/Responsible">{{ module.name }}</q-route-tab>
+            <q-tabs v-for="module in MODULES" :key="module.id" align="left">
+              <q-route-tab to="/1">{{ module.name }}</q-route-tab>
             </q-tabs>
           </q-expansion-item>
         </q-list>
@@ -74,6 +70,7 @@ import { defineComponent, ref, computed, reactive } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { useMutation } from "@vue/apollo-composable";
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "MainLayout",
@@ -83,6 +80,10 @@ export default defineComponent({
     const authorId = ref("");
     const UserSignInId = ref("");
     const space = ref("");
+
+    const store = useStore();
+    store.dispatch("GET_MODULES");
+    const MODULES = computed(() => store.getters.MODULES);
 
     const isAdmin = computed(() => {
       return authorId.value === UserSignInId.value;
@@ -242,43 +243,6 @@ export default defineComponent({
           result.data.userSignIn.record.access_token + space.value
         );
         console.log("UserSignInId: ", UserSignInId.value);
-      });
-    }
-
-    const MODULES = reactive([]);
-
-    //Получение всех модулей
-    {
-      const { onResult } = useQuery(
-        gql`
-          {
-            paginate_type1(page: 1, perPage: 100) {
-              data {
-                id
-                type_id
-                author_id
-                level
-                position
-                created_at
-                updated_at
-                name
-              }
-              paginatorInfo {
-                perPage
-                currentPage
-                lastPage
-                total
-                count
-                from
-                to
-                hasMorePages
-              }
-            }
-          }
-        `
-      );
-      onResult((queryResult) => {
-        MODULES.values = queryResult.data["paginate_type1"].data;
       });
     }
 
