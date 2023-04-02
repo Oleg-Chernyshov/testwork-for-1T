@@ -12,19 +12,17 @@
         />
 
         <q-toolbar-title> Quasar App </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+    <q-drawer class="q-pt-xl" v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
         <q-list bordered class="rounded-borders">
           <q-expansion-item
             to="/Team"
             expand-separator
             icon=""
-            label="Команда"
+            label="КОМАНДА"
             caption=""
             default-opened
           >
@@ -35,6 +33,16 @@
             <q-tabs align="left">
               <q-route-tab to="/Responsible" label="Ответственные" />
             </q-tabs>
+          </q-expansion-item>
+
+          <q-expansion-item
+            to="/Modules"
+            expand-separator
+            icon=""
+            label="МОДУЛИ"
+            caption=""
+            default-opened
+          >
           </q-expansion-item>
         </q-list>
       </q-list>
@@ -240,3 +248,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss">
+.q-tabs__content {
+  width: 100% !important;
+  text-align: left !important;
+}
+</style>
