@@ -31,14 +31,23 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
+import { useMutation } from '@vue/apollo-composable'
+import { UserSignIn } from 'src/api/authorization/mutations'
 
 export default defineComponent({
     setup() {
         const email = ref("")
         const password = ref("")
+        const {mutate:UserSignInMutation} = useMutation(UserSignIn)
         return{
-            EnterSubmit(){
-                console.log("submitted");
+            async EnterSubmit(){
+                await UserSignInMutation({"input":{login:email.value, password: password.value}})
+                .then(MutationResult => {
+                    sessionStorage.setItem(
+                        "token",
+                        MutationResult.data.userSignIn.record.access_token
+                    );
+                })    
             },
             EnterReset(){
                 email.value = ""

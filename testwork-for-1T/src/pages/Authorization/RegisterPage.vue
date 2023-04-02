@@ -121,6 +121,7 @@ export default defineComponent({
                             alert("Неверный код")
                         }
                     })
+                    console.log(error);
             },
             RegisterReset(){
                 email.value = ""
