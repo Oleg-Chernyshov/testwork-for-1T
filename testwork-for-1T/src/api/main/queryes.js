@@ -91,3 +91,10 @@ export const GetGroupById = gql`query($id: String!){
     }
   }
 `
+
+export const GetPropertyStatus = gql`query {
+    property (id: "2850781111748661430") {
+      meta
+    }
+  }
+`

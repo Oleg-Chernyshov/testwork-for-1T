@@ -44,7 +44,7 @@ export default {
 
   setup() {
     const $q = useQuasar();
-    const getFormExecuterValues = function (e, n) {
+    const getFormExecuterValues = function (e) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(
@@ -82,12 +82,6 @@ export default {
             message: "Ошибка отправки",
           });
         });
-      [
-        e.target.elements.name.value,
-        e.target.elements.surname.value,
-        e.target.elements.eMail.value,
-      ] = ["", "", ""];
-      console.log(n);
     };
 
     const getFormResponsibleValues = function (e) {

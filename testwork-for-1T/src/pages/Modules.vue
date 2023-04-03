@@ -1,8 +1,7 @@
 <template>
   <div class="modules">
-    <h5>Modules</h5>
-    <div class="modules__table">
-      <table class="table">
+    <div class="modules__table table" v-if="showTableModules()">
+      <table class="modules__table-modules">
         <thead>
           <tr>
             <th>Модуль</th>
@@ -56,16 +55,57 @@
           </tr>
         </tbody>
       </table>
-      {{ current_module.values }}
+    </div>
+    <div class="modules__module" v-else>
+      <table class="modules__table-module table">
+        <thead>
+          <tr>
+            <th>Задача</th>
+            <th>Описание</th>
+            <th>Статус</th>
+            <th>Ответственный</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="task in MODULES[module_index]?.property8" :key="task.id">
+            <td>{{ task.name }}</td>
+            <td>
+              {{ task.property4 }}
+            </td>
+            <td>
+              {{
+                (function () {
+                  if (task.property5 == "3173475364523847130")
+                    return "Назначена";
+                  else if (task.property5 == "3173475364523847130")
+                    return "Выполнена";
+                  else if (task.property5 == "3173475364523847130")
+                    return "Завершена";
+                })()
+              }}
+            </td>
+            <td>
+              {{
+                task.property6.fullname.first_name +
+                " " +
+                task.property6.fullname.last_name
+              }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div v-if="MODULES[module_index].property8.length == 0">
+        Список задач пуст
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed, reactive, watch, watchEffect } from "vue";
+import { computed, reactive, watch } from "vue";
 import { useStore } from "vuex";
+import { GetPropertyStatus } from "src/api/main/queryes";
 import { useQuery } from "@vue/apollo-composable";
-import gql from "graphql-tag";
 
 export default {
   components: {},
@@ -77,30 +117,21 @@ export default {
     const MODULES = computed(() => store.getters.MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
     const current_module = reactive({});
+    const propertyStatus = reactive({});
+    const showTableModules = () => {
+      return module_index.value <= -1;
+    };
 
     const get_module = function (module_index) {
-      // const { onResult } = useQuery(
-      //   gql`
-      //     {
-      //       get_type1(id: MODULES[module_index]) {
-      //         id
-      //         name
-      //         author_id
-      //         property8 {
-      //           name
-      //           property4
-      //           property5
-      //         }
-      //       }
-      //     }
-      //   `
-      // );
-      // onResult((queryResult) => {
-      //   current_module.values = queryResult.data;
-      // });
       current_module.values = MODULES.value[module_index.value];
-      console.log(MODULES.value[module_index.value]);
     };
+
+    //Получение свойства Status для определения статуса задачи по id
+    const { onResult } = useQuery(GetPropertyStatus);
+    onResult((queryResult) => {
+      propertyStatus.values = queryResult.data.property.meta.options;
+      console.log(1241, propertyStatus.values);
+    });
 
     watch(
       () => store.getters.MODULE_INDEX,
@@ -110,6 +141,9 @@ export default {
     return {
       MODULES,
       current_module,
+      showTableModules,
+      module_index,
+      propertyStatus,
     };
   },
 };

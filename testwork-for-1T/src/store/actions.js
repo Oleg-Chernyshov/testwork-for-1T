@@ -2,10 +2,10 @@ import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 
 export const GET_MODULES = ({ commit }) => {
-	const fetching = async () => {
-		try {
-			const { onResult } = useQuery(
-				gql`
+  const fetching = async () => {
+    try {
+      const { onResult } = useQuery(
+        gql`
 					{
   paginate_type1(
     page: 1
@@ -38,6 +38,13 @@ export const GET_MODULES = ({ commit }) => {
         name
         id
        property5
+        property4
+        property6{
+          fullname{
+            first_name
+            last_name
+          }
+        }
       }
     }
     paginatorInfo {
@@ -52,14 +59,14 @@ export const GET_MODULES = ({ commit }) => {
     }
   }
 } `
-			);
-			onResult(queryResult => {
-				console.log(queryResult.data["paginate_type1"].data);
-				commit("setModules", queryResult.data["paginate_type1"].data)
-			})
-		} catch (e) {
-			console.log("Ошибка:", e);
-		}
-	};
-	fetching();
+      );
+      onResult(queryResult => {
+        console.log(queryResult.data["paginate_type1"].data);
+        commit("setModules", queryResult.data["paginate_type1"].data)
+      })
+    } catch (e) {
+      console.log("Ошибка:", e);
+    }
+  };
+  fetching();
 }
