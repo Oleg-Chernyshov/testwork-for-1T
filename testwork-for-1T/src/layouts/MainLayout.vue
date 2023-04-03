@@ -12,19 +12,17 @@
         />
 
         <q-toolbar-title> Quasar App </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+    <q-drawer class="q-pt-xl" v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
         <q-list bordered class="rounded-borders">
           <q-expansion-item
             to="/Team"
             expand-separator
             icon=""
-            label="Команда"
+            label="КОМАНДА"
             caption=""
             default-opened
           >
@@ -34,6 +32,25 @@
 
             <q-tabs align="left">
               <q-route-tab to="/Responsible" label="Ответственные" />
+            </q-tabs>
+          </q-expansion-item>
+
+          <q-expansion-item
+            to="/Modules"
+            expand-separator
+            icon=""
+            label="МОДУЛИ"
+            caption=""
+            default-opened
+            @click="get_module_index(-1)"
+          >
+            <q-tabs
+              v-for="(module, index) in MODULES"
+              :key="module.id"
+              align="left"
+              @click="get_module_index(index)"
+            >
+              <q-route-tab>{{ module.name }}</q-route-tab>
             </q-tabs>
           </q-expansion-item>
         </q-list>
@@ -55,19 +72,26 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, reactive, watch } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { useMutation } from "@vue/apollo-composable";
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "MainLayout",
-
   setup() {
     const leftDrawerOpen = ref(false);
     const authorId = ref("");
     const UserSignInId = ref("");
     const space = ref("");
+    const store = useStore();
+    const get_module_index = function (index) {
+      store.commit("setModuleIndex", index);
+    };
+
+    store.dispatch("GET_MODULES");
+    const MODULES = computed(() => store.getters.MODULES);
 
     const isAdmin = computed(() => {
       return authorId.value === UserSignInId.value;
@@ -233,10 +257,19 @@ export default defineComponent({
     return {
       isAdmin,
       leftDrawerOpen,
+      get_module_index,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
+      MODULES,
     };
   },
 });
 </script>
+
+<style lang="scss">
+.q-tabs__content {
+  width: 100% !important;
+  text-align: left !important;
+}
+</style>
