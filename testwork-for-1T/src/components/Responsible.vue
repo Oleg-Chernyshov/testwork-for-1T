@@ -9,34 +9,13 @@
 
 <script>
 import { defineComponent, ref, computed, reactive } from "vue";
+import { GetGroupById } from "src/api/main/queryes";
 import { useQuery } from "@vue/apollo-composable";
-import gql from "graphql-tag";
-import { useMutation } from "@vue/apollo-composable";
 
-export default {
+export default defineComponent({
   setup(props, { emit }) {
     const responsible = reactive([]);
-
-    const { onResult } = useQuery(
-      gql`
-        query {
-          get_group(id: "1358489619049103837") {
-            name
-            subject {
-              id
-              type_id
-              email {
-                email
-              }
-              fullname {
-                first_name
-                last_name
-              }
-            }
-          }
-        }
-      `
-    );
+    const { onResult } = useQuery(GetGroupById, {"id":"1358489619049103837"});
     onResult((queryResult) => {
       responsible.values = queryResult.data.get_group.subject;
     });
@@ -45,7 +24,7 @@ export default {
       responsible,
     };
   },
-};
+});
 </script>
 
 <style></style>
