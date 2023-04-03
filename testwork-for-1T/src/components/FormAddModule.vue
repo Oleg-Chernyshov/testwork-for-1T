@@ -78,6 +78,7 @@
         </div>
       </form>
     </section>
+    {{ subjects.values }}
   </div>
 </template>
 
@@ -89,6 +90,7 @@ import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
+import { useQuery } from "@vue/apollo-composable";
 
 export default defineComponent({
   setup() {
@@ -168,8 +170,32 @@ export default defineComponent({
           });
         });
     };
+
+    const subjects = reactive({});
+
+    const { onResult } = useQuery(gql`
+      query ($id: String!) {
+        paginate_subject(page: 1, perPage: 100) {
+          data {
+            id
+            type_id
+            author_id
+            fullname {
+              first_name
+              last_name
+            }
+          }
+        }
+      }
+    `);
+    onResult((queryResult) => {
+      subjects.values = queryResult.data;
+      console.log("Users", queryResult.data);
+    });
+
     return {
       createNewModule,
+      subjects,
     };
   },
 });
