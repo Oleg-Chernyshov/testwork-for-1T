@@ -79,7 +79,7 @@ export default {
           console.log("Ошибка", err);
           $q.notify({
             type: "negative",
-            message: "Ошибка отправки",
+            message: "Ошибка",
           });
         });
     };
@@ -122,11 +122,6 @@ export default {
             message: "Ошибка отправки",
           });
         });
-      [
-        e.target.elements.name.value,
-        e.target.elements.surname.value,
-        e.target.elements.eMail.value,
-      ] = ["", "", ""];
     };
 
     return {

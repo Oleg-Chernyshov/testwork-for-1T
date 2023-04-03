@@ -18,13 +18,13 @@
             <td>{{ module.name }}</td>
             <td>
               {{
-                module.property7.fullname.first_name +
+                module.property7?.fullname.first_name +
                 " " +
-                module.property7.fullname.last_name
+                module.property7?.fullname.last_name
               }}
             </td>
-            <td>{{ module.property2.date + " " + module.property2.time }}</td>
-            <td>{{ module.property3.date + " " + module.property3.time }}</td>
+            <td>{{ module.property2?.date + " " + module.property2?.time }}</td>
+            <td>{{ module.property3?.date + " " + module.property3?.time }}</td>
             <td>
               {{
                 module.property8.reduce(function (a, b) {
@@ -63,7 +63,7 @@
             <th>Задача</th>
             <th>Описание</th>
             <th>Статус</th>
-            <th>Ответственный</th>
+            <th>Исполнитель</th>
           </tr>
         </thead>
         <tbody>
@@ -86,9 +86,9 @@
             </td>
             <td>
               {{
-                task.property6.fullname.first_name +
+                task.property6?.fullname.first_name +
                 " " +
-                task.property6.fullname.last_name
+                task.property6?.fullname.last_name
               }}
             </td>
           </tr>
@@ -98,20 +98,26 @@
         Список задач пуст
       </div>
     </div>
+    <button @click="showForm = !showForm">Добавить модуль</button>
+    <div class="wrapper"></div>
+    <FormAddModule v-if="showForm" />
   </div>
 </template>
 
 <script>
-import { computed, reactive, watch } from "vue";
+import { computed, reactive, watch, ref } from "vue";
 import { useStore } from "vuex";
 import { GetPropertyStatus } from "src/api/main/queryes";
 import { useQuery } from "@vue/apollo-composable";
+import FormAddModule from "../components/FormAddModule.vue";
 
 export default {
-  components: {},
+  components: {
+    FormAddModule,
+  },
 
   setup(props) {
-    console.log("props", props);
+    const showForm = ref(false);
     const store = useStore();
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
@@ -121,6 +127,7 @@ export default {
     const showTableModules = () => {
       return module_index.value <= -1;
     };
+    const addNewModule = function () {};
 
     const get_module = function (module_index) {
       current_module.values = MODULES.value[module_index.value];
@@ -144,12 +151,23 @@ export default {
       showTableModules,
       module_index,
       propertyStatus,
+      showForm,
     };
   },
 };
 </script>
 
 <style lang="scss">
+// .wrapper {
+//   position: absolute;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   top: 0;
+//   left: 50%;
+//   width: 100%;
+//   height: 100%;
+// }
 .table {
   width: 100%;
   border: none;
