@@ -30,7 +30,7 @@ export default defineComponent({
                 token = token.split('&')[0]
                 sessionStorage.setItem(
                     "token",
-                    token + "&space=" + space_id
+                    token + "&space=" + 752
                 )
                 router.push("/app")
             }

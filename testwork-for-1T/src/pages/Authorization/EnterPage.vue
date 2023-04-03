@@ -18,6 +18,7 @@
                         lazy-rules
                         :rules="[ val => val && val.length > 0 || 'Введите что нибудь']">
                 </q-input>
+                <p class="error" v-if="error">{{ error }}</p>
                 <div class="q-mt-md">
                     <q-btn label="Отправить" type="submit" color="primary"/>
                     <q-btn label="Сбросить" type="reset" color="primary" flat class="q-ml-sm" />
@@ -40,6 +41,7 @@ export default defineComponent({
         const router = useRouter()
         const email = ref("")
         const password = ref("")
+        const error = ref("")
         const {mutate:UserSignInMutation} = useMutation(UserSignIn)
         return{
             async EnterSubmit(){
@@ -54,6 +56,9 @@ export default defineComponent({
                         MutationResult.data.userSignIn.recordId
                     );
                     router.push("/user")
+                })
+                .catch(e => {
+                    error.value = "Неверный логин или пароль"
                 })    
             },
             EnterReset(){
@@ -61,7 +66,8 @@ export default defineComponent({
                 password.value = ""
             },
             email,
-            password
+            password,
+            error
         }
     },
 })
