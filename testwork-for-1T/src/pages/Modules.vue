@@ -55,6 +55,7 @@
           </tr>
         </tbody>
       </table>
+      <button @click="showForm = !showForm">Добавить модуль</button>
     </div>
     <div class="modules__module" v-else>
       <table class="modules__table-module table">
@@ -98,8 +99,6 @@
         Список задач пуст
       </div>
     </div>
-    <button @click="showForm = !showForm">Добавить модуль</button>
-    <div class="wrapper"></div>
     <FormAddModule v-if="showForm" />
   </div>
 </template>

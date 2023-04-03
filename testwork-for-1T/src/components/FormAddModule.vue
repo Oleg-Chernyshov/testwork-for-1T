@@ -63,7 +63,7 @@
           />
           <label class="label" for="responsible">Ответственный</label>
         </div>
-        <div class="form-field col-lg-12">
+        <!-- <div class="form-field col-lg-12">
           <input
             name="tasks"
             id="tasks"
@@ -72,13 +72,12 @@
             required
           />
           <label class="label" for="tasks">Задачи(пока не имеет смысла)</label>
-        </div>
+        </div> -->
         <div class="form-field col-lg-12">
           <input name="" class="submit-btn" type="submit" value="Создать" />
         </div>
       </form>
     </section>
-    {{ subjects.values }}
   </div>
 </template>
 
@@ -142,7 +141,7 @@ export default defineComponent({
                 time: e.target.elements.endTime.value,
               },
               property7: {
-                "6714467324498160547": "3428744769792866399",
+                "6714467324498160547": e.target.elements.responsible.value,
               },
             },
           },
@@ -158,11 +157,6 @@ export default defineComponent({
           });
         })
         .catch((err) => {
-          console.log(e.target.elements.name.value);
-          console.log(e.target.elements.startData.value);
-          console.log(e.target.elements.startTime.value);
-          console.log(e.target.elements.endData.value);
-          console.log(e.target.elements.endTime.value);
           console.log("Ошибка", err);
           $q.notify({
             type: "negative",
