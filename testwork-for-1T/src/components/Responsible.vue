@@ -9,7 +9,8 @@
         <th>Действия</th>
       </thead>
       <tbody>
-        <tr v-for="res in responsible.values" :key="res.id">
+        <tr v-if="loading">loading</tr>
+        <tr v-else v-for="res in responsible.values" :key="res.id">
           <td>{{ res.email.email }}</td>
           <td>{{ res.fullname.first_name }}</td>
           <td>{{ res.fullname.last_name }}</td>
@@ -29,13 +30,14 @@ import { useQuery } from "@vue/apollo-composable";
 export default defineComponent({
   setup(props, { emit }) {
     const responsible = reactive([]);
-    const { onResult } = useQuery(GetGroupById, {"id":"1358489619049103837"});
+    const { onResult, loading } = useQuery(GetGroupById, {"id":"1358489619049103837"});
     onResult((queryResult) => {
       responsible.values = queryResult.data.get_group.subject;
     });
 
     return {
       responsible,
+      loading
     };
   },
 });

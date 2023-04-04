@@ -9,7 +9,8 @@
         <th>Действия</th>
       </thead>
       <tbody>
-        <tr v-for="executor in executors.values" :key="executor.id">
+        <tr v-if="loading"> loading</tr>
+        <tr v-else v-for="executor in executors.values" :key="executor.id">
           <td>{{ executor.email.email }}</td>
           <td>{{ executor.fullname.first_name }}</td>
           <td>{{ executor.fullname.last_name }}</td>
@@ -25,11 +26,12 @@
 import { defineComponent, reactive } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { GetGroupById } from "src/api/main/queryes";
+import { Loading } from "quasar";
 
 export default defineComponent({
   setup(props, { emit }) {
     const executors = reactive([]);
-    const { onResult } = useQuery(GetGroupById, {"id":"6271877799003044991"});
+    const { onResult, loading } = useQuery(GetGroupById, {"id":"6271877799003044991"});
     onResult((queryResult) => {
       executors.values = queryResult.data.get_group.subject;
       console.log("execute", executors.values);
@@ -37,6 +39,7 @@ export default defineComponent({
 
     return {
       executors,
+      loading
     };
   },
 });

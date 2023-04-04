@@ -5,3 +5,7 @@ export const setModules = (state, modules) => {
 export const setModuleIndex = (state, index) => {
 	state.module_index = index
 }
+
+export const SetId = (state, id) => {
+	state.id = id
+}

@@ -70,3 +70,8 @@ export const GET_MODULES = ({ commit }) => {
   };
   fetching();
 }
+
+export const GET_ID = ({ commit},id) => {
+  console.log(id);
+  commit("SetId", id)
+}

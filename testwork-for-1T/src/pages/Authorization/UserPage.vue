@@ -30,13 +30,17 @@ import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router';
 import { UserQuery } from 'src/api/authorization/queryes';
 import { useQuery } from '@vue/apollo-composable';
+import { useStore } from 'vuex';
 
 export default defineComponent({
     setup(){
+        const store = useStore();
+        const ID = store.getters.ID
+        console.log(ID);
         const router = useRouter()
-        const id = sessionStorage.getItem("user_id");
+        // const id = sessionStorage.getItem("user_id");
         let token = sessionStorage.getItem("token");
-        const {result, loading, error} = useQuery(UserQuery,{"id":id})
+        const {result, loading, error} = useQuery(UserQuery,{"id":ID})
         return{
             result,
             loading,
@@ -46,7 +50,7 @@ export default defineComponent({
                 token = token.split('&')[0]
                 sessionStorage.setItem(
                     "token",
-                    token + "&space=" + 752
+                    token + "&space=" + space_id
                 )
                 router.push("/app")
             }

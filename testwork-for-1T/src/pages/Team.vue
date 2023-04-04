@@ -44,7 +44,7 @@ export default {
 
   setup() {
     const $q = useQuasar();
-    const getFormExecuterValues = function (e) {
+    const getFormExecuterValues = function (e, n) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(
@@ -53,7 +53,7 @@ export default {
             userGroupInviteUser(input: $input) {
               status
             }
-          }
+          } 
         `,
         () => ({
           variables: {
@@ -79,9 +79,15 @@ export default {
           console.log("Ошибка", err);
           $q.notify({
             type: "negative",
-            message: "Ошибка",
+            message: "Ошибка отправки",
           });
         });
+      [
+        e.target.elements.name.value,
+        e.target.elements.surname.value,
+        e.target.elements.eMail.value,
+      ] = ["", "", ""];
+      console.log(n);
     };
 
     const getFormResponsibleValues = function (e) {
@@ -122,6 +128,11 @@ export default {
             message: "Ошибка отправки",
           });
         });
+      [
+        e.target.elements.name.value,
+        e.target.elements.surname.value,
+        e.target.elements.eMail.value,
+      ] = ["", "", ""];
     };
 
     return {

@@ -35,6 +35,7 @@ import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMutation } from '@vue/apollo-composable'
 import { UserSignIn } from 'src/api/authorization/mutations'
+import { useStore } from 'vuex'
 
 export default defineComponent({
     setup() {
@@ -42,6 +43,7 @@ export default defineComponent({
         const email = ref("")
         const password = ref("")
         const error = ref("")
+        const store = useStore()
         const {mutate:UserSignInMutation} = useMutation(UserSignIn)
         return{
             async EnterSubmit(){
@@ -51,14 +53,16 @@ export default defineComponent({
                         "token",
                         MutationResult.data.userSignIn.record.access_token
                     );
-                    sessionStorage.setItem(
-                        "user_id",
-                        MutationResult.data.userSignIn.recordId
-                    );
+                    // sessionStorage.setItem(
+                    //     "user_id",
+                    //     MutationResult.data.userSignIn.recordId
+                    // );
+                    store.dispatch("GET_ID",MutationResult.data.userSignIn.recordId)
                     router.push("/user")
                 })
                 .catch(e => {
                     error.value = "Неверный логин или пароль"
+                    console.log(e);
                 })    
             },
             EnterReset(){
