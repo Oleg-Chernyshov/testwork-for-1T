@@ -31,15 +31,14 @@
 
 <script>
 import { useMutation } from "@vue/apollo-composable";
-import { defineComponent, ref, computed } from "vue";
-import { useQuery } from "@vue/apollo-composable";
-import gql from "graphql-tag";
+import { defineComponent} from "vue";
+import { inviteUser } from "src/api/main/mutations"
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 
-export default {
+export default defineComponent({
   components: {},
 
   setup() {
@@ -48,13 +47,7 @@ export default {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(
-        gql`
-          mutation userGroupInviteUser($input: UserGroupInviteUserInput!) {
-            userGroupInviteUser(input: $input) {
-              status
-            }
-          } 
-        `,
+        inviteUser,
         () => ({
           variables: {
             input: {
@@ -94,13 +87,7 @@ export default {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(
-        gql`
-          mutation userGroupInviteUser($input: UserGroupInviteUserInput!) {
-            userGroupInviteUser(input: $input) {
-              status
-            }
-          }
-        `,
+        inviteUser,
         () => ({
           variables: {
             input: {
@@ -140,7 +127,7 @@ export default {
       getFormResponsibleValues,
     };
   },
-};
+});
 </script>
 
 <style lang="scss">

@@ -136,8 +136,6 @@ export default {
     const showTableModules = () => {
       return module_index.value <= -1;
     };
-    const addNewModule = function () {};
-
     const get_module = function (module_index) {
       current_module.values = MODULES.value[module_index.value];
     };
@@ -167,16 +165,6 @@ export default {
 </script>
 
 <style lang="scss">
-// .wrapper {
-//   position: absolute;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   top: 0;
-//   left: 50%;
-//   width: 100%;
-//   height: 100%;
-// }
 .table {
   width: 100%;
   border: none;

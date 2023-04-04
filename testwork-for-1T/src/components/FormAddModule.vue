@@ -83,13 +83,14 @@
 
 <script>
 import { useMutation } from "@vue/apollo-composable";
-import { defineComponent, ref, computed, reactive } from "vue";
+import { defineComponent, reactive } from "vue";
 import gql from "graphql-tag";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { useQuery } from "@vue/apollo-composable";
+import { addNewModule } from "src/api/main/mutations"
 
 export default defineComponent({
   setup() {
@@ -98,36 +99,7 @@ export default defineComponent({
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(
-        gql`
-          mutation ($input: create_type1_input!) {
-            create_type1(input: $input) {
-              recordId
-              record {
-                property2 {
-                  date
-                }
-                property3 {
-                  date
-                }
-                property7 {
-                  fullname {
-                    first_name
-                    last_name
-                  }
-                }
-                property8 {
-                  name
-                }
-                id
-                author_id
-                type_id
-                created_at
-                updated_at
-              }
-              status
-            }
-          }
-        `,
+        addNewModule,
         () => ({
           variables: {
             input: {

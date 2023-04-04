@@ -26,7 +26,6 @@
 import { defineComponent, reactive } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { GetGroupById } from "src/api/main/queryes";
-import { Loading } from "quasar";
 
 export default defineComponent({
   setup(props, { emit }) {
