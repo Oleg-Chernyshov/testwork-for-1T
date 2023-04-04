@@ -12,7 +12,9 @@
         />
 
         <q-toolbar-title> Quasar App </q-toolbar-title>
+        <router-link class="link" to="/user">User</router-link>
       </q-toolbar>
+      
     </q-header>
 
     <q-drawer class="q-pt-xl" v-model="leftDrawerOpen" show-if-above bordered>
@@ -34,7 +36,18 @@
               <q-route-tab to="/Responsible" label="Ответственные" />
             </q-tabs>
           </q-expansion-item>
-
+          <q-expansion-item
+            to="/Deleted"
+            expand-separator
+            icon=""
+            label="ИСКЛЮЧЕННЫЕ"
+            caption=""
+            default-opened
+          >
+            <q-tabs align="left">
+              <q-route-tab to="/Deleted" label="Исключенные" />
+            </q-tabs>
+          </q-expansion-item>
           <q-expansion-item
             to="/Modules"
             expand-separator
@@ -126,5 +139,9 @@ export default defineComponent({
 .q-tabs__content {
   width: 100% !important;
   text-align: left !important;
+}
+.link{
+   color: white;
+   text-decoration: none;
 }
 </style>

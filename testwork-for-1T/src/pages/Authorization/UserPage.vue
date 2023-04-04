@@ -1,13 +1,29 @@
 <template>
-    <div v-if="loading">
-        loading...
+    <div class="row flex-center flex">
+        <h5>Данные пользователя</h5>
     </div>
-    <div v-else>
-        {{ result }}
+    <div class="row q-pa-md">
+        <div class="col-6 flex-center">
+            <div v-if="loading">
+                loading...
+            </div>
+            <div v-else>
+                <div>
+                    <h6 class="data">Имя: {{ result.user.name }} {{ result.user.surname  }}</h6>
+                    <h6 class="data"> Почта: {{ result.user.email }}</h6>
+                    <q-btn color="primary" class="q-my-md q-mr-md">Редактировать</q-btn>
+                    <q-btn color="red" class="q-my-md">Выйти </q-btn>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 flex-center flex">
+           <q-btn @click="go">
+                Перейти в пространство
+            </q-btn> 
+        </div>
     </div>
-    <q-btn @click="go">
-        Перейти в пространство
-    </q-btn>
+    
+    
 </template>
 <script>
 import { defineComponent } from 'vue'
@@ -38,3 +54,9 @@ export default defineComponent({
     },
 })
 </script>
+<style scoped>
+.data{
+    padding: 0;
+    margin: 0;
+}
+</style>

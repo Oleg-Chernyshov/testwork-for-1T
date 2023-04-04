@@ -11,6 +11,7 @@
             <th>Назначенные задачи</th>
             <th>Выполненыне задачи</th>
             <th>Завершеныне задачи</th>
+            <th>Действия</th>
           </tr>
         </thead>
         <tbody>
@@ -52,6 +53,10 @@
                 }, 0)
               }}
             </td>
+            <td>
+              <q-btn color="green"> Редактировать </q-btn>
+              <q-btn color="red" class="q-mx-lg q-my-sm"> Удалить </q-btn>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -65,6 +70,7 @@
             <th>Описание</th>
             <th>Статус</th>
             <th>Исполнитель</th>
+            <th>Действия</th>
           </tr>
         </thead>
         <tbody>
@@ -91,6 +97,10 @@
                 " " +
                 task.property6?.fullname.last_name
               }}
+            </td>
+            <td>
+              <q-btn color="red" class="q-mx-lg"> Удалить </q-btn>
+              <q-btn color="green"> Редактировать </q-btn>
             </td>
           </tr>
         </tbody>
