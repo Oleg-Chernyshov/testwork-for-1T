@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="q-pa-md">
     <h5>Ответственные</h5>
     <table class="table">
       <thead>

@@ -1,29 +1,29 @@
 <template>
   <div>
-    Team
+    <h5 class="flex flex-center">Добавление в команды</h5>
     <div class="wrapper join">
       <div class="join__block">
-        <form
+        <q-form
           @submit.prevent="getFormExecuterValues"
-          class="join__form-executer"
+          class="join__form-executer q-mr-xl"
         >
-          <input name="name" type="text" placeholder="Имя" />
-          <input name="surname" type="text" placeholder="Фамилия" />
-          <input name="eMail" type="text" placeholder="Почта" />
-          <button>Добавить в группу Исполнители</button>
-        </form>
+          <q-input name="name" type="text" placeholder="Имя" v-model="input1_1"/>
+          <q-input name="surname" type="text" placeholder="Фамилия" v-model="input1_2"/>
+          <q-input name="eMail" type="text" class="q-mb-sm" placeholder="Почта" v-model="input1_3"/>
+          <q-btn type="submit">Добавить в группу Исполнители</q-btn>
+        </q-form>
       </div>
 
       <div class="join__block">
-        <form
+        <q-form
           @submit.prevent="getFormResponsibleValues"
           class="join__form-executer"
         >
-          <input name="name" type="text" placeholder="Имя" />
-          <input name="surname" type="text" placeholder="Фамилия" />
-          <input name="eMail" type="text" placeholder="Почта" />
-          <button>Добавить в группу Ответственные</button>
-        </form>
+          <q-input name="name" type="text" placeholder="Имя" v-model="input2_1"/>
+          <q-input name="surname" type="text" placeholder="Фамилия" v-model="input2_2" />
+          <q-input name="eMail" type="text" class="q-mb-sm" placeholder="Почта" v-model="input2_3" />
+          <q-btn>Добавить в группу Ответственные</q-btn>
+        </q-form>
       </div>
     </div>
   </div>
@@ -31,7 +31,7 @@
 
 <script>
 import { useMutation } from "@vue/apollo-composable";
-import { defineComponent} from "vue";
+import { defineComponent, ref} from "vue";
 import { inviteUser } from "src/api/main/mutations"
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
@@ -42,6 +42,12 @@ export default defineComponent({
   components: {},
 
   setup() {
+    const input1_1 = ref("")
+    const input1_2 = ref("")
+    const input1_3 = ref("")
+    const input2_1 = ref("")
+    const input2_2 = ref("")
+    const input2_3 = ref("")
     const $q = useQuasar();
     const getFormExecuterValues = function (e, n) {
       const apolloClient = new ApolloClient(getClientOptions());
@@ -123,6 +129,8 @@ export default defineComponent({
     };
 
     return {
+      input1_1, input1_2, input1_3,
+      input2_1, input2_2, input2_3,
       getFormExecuterValues,
       getFormResponsibleValues,
     };

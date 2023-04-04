@@ -1,5 +1,5 @@
 <template>
-  <div class="modules">
+  <div class="modules q-pa-md">
     <div class="modules__table table" v-if="showTableModules()">
       <table class="modules__table-modules">
         <thead>
@@ -54,13 +54,13 @@
               }}
             </td>
             <td>
-              <q-btn color="green"> Редактировать </q-btn>
-              <q-btn color="red" class="q-mx-lg q-my-sm"> Удалить </q-btn>
+              <q-btn color="green" class="q-mr-sm"> Редактировать </q-btn>
+              <q-btn color="red" class="q-my-sm"> Удалить </q-btn>
             </td>
           </tr>
         </tbody>
       </table>
-      <button @click="showForm = !showForm">Добавить модуль</button>
+      <q-btn class="q-mt-sm" color="primary" @click="showForm = !showForm">Добавить модуль</q-btn>
     </div>
     <div class="modules__module" v-else>
       <table class="modules__table-module table">
@@ -99,7 +99,7 @@
               }}
             </td>
             <td>
-              <q-btn color="red" class="q-mx-lg"> Удалить </q-btn>
+              <q-btn color="red" class="q-mr-lg"> Удалить </q-btn>
               <q-btn color="green"> Редактировать </q-btn>
             </td>
           </tr>
