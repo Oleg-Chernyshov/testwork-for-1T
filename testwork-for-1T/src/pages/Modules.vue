@@ -84,9 +84,9 @@
                 (function () {
                   if (task.property5 == "3173475364523847130")
                     return "Назначена";
-                  else if (task.property5 == "3173475364523847130")
+                  else if (task.property5 == "9117798227215343609")
                     return "Выполнена";
-                  else if (task.property5 == "3173475364523847130")
+                  else if (task.property5 == "4106452242288243072")
                     return "Завершена";
                 })()
               }}
