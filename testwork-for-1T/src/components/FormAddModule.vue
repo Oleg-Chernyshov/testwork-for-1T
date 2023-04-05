@@ -63,18 +63,9 @@
           />
           <label class="label" for="responsible">Ответственный</label>
         </div>
-        <!-- <div class="form-field col-lg-12">
-          <input
-            name="tasks"
-            id="tasks"
-            class="input-text js-input"
-            type="text"
-            required
-          />
-          <label class="label" for="tasks">Задачи(пока не имеет смысла)</label>
-        </div> -->
-        <div class="form-field col-lg-12">
+        <div class="form-field col-lg-12 justify-between flex">
           <input name="" class="submit-btn" type="submit" value="Создать" />
+          <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
       </form>
     </section>
@@ -170,7 +161,6 @@ export default defineComponent({
 <style>
 .get-in-touch {
   max-width: 800px;
-  margin: 50px auto;
   position: relative;
 }
 .get-in-touch .title {
@@ -179,7 +169,6 @@ export default defineComponent({
   letter-spacing: 3px;
   font-size: 2em;
   line-height: 48px;
-  padding-bottom: 48px;
   color: #5543ca;
   background: #5543ca;
   background: -moz-linear-gradient(left, #f4524d 0%, #5543ca 100%) !important;
@@ -241,5 +230,9 @@ export default defineComponent({
   border: none;
   width: 200px;
   cursor: pointer;
+}
+.wrapper{
+  background-color: white;
+  padding: 10px
 }
 </style>

@@ -66,7 +66,7 @@ export default defineComponent({
             },
             email,
             password,
-            error
+            error,
         }
     },
 })

@@ -12,7 +12,6 @@
         />
 
         <q-toolbar-title> Quasar App </q-toolbar-title>
-        <router-link class="link" to="/user">User</router-link>
       </q-toolbar>
       
     </q-header>

@@ -59,7 +59,7 @@
           </tr>
         </tbody>
       </table>
-      <q-btn class="q-mt-sm" color="primary" @click="showForm = !showForm">Добавить модуль</q-btn>
+      <q-btn class="q-mt-sm" color="primary" @click="showForm_addModule = !showForm_addModule">Добавить модуль</q-btn>
     </div>
     <div class="modules__module" v-else>
       <table class="modules__table-module table">
@@ -103,11 +103,14 @@
           </tr>
         </tbody>
       </table>
+      <q-btn class="q-mt-sm" color="primary" @click="showForm_addTask = !showForm_addTask">Добавить задачу</q-btn>
       <div v-if="MODULES[module_index].property8.length == 0">
         Список задач пуст
       </div>
     </div>
-    <FormAddModule v-if="showForm" />
+    <q-dialog v-model="showForm_addModule" no-backdrop-dismiss>
+      <FormAddModule/>
+    </q-dialog>
   </div>
 </template>
 
@@ -124,7 +127,8 @@ export default {
   },
 
   setup(props) {
-    const showForm = ref(false);
+    const showForm_addModule = ref(false)
+    const showForm_addTask = ref(false)
     const store = useStore();
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
@@ -151,12 +155,13 @@ export default {
     );
 
     return {
+      showForm_addTask,
+      showForm_addModule,
       MODULES,
       current_module,
       showTableModules,
       module_index,
       propertyStatus,
-      showForm,
     };
   },
 };
