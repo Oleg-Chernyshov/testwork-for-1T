@@ -22,7 +22,7 @@
           <q-input name="name" type="text" placeholder="Имя" v-model="input2_1"/>
           <q-input name="surname" type="text" placeholder="Фамилия" v-model="input2_2" />
           <q-input name="eMail" type="text" class="q-mb-sm" placeholder="Почта" v-model="input2_3" />
-          <q-btn>Добавить в группу Ответственные</q-btn>
+          <q-btn >Добавить в группу Ответственные</q-btn>
         </q-form>
       </div>
     </div>

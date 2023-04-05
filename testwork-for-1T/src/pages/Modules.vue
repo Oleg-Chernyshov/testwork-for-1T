@@ -62,7 +62,7 @@
       <q-btn class="q-mt-sm" color="primary" @click="showForm_addModule = !showForm_addModule">Добавить модуль</q-btn>
     </div>
     <div class="modules__module" v-else>
-      <table class="modules__table-module table">
+      <table class="modules__table-module table" v-if="!MODULES[module_index].property8.length == 0">
         <thead>
           <tr>
             <th>Задача</th>
@@ -108,7 +108,10 @@
         Список задач пуст
       </div>
     </div>
-    <q-dialog v-model="showForm_addModule" no-backdrop-dismiss>
+    <q-dialog v-model="showForm_addTask">
+      <FormAddTask/>
+    </q-dialog>
+    <q-dialog v-model="showForm_addModule">
       <FormAddModule/>
     </q-dialog>
   </div>
@@ -120,10 +123,12 @@ import { useStore } from "vuex";
 import { GetPropertyStatus } from "src/api/main/queryes";
 import { useQuery } from "@vue/apollo-composable";
 import FormAddModule from "../components/FormAddModule.vue";
+import FormAddTask from "../components/FormAddTask.vue"
 
 export default {
   components: {
     FormAddModule,
+    FormAddTask,
   },
 
   setup(props) {
