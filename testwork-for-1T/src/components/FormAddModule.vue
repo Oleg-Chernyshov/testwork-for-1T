@@ -54,17 +54,10 @@
           <label class="label" for="endTime">Время окончания</label>
         </div>
         <div class="form-field col-lg-6">
-          <input
-            name="responsible"
-            id="responsible"
-            class="input-text js-input"
-            type="text"
-            required
-          />
-          <label class="label" for="responsible">Ответственный</label>
+          <q-select v-model="model" :options="options" label="Ответсвенный"/>
         </div>
         <div class="form-field col-lg-12 justify-between flex">
-          <input name="" class="submit-btn" type="submit" value="Создать" />
+          <input @click="refetchModulesSetTimeout" name="" class="submit-btn" type="submit" value="Создать" />
           <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
       </form>
