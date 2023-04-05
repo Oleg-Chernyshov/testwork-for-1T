@@ -55,7 +55,6 @@
             </td>
             <td>
               <q-btn color="green" class="q-mr-sm"> Редактировать </q-btn>
-              <q-btn color="red" class="q-my-sm"> Удалить </q-btn>
             </td>
           </tr>
         </tbody>
@@ -99,7 +98,6 @@
               }}
             </td>
             <td>
-              <q-btn color="red" class="q-mr-lg"> Удалить </q-btn>
               <q-btn color="green"> Редактировать </q-btn>
             </td>
           </tr>

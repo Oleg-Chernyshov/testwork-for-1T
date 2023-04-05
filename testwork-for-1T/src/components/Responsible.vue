@@ -6,7 +6,6 @@
         <th>Почта</th>
         <th>Имя</th>
         <th>Фамилия</th>
-        <th>Действия</th>
       </thead>
       <tbody>
         <tr v-if="loading">loading</tr>
@@ -14,7 +13,6 @@
           <td>{{ res.email.email }}</td>
           <td>{{ res.fullname.first_name }}</td>
           <td>{{ res.fullname.last_name }}</td>
-          <td> <q-btn color="red">Удалить</q-btn> </td>
         </tr>
       </tbody>
     </table>
