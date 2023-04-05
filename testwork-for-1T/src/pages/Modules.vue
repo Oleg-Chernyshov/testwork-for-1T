@@ -140,6 +140,7 @@ export default {
     const module_index = computed(() => store.getters.MODULE_INDEX);
     const current_module = reactive({});
     const propertyStatus = reactive({});
+
     const showTableModules = () => {
       return module_index.value <= -1;
     };
@@ -158,7 +159,6 @@ export default {
       () => store.getters.MODULE_INDEX,
       () => get_module(module_index)
     );
-
     return {
       showForm_addTask,
       showForm_addModule,

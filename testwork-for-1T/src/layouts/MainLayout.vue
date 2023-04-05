@@ -13,7 +13,6 @@
 
         <q-toolbar-title> Quasar App </q-toolbar-title>
       </q-toolbar>
-      
     </q-header>
 
     <q-drawer class="q-pt-xl" v-model="leftDrawerOpen" show-if-above bordered>
@@ -139,8 +138,8 @@ export default defineComponent({
   width: 100% !important;
   text-align: left !important;
 }
-.link{
-   color: white;
-   text-decoration: none;
+.link {
+  color: white;
+  text-decoration: none;
 }
 </style>

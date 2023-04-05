@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 export const GET_MODULES = ({ commit }) => {
   const fetching = async () => {
     try {
-      const { onResult } = useQuery(
+      const { onResult, refetch } = useQuery(
         gql`
 					{
   paginate_type1(
@@ -61,8 +61,7 @@ export const GET_MODULES = ({ commit }) => {
 } `
       );
       onResult(queryResult => {
-        console.log(queryResult.data["paginate_type1"].data);
-        commit("setModules", queryResult.data["paginate_type1"].data)
+        commit("setModules", { modules: queryResult.data["paginate_type1"].data, refetch: refetch })
       })
     } catch (e) {
       console.log("Ошибка:", e);
@@ -71,7 +70,35 @@ export const GET_MODULES = ({ commit }) => {
   fetching();
 }
 
-export const GET_ID = ({ commit},id) => {
-  console.log(id);
+export const GET_SUBJECTS = ({ commit }) => {
+  const fetching = async () => {
+    try {
+      const { onResult } = useQuery(
+        gql`
+					{
+          paginate_subject(page: 1, perPage: 100) {
+            data {
+              id
+              type_id
+              author_id
+              fullname {
+                first_name
+                last_name
+              }
+            }
+          }
+        }`
+      );
+      onResult((queryResult) => {
+        commit("setSubjects", queryResult.data.paginate_subject.data)
+      });
+    } catch (e) {
+      console.log("Ошибка:", e);
+    }
+  };
+  fetching();
+}
+
+export const GET_ID = ({ commit }, id) => {
   commit("SetId", id)
 }
