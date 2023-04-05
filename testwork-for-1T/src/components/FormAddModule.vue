@@ -67,7 +67,13 @@
           <label class="label" for="tasks">Задачи(пока не имеет смысла)</label>
         </div> -->
         <div class="form-field col-lg-12">
-          <input name="" class="submit-btn" type="submit" value="Создать" />
+          <input
+            @click="refetchModulesSetTimeout"
+            name=""
+            class="submit-btn"
+            type="submit"
+            value="Создать"
+          />
         </div>
       </form>
     </section>
@@ -77,12 +83,10 @@
 <script>
 import { useMutation } from "@vue/apollo-composable";
 import { defineComponent, reactive, ref, computed, watch } from "vue";
-import gql from "graphql-tag";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
-import { useQuery } from "@vue/apollo-composable";
 import { addNewModule } from "src/api/main/mutations";
 import { useStore } from "vuex";
 
@@ -97,6 +101,13 @@ export default defineComponent({
     const SUBJECTS = computed(() => store.getters.SUBJECTS);
     const model = ref(null);
     const indexResponsible = ref(0);
+
+    const refetchModules = store.getters.REFETCH_MODULES;
+    console.log("refetchModules", refetchModules);
+
+    const refetchModulesSetTimeout = function () {
+      setTimeout(refetchModules, 100);
+    };
 
     watch(SUBJECTS, () => {
       const arr = [];
@@ -155,6 +166,8 @@ export default defineComponent({
       createNewModule,
       options,
       model,
+      refetchModulesSetTimeout,
+      refetchModules,
     };
   },
 });

@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 export const GET_MODULES = ({ commit }) => {
   const fetching = async () => {
     try {
-      const { onResult } = useQuery(
+      const { onResult, refetch } = useQuery(
         gql`
 					{
   paginate_type1(
@@ -61,8 +61,7 @@ export const GET_MODULES = ({ commit }) => {
 } `
       );
       onResult(queryResult => {
-        console.log(queryResult.data["paginate_type1"].data);
-        commit("setModules", queryResult.data["paginate_type1"].data)
+        commit("setModules", { modules: queryResult.data["paginate_type1"].data, refetch: refetch })
       })
     } catch (e) {
       console.log("Ошибка:", e);

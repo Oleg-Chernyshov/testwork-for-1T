@@ -13,3 +13,7 @@ export const ID = (state) => {
 export const SUBJECTS = (state) => {
 	return state.subjects
 }
+
+export const REFETCH_MODULES = (state) => {
+	return state.refetchModules
+}
