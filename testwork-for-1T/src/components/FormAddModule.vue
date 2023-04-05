@@ -54,14 +54,7 @@
           <label class="label" for="endTime">Время окончания</label>
         </div>
         <div class="form-field col-lg-6">
-          <input
-            name="responsible"
-            id="responsible"
-            class="input-text js-input"
-            type="text"
-            required
-          />
-          <label class="label" for="responsible">Ответственный</label>
+          <q-select v-model="model" :options="options" label="Ответственный" />
         </div>
         <!-- <div class="form-field col-lg-12">
           <input
@@ -83,42 +76,63 @@
 
 <script>
 import { useMutation } from "@vue/apollo-composable";
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, ref, computed, watch } from "vue";
 import gql from "graphql-tag";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { useQuery } from "@vue/apollo-composable";
-import { addNewModule } from "src/api/main/mutations"
+import { addNewModule } from "src/api/main/mutations";
+import { useStore } from "vuex";
 
 export default defineComponent({
+  components: {},
+
   setup() {
     const $q = useQuasar();
+    const options = ref();
+    const store = useStore();
+    store.dispatch("GET_SUBJECTS");
+    const SUBJECTS = computed(() => store.getters.SUBJECTS);
+    const model = ref(null);
+    const indexResponsible = ref(0);
+
+    watch(SUBJECTS, () => {
+      const arr = [];
+      for (let subject of SUBJECTS.value) {
+        arr.push(
+          subject.fullname?.first_name + " " + subject.fullname?.last_name
+        );
+      }
+      options.value = arr;
+    });
+
+    watch(model, () => {
+      indexResponsible.value = options.value.indexOf(model.value);
+    });
+
     const createNewModule = function (e) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
-      const { mutate } = useMutation(
-        addNewModule,
-        () => ({
-          variables: {
-            input: {
-              name: e.target.elements.name.value,
-              property2: {
-                date: e.target.elements.startData.value,
-                time: e.target.elements.startTime.value,
-              },
-              property3: {
-                date: e.target.elements.endData.value,
-                time: e.target.elements.endTime.value,
-              },
-              property7: {
-                "6714467324498160547": e.target.elements.responsible.value,
-              },
+      const { mutate } = useMutation(addNewModule, () => ({
+        variables: {
+          input: {
+            name: e.target.elements.name.value,
+            property2: {
+              date: e.target.elements.startData.value,
+              time: e.target.elements.startTime.value,
+            },
+            property3: {
+              date: e.target.elements.endData.value,
+              time: e.target.elements.endTime.value,
+            },
+            property7: {
+              "6714467324498160547": SUBJECTS.value[indexResponsible.value].id,
             },
           },
-        })
-      );
+        },
+      }));
       const response = mutate();
       response
         .then(function (result) {
@@ -137,31 +151,10 @@ export default defineComponent({
         });
     };
 
-    const subjects = reactive({});
-
-    const { onResult } = useQuery(gql`
-      query ($id: String!) {
-        paginate_subject(page: 1, perPage: 100) {
-          data {
-            id
-            type_id
-            author_id
-            fullname {
-              first_name
-              last_name
-            }
-          }
-        }
-      }
-    `);
-    onResult((queryResult) => {
-      subjects.values = queryResult.data;
-      console.log("Users", queryResult.data);
-    });
-
     return {
       createNewModule,
-      subjects,
+      options,
+      model,
     };
   },
 });

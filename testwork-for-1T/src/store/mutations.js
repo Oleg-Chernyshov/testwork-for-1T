@@ -9,3 +9,7 @@ export const setModuleIndex = (state, index) => {
 export const SetId = (state, id) => {
 	state.id = id
 }
+
+export const setSubjects = (state, subjects) => {
+	state.subjects = subjects
+}

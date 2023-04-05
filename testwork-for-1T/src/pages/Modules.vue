@@ -60,7 +60,10 @@
           </tr>
         </tbody>
       </table>
-      <q-btn class="q-mt-sm" color="primary" @click="showForm = !showForm">Добавить модуль</q-btn>
+      <q-btn class="q-mt-sm" color="primary" @click="showForm = !showForm"
+        >Добавить модуль</q-btn
+      >
+      <FormAddModule v-if="showForm" />
     </div>
     <div class="modules__module" v-else>
       <table class="modules__table-module table">
@@ -84,9 +87,9 @@
                 (function () {
                   if (task.property5 == "3173475364523847130")
                     return "Назначена";
-                  else if (task.property5 == "3173475364523847130")
+                  else if (task.property5 == "9117798227215343609")
                     return "Выполнена";
-                  else if (task.property5 == "3173475364523847130")
+                  else if (task.property5 == "4106452242288243072")
                     return "Завершена";
                 })()
               }}
@@ -109,7 +112,6 @@
         Список задач пуст
       </div>
     </div>
-    <FormAddModule v-if="showForm" />
   </div>
 </template>
 

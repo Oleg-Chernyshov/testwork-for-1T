@@ -9,3 +9,7 @@ export const MODULE_INDEX = (state) => {
 export const ID = (state) => {
 	return state.id
 }
+
+export const SUBJECTS = (state) => {
+	return state.subjects
+}
