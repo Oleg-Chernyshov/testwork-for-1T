@@ -58,7 +58,7 @@
     
     export default defineComponent({
         props: {
-            id: Number
+            id: String
         },
         setup(props) {
             console.log(props.id);

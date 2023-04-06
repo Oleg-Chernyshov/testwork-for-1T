@@ -1,6 +1,6 @@
 <template>
   <div class="modules q-pa-md">
-    <div class="modules__table table" v-if="showTableModules">
+    <div class="modules__table table" v-if="showTableModules()">
       <table class="modules__table-modules">
         <thead>
           <tr>
@@ -132,7 +132,6 @@ import FormAddModule from "../components/FormAddModule.vue";
 import FormAddTask from "../components/FormAddTask.vue";
 import FormUpdateTask from "../components/FormUpdateTask.vue";
 import FormUpdateModule from "../components/FormUpdateModule.vue";
-import { SetId } from "src/store/mutations";
 
 export default {
   components: {
@@ -142,7 +141,7 @@ export default {
     FormUpdateModule
   },
 
-  setup(props) {
+  setup() {
     const id = ref(0)
     const showForm_addModule = ref(false)
     const showForm_updateModule = ref(false)

@@ -109,7 +109,6 @@ export default defineComponent({
           subject.fullname?.first_name + " " + subject.fullname?.last_name
         );
       }
-      console.log(1);
       options.value = arr;
     })
 
