@@ -130,7 +130,10 @@
       <q-btn
         class="q-mt-sm"
         color="primary"
-        @click="showForm_addTask = !showForm_addTask"
+        @click="
+          showForm_addTask = !showForm_addTask;
+          set_id_module(module_index);
+        "
         >Добавить задачу</q-btn
       >
       <div v-if="MODULES[module_index].property8.length == 0">
@@ -138,7 +141,7 @@
       </div>
     </div>
     <q-dialog v-model="showForm_addTask">
-      <FormAddTask />
+      <FormAddTask :idModule="idModule" />
     </q-dialog>
     <q-dialog v-model="showForm_updateTask">
       <FormUpdateTask :id="id" />
@@ -178,6 +181,7 @@ export default {
 
   setup(props) {
     const id = ref(0);
+    const idModule = ref(0);
     const showForm_addModule = ref(false);
     const showForm_addTask = ref(false);
     const showForm_updateTask = ref(false);
@@ -203,7 +207,6 @@ export default {
     const { onResult } = useQuery(GetPropertyStatus);
     onResult((queryResult) => {
       propertyStatus.values = queryResult.data.property.meta.options;
-      console.log(1241, propertyStatus.values);
     });
 
     watch(
@@ -221,10 +224,13 @@ export default {
       showForm_updateTask,
       showForm_updateModule,
       id,
-      set_id(env){
-        id.value = env.target.id
+      idModule,
+      set_id(env) {
+        id.value = env.target.id;
       },
-      colorTask,
+      set_id_module(id) {
+        idModule.value = id;
+      },
     };
   },
 };
