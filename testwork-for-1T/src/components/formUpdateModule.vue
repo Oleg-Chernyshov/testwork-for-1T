@@ -88,6 +88,7 @@ export default defineComponent({
     const store = useStore();
     const model = ref(null);
     const indexResponsible = ref(0);
+    const SUBJECTS = computed(() => store.getters.EXECUTORS);
 
     const responsible = ref([]);
     const { onResult } = useQuery(GetGroupById, {
