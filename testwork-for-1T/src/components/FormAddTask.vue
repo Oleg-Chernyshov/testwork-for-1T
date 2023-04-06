@@ -53,11 +53,9 @@
 import { useMutation } from "@vue/apollo-composable";
 import {
   defineComponent,
-  reactive,
   ref,
   computed,
-  watch,
-  onMounted,
+  watch
 } from "vue";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
@@ -86,7 +84,9 @@ export default defineComponent({
     watch(model, () => {
       indexExecutor.value = options.value.indexOf(model.value);
     });
-
+    watch(modelModule, () => {
+      indexModule.value = optionsModules.value.indexOf(modelModule.value);
+    });
     watch(modelStatus, () => {
       if (modelStatus.value == "Назначена") {
         statusId.value = "3173475364523847130";
@@ -97,11 +97,10 @@ export default defineComponent({
       }
     });
 
-    watch(modelModule, () => {
-      indexModule.value = optionsModules.value.indexOf(modelModule.value);
-    });
+    
 
     const createNewTask = function (e) {
+      console.log(MODULES.value[indexModule.value].id);
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(addNewTask, () => ({

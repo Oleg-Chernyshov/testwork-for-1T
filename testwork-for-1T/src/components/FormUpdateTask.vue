@@ -2,7 +2,7 @@
   <div class="wrapper">
     <section class="get-in-touch">
       <h3 class="title">Обновить задачу</h3>
-      <form class="contact-form row" @submit.prevent="createNewModule">
+      <form class="contact-form row" @submit.prevent="updateTask">
         <div class="form-field col-lg-6">
           <input
             name="name"
@@ -24,24 +24,14 @@
           <label class="label" for="description">Описание</label>
         </div>
         <div class="form-field col-lg-6">
-          <input
-            name="executor"
-            id="executor"
-            class="input-text js-input"
-            type="text"
-            required
+          <q-select
+            v-model="modelStatus"
+            :options="optionsStatus"
+            label="Статус"
           />
-          <label class="label" for="executor">Ответственный</label>
         </div>
         <div class="form-field col-lg-6">
-          <input
-            name="status"
-            id="status"
-            class="input-text js-input"
-            type="text"
-            required
-          />
-          <label class="label" for="status">Статус</label>
+          <q-select v-model="model" :options="options" label="Исполнитель" />
         </div>
         <div class="form-field col-lg-12 justify-between flex">
           <input name="" class="submit-btn" type="submit" value="Создать" />
@@ -53,14 +43,109 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { useMutation } from "@vue/apollo-composable";
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch
+} from "vue";
+import { getClientOptions } from "src/apollo/index";
+import { updateUser } from "../api/main/mutations"
+import { provideApolloClient } from "@vue/apollo-composable";
+import { ApolloClient } from "@apollo/client/core";
+import { useQuasar } from "quasar";
+import { useStore } from "vuex";
 
 export default defineComponent({
   props: {
-    id: Number,
+    id: String,
   },
   setup(props) {
     console.log(props.id);
+    const $q = useQuasar();
+    const store = useStore();
+    store.dispatch("GET_EXECUTORS");
+    const options = computed(() => store.getters.OPTIONS_EXECUTORS);
+    const model = ref(null);
+    const modelStatus = ref(null);
+    const modelModule = ref(null);
+    const indexExecutor = ref(0);
+    const optionsStatus = ["Назначена", "Выполнена", "Завершена"];
+    const SUBJECTS = computed(() => store.getters.EXECUTORS);
+    const refetchModules = store.getters.REFETCH_MODULES;
+    store.dispatch("GET_MODULES");
+    const MODULES = computed(() => store.getters.MODULES);
+    const statusId = ref("");
+    const optionsModules = computed(() => store.getters.OPTIONS_MODULES);
+    const module_index = computed(() => store.getters.MODULE_INDEX);
+
+    watch(model, () => {
+      indexExecutor.value = options.value.indexOf(model.value);
+    });
+
+    watch(modelStatus, () => {
+      if (modelStatus.value == "Назначена") {
+        statusId.value = "3173475364523847130";
+      } else if (modelStatus.value == "Выполнена") {
+        statusId.value = "9117798227215343609";
+      } else {
+        statusId.value = "4106452242288243072";
+      }
+    });
+
+    const refetchModulesSetTimeout = function () {
+      setTimeout(refetchModules, 1000);
+    };
+
+    const updateTask = function (e) {
+      const apolloClient = new ApolloClient(getClientOptions());
+      provideApolloClient(apolloClient);
+      const { mutate } = useMutation(updateUser, () => ({
+        variables: {
+          input: {
+            name: e.target.elements.name.value,
+            property4: e.target.elements.description.value,
+            property5: statusId.value,
+            property6: {
+              "6714467324498160547": SUBJECTS.value[indexExecutor.value].id,
+            },
+            property8: {
+              "2293521969897910704": MODULES.value[module_index.value].id,
+            },
+          },
+          id:props.id
+        },
+      }));
+      const response = mutate();
+      response
+        .then(function (result) {
+          console.log("updated task", result);
+          $q.notify({
+            type: "positive",
+            message: "Задача добавлен",
+          });
+          refetchModulesSetTimeout()
+          console.log(refetchModules);
+        })
+        .catch((err) => {
+          console.log("Ошибка", err);
+          $q.notify({
+            type: "negative",
+            message: "Ошибка",
+          });
+        });
+    };
+
+    return {
+      options,
+      modelStatus,
+      model,
+      modelModule,
+      optionsModules,
+      optionsStatus,
+      updateTask
+    };
   },
 });
 </script>

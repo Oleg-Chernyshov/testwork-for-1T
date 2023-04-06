@@ -186,6 +186,7 @@ export default {
     const colorTask = ref();
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
+    console.log(MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
     const current_module = reactive({});
     const propertyStatus = reactive({});
@@ -195,6 +196,7 @@ export default {
     };
     const get_module = function (module_index) {
       current_module.values = MODULES.value[module_index.value];
+      console.log(current_module);
     };
 
     //Получение свойства Status для определения статуса задачи по id
