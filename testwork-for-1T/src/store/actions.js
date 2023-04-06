@@ -104,7 +104,7 @@ export const GET_RESPONSIBLES = ({ commit }) => {
   const fetching = async () => {
     try {
       let responsible = [];
-      const { onResult } = useQuery(GetGroupById, {
+      const { onResult, refetch } = useQuery(GetGroupById, {
         id: "1358489619049103837",
       });
       onResult((queryResult) => {
@@ -115,8 +115,7 @@ export const GET_RESPONSIBLES = ({ commit }) => {
             subject.fullname?.first_name + " " + subject.fullname?.last_name
           );
         }
-
-        commit("setResponsibles", { responsible: responsible, options: options })
+        commit("setResponsibles", { responsible: responsible, options: options, refetch: refetch })
       });
     } catch (e) {
       console.log("Ошибка:", e);

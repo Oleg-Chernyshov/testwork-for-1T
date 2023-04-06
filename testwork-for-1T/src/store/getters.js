@@ -24,5 +24,8 @@ export const RESPONSIBLES = (state) => {
 
 export const OPTIONS = (state) => {
 	return state.options
+}
 
+export const REFETCH_RESPONSIBLES = (state) => {
+	return state.refetchQueryResponsible
 }
