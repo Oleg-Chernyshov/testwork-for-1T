@@ -31,6 +31,25 @@ mutation ($input: create_type1_input!) {
   }
 `
 
+export const addNewTask = gql`
+mutation ($input: create_type2_input!) {
+    create_type2(input: $input) {
+      recordId
+      record {
+        property8 {
+          name
+        }
+        id
+        author_id
+        type_id
+        created_at
+        updated_at
+      }
+      status
+    }
+  }
+`
+
 export const inviteUser = gql`
 mutation userGroupInviteUser($input: UserGroupInviteUserInput!) {
     userGroupInviteUser(input: $input) {

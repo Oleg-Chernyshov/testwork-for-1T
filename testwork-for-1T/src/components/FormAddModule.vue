@@ -54,19 +54,9 @@
           <label class="label" for="endTime">Время окончания</label>
         </div>
         <div class="form-field col-lg-6">
-          <q-select v-model="model" :options="options" label="Ответственный" />
+          <q-select v-model="model" :options="options" label="Ответсвенный" />
         </div>
-        <!-- <div class="form-field col-lg-12">
-          <input
-            name="tasks"
-            id="tasks"
-            class="input-text js-input"
-            type="text"
-            required
-          />
-          <label class="label" for="tasks">Задачи(пока не имеет смысла)</label>
-        </div> -->
-        <div class="form-field col-lg-12">
+        <div class="form-field col-lg-12 justify-between flex">
           <input
             @click="refetchModulesSetTimeout"
             name=""
@@ -74,6 +64,7 @@
             type="submit"
             value="Создать"
           />
+          <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
       </form>
     </section>
@@ -82,15 +73,20 @@
 
 <script>
 import { useMutation } from "@vue/apollo-composable";
-import { defineComponent, reactive, ref, computed, watch } from "vue";
+import {
+  defineComponent,
+  reactive,
+  ref,
+  computed,
+  watch,
+  onMounted,
+} from "vue";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { addNewModule } from "src/api/main/mutations";
 import { useStore } from "vuex";
-import { GetGroupById } from "src/api/main/queryes";
-import { useQuery } from "@vue/apollo-composable";
 
 export default defineComponent({
   components: {},
@@ -105,11 +101,12 @@ export default defineComponent({
     const model = ref(null);
     const indexResponsible = ref(0);
     store.dispatch("GET_RESPONSIBLES");
-    const options = computed(() => store.getters.OPTIONS);
-
-    watch(options, () => {
-      console.log("opt", options.value);
-    });
+    const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
+    const SUBJECTS = computed(() => store.getters.RESPONSIBLES);
+    console.log(SUBJECTS.value);
+    // watch(options, () => {
+    //   console.log("opt", options.value);
+    // });
 
     const refetchModules = store.getters.REFETCH_MODULES;
 
@@ -246,5 +243,9 @@ export default defineComponent({
   border: none;
   width: 200px;
   cursor: pointer;
+}
+.wrapper {
+  background-color: white;
+  padding: 10px;
 }
 </style>
