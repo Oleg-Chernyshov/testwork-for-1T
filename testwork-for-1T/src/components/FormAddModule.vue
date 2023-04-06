@@ -97,7 +97,7 @@ export default defineComponent({
 
   setup() {
     const $q = useQuasar();
-    const options = ref();
+    const options = ref([]);
     const store = useStore();
     store.dispatch("GET_SUBJECTS");
     const SUBJECTS = computed(() => store.getters.SUBJECTS);
@@ -120,13 +120,11 @@ export default defineComponent({
     };
 
     watch(responsible, () => {
-      const arr = [];
       for (let subject of responsible.value) {
-        arr.push(
+        options.value.push(
           subject.fullname?.first_name + " " + subject.fullname?.last_name
         );
       }
-      options.value = arr;
     });
 
     watch(model, () => {
