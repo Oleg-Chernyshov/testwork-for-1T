@@ -82,12 +82,20 @@
             <td>
               {{ task.property4 }}
             </td>
-            <td>
+            <td
+              :class="
+                task.property5 == 3173475364523847130
+                  ? 'assigned'
+                  : task.property5 == 9117798227215343609
+                  ? 'accomplished'
+                  : 'completed'
+              "
+            >
               {{
                 (function () {
-                  if (task.property5 == "3173475364523847130")
+                  if (task.property5 == "3173475364523847130") {
                     return "Назначена";
-                  else if (task.property5 == "9117798227215343609")
+                  } else if (task.property5 == "9117798227215343609")
                     return "Выполнена";
                   else if (task.property5 == "4106452242288243072")
                     return "Завершена";
@@ -130,6 +138,7 @@ export default {
   setup(props) {
     const showForm = ref(false);
     const store = useStore();
+    const colorTask = ref();
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
@@ -161,12 +170,23 @@ export default {
       module_index,
       propertyStatus,
       showForm,
+      colorTask,
     };
   },
 };
 </script>
 
 <style lang="scss">
+.assigned {
+  background-color: rgb(199, 21, 160);
+}
+.accomplished {
+  background-color: rgb(235, 220, 20);
+}
+.completed {
+  background-color: rgb(100, 207, 67);
+}
+
 .table {
   width: 100%;
   border: none;

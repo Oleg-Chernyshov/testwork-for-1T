@@ -18,3 +18,14 @@ export const SUBJECTS = (state) => {
 export const REFETCH_MODULES = (state) => {
 	return state.refetchModules
 }
+export const RESPONSIBLES = (state) => {
+	return state.responsibles
+}
+
+export const OPTIONS = (state) => {
+	return state.options
+}
+
+export const REFETCH_RESPONSIBLES = (state) => {
+	return state.refetchQueryResponsible
+}

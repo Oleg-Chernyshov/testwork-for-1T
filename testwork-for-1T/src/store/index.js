@@ -8,6 +8,9 @@ export const state = {
   module_index: -1,
   subjects: [],
   refetchModules: "23t524hiovdf",
+  refetchQueryResponsible: {},
+  responsibles: [],
+  options: []
 }
 
 const store = createStore({
