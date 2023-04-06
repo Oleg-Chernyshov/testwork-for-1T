@@ -6,7 +6,6 @@
         <th>Почта</th>
         <th>Имя</th>
         <th>Фамилия</th>
-        <th>Действия</th>
       </thead>
       <tbody>
         <tr v-if="loading">

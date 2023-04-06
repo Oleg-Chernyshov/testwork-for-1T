@@ -1,67 +1,66 @@
 <template>
-  <form @submit.prevent class="v-form__block">
-    <input
-      @input="changeValid"
-      v-model="price"
-      class="v-form__input"
-      type="text"
-      placeholder="price"
-    />
-    <input
-      @input="changeValid"
-      v-model="category"
-      class="v-form__input"
-      type="text"
-      placeholder="category"
-    />
-    <input
-      @input="changeValid"
-      v-model="about"
-      class="v-form__input"
-      type="text"
-      placeholder="about"
-    />
-    <input
-      v-model="name"
-      @input="changeValid"
-      class="v-form__input"
-      type="text"
-      placeholder="name"
-    />
-    <!-- <button
-        :disabled="isValid"
-        class="v-form__btn-is-valid"
-        @click="addToCatalog"
-      >
-        Добавить
-      </button> -->
-    <button
-      :class="isValid ? 'v-form__btn-is-valid' : 'v-form__btn-not-is-valid'"
-      class="v-form__btn-is-valid"
-      @click="addToCatalog"
-    >
-      Добавить
-    </button>
-  </form>
+  <div class="wrapper">
+    <section class="get-in-touch">
+      <h3 class="title">Обновить задачу</h3>
+      <form class="contact-form row" @submit.prevent="createNewModule">
+        <div class="form-field col-lg-6">
+          <input
+            name="name"
+            id="name"
+            class="input-text js-input"
+            type="text"
+            required
+          />
+          <label class="label" for="name">Название</label>
+        </div>
+        <div class="form-field col-lg-6">
+          <input
+            name="description"
+            id="description"
+            class="input-text js-input"
+            type="text"
+            required
+          />
+          <label class="label" for="description">Описание</label>
+        </div>
+        <div class="form-field col-lg-6">
+          <input
+            name="executor"
+            id="executor"
+            class="input-text js-input"
+            type="text"
+            required
+          />
+          <label class="label" for="executor">Ответственный</label>
+        </div>
+        <div class="form-field col-lg-6">
+          <input
+            name="status"
+            id="status"
+            class="input-text js-input"
+            type="text"
+            required
+          />
+          <label class="label" for="status">Статус</label>
+        </div>
+        <div class="form-field col-lg-12 justify-between flex">
+          <input name="" class="submit-btn" type="submit" value="Создать" />
+          <q-btn color="primary" label="Отменить" v-close-popup />
+        </div>
+      </form>
+    </section>
+  </div>
 </template>
 
 <script>
-import { useMutation } from "@vue/apollo-composable";
-import { defineComponent, reactive, ref, computed, watch } from "vue";
-import gql from "graphql-tag";
-import { getClientOptions } from "src/apollo/index";
-import { provideApolloClient } from "@vue/apollo-composable";
-import { ApolloClient } from "@apollo/client/core";
-import { useQuasar } from "quasar";
-import { useQuery } from "@vue/apollo-composable";
-import { addNewModule } from "src/api/main/mutations";
-import { useStore } from "vuex";
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  components: {},
-
-  setup() {
-    return {};
+  props: {
+    id: Number,
+  },
+  setup(props) {
+    console.log(props.id);
   },
 });
 </script>

@@ -7,10 +7,13 @@ export const state = {
   modules: [],
   module_index: -1,
   subjects: [],
-  refetchModules: "23t524hiovdf",
+  // refetchModules: "23t524hiovdf",
   refetchQueryResponsible: {},
   responsibles: [],
-  options: []
+  optionsForResponsibles: [],
+  executors: [],
+  optionsForExecutors: [],
+  refetchQueryExecutors: {}
 }
 
 const store = createStore({

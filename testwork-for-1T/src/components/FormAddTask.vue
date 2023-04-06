@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">
     <section class="get-in-touch">
-      <h3 class="title">Новый модуль</h3>
-      <form class="contact-form row" @submit.prevent="createNewModule">
+      <h3 class="title">Новая задача</h3>
+      <form class="contact-form row" @submit.prevent="createNewTask">
         <div class="form-field col-lg-6">
           <input
             name="name"
@@ -15,55 +15,36 @@
         </div>
         <div class="form-field col-lg-6">
           <input
-            name="startData"
-            id="startData"
+            name="description"
+            id="description"
             class="input-text js-input"
             type="text"
             required
           />
-          <label class="label" for="startData">Дата начала</label>
+          <label class="label" for="description">Описание</label>
+        </div>
+        <div class="form-field col-lg-6">
+          <q-select
+            v-model="modelStatus"
+            :options="optionsStatus"
+            label="Статус"
+          />
         </div>
         <div class="form-field col-lg-6">
           <input
-            name="startTime"
-            id="startTime"
+            name="module"
+            id="module"
             class="input-text js-input"
             type="text"
             required
           />
-          <label class="label" for="startTime">Время начала</label>
+          <label class="label" for="module">Модуль</label>
         </div>
         <div class="form-field col-lg-6">
-          <input
-            name="endData"
-            id="endData"
-            class="input-text js-input"
-            type="text"
-            required
-          />
-          <label class="label" for="endData">Дата окончания</label>
-        </div>
-        <div class="form-field col-lg-6">
-          <input
-            name="endTime"
-            id="endTime"
-            class="input-text js-input"
-            type="text"
-            required
-          />
-          <label class="label" for="endTime">Время окончания</label>
-        </div>
-        <div class="form-field col-lg-6">
-          <q-select v-model="model" :options="options" label="Ответсвенный" />
+          <q-select v-model="model" :options="options" label="Исполнитель" />
         </div>
         <div class="form-field col-lg-12 justify-between flex">
-          <input
-            @click="refetchModulesSetTimeout"
-            name=""
-            class="submit-btn"
-            type="submit"
-            value="Создать"
-          />
+          <input name="" class="submit-btn" type="submit" value="Создать" />
           <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
       </form>
@@ -85,66 +66,73 @@ import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
-import { addNewModule } from "src/api/main/mutations";
+import { addNewTask } from "src/api/main/mutations";
 import { useStore } from "vuex";
 
 export default defineComponent({
-  components: {},
-
   setup() {
     const $q = useQuasar();
-    // const options = ref([]);
-    console.log(1);
     const store = useStore();
+    store.dispatch("GET_EXECUTORS");
+    const options = computed(() => store.getters.OPTIONS_EXECUTORS);
     const model = ref(null);
-    const indexResponsible = ref(0);
-    store.dispatch("GET_RESPONSIBLES");
-    const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
-    const SUBJECTS = computed(() => store.getters.RESPONSIBLES);
-    console.log(SUBJECTS.value);
-    // watch(options, () => {
-    //   console.log("opt", options.value);
-    // });
-
-    const refetchModules = store.getters.REFETCH_MODULES;
-
-    const refetchModulesSetTimeout = function () {
-      setTimeout(refetchModules, 1000);
-    };
+    const modelStatus = ref(null);
+    const indexExecutor = ref(0);
+    const optionsStatus = ["Назначена", "Выполнена", "Завершена"];
+    const SUBJECTS = computed(() => store.getters.EXECUTORS);
+    const statusId = ref("");
+    const MODULES = computed(() => store.getters.MODULES);
 
     watch(model, () => {
-      indexResponsible.value = options.value.indexOf(model.value);
-      console.log(4);
+      indexExecutor.value = options.value.indexOf(model.value);
     });
 
-    const createNewModule = function (e) {
+    watch(modelStatus, () => {
+      console.log(modelStatus);
+      if (modelStatus.value == "Назначена") {
+        statusId.value = "3173475364523847130";
+      } else if (modelStatus.value == "Выполнена") {
+        statusId.value = "9117798227215343609";
+      } else {
+        statusId.value = "4106452242288243072";
+      }
+    });
+
+    const createNewTask = function (e) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
-      const { mutate } = useMutation(addNewModule, () => ({
+      const { mutate } = useMutation(addNewTask, () => ({
         variables: {
           input: {
             name: e.target.elements.name.value,
-            property2: {
-              date: e.target.elements.startData.value,
-              time: e.target.elements.startTime.value,
+            property4: e.target.elements.description.value,
+            property5: statusId.value,
+            property6: {
+              "6714467324498160547": SUBJECTS.value[indexExecutor.value].id,
             },
-            property3: {
-              date: e.target.elements.endData.value,
-              time: e.target.elements.endTime.value,
+            property8: {
+              "2293521969897910704": e.target.elements.module.value,
             },
-            property7: {
-              "6714467324498160547": SUBJECTS.value[indexResponsible.value].id,
-            },
+
+            //             name: e.target.elements.name.value,
+            // property4: e.target.elements.description.value,
+            // property5: e.target.elements.status.value,
+            // property6: {
+            //   "6714467324498160547": e.target.elements.module.value,
+            // },
+            // property8: {
+            //   "2293521969897910704": SUBJECTS.value[indexExecutor.value].id,
+            // },
           },
         },
       }));
       const response = mutate();
       response
         .then(function (result) {
-          console.log("createNewModule", result);
+          console.log("createNewTask", result);
           $q.notify({
             type: "positive",
-            message: "Модуль добавлен",
+            message: "Задача добавлен",
           });
         })
         .catch((err) => {
@@ -155,13 +143,12 @@ export default defineComponent({
           });
         });
     };
-
     return {
-      createNewModule,
       options,
+      modelStatus,
       model,
-      refetchModulesSetTimeout,
-      refetchModules,
+      createNewTask,
+      optionsStatus,
     };
   },
 });

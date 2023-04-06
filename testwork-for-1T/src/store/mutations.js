@@ -15,8 +15,14 @@ export const setSubjects = (state, subjects) => {
 	state.subjects = subjects
 }
 
-export const setResponsibles = (state, { responsibles, options, refetch }) => {
+export const setResponsibles = (state, { responsibles, optionsForResponsibles, refetch }) => {
 	state.responsibles = responsibles
-	state.options = options
+	state.optionsForResponsibles = optionsForResponsibles
 	state.refetchQueryResponsible = refetch
+}
+
+export const setExecutors = (state, { executors, optionsForExecutors, refetch }) => {
+	state.executors = executors
+	state.optionsForExecutors = optionsForExecutors
+	state.refetchQueryExecutors = refetch
 }

@@ -22,10 +22,22 @@ export const RESPONSIBLES = (state) => {
 	return state.responsibles
 }
 
-export const OPTIONS = (state) => {
-	return state.options
+export const OPTIONS_RESPONSIBLES = (state) => {
+	return state.optionsForResponsibles
 }
 
 export const REFETCH_RESPONSIBLES = (state) => {
 	return state.refetchQueryResponsible
+}
+
+export const EXECUTORS = (state) => {
+	return state.executors
+}
+
+export const OPTIONS_EXECUTORS = (state) => {
+	return state.optionsForExecutors
+}
+
+export const REFETCH_EXECUTORS = (state) => {
+	return state.refetchQueryExecutors
 }

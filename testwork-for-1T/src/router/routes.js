@@ -21,8 +21,6 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/Authorization/EnterPage.vue') },
       { path: '/register', component: () => import('pages/Authorization/RegisterPage.vue') },
-      { path: '/user', component: () => import('pages/Authorization/UserPage.vue')},
-      { path: '/reset', component: () => import('pages/Authorization/ResetPage.vue')}
     ]
   },
   {
