@@ -30,13 +30,13 @@
             label="Статус"
           />
         </div>
-        <div class="form-field col-lg-6">
+        <!-- <div class="form-field col-lg-6">
           <q-select
             v-model="modelModule"
             :options="optionsModules"
             label="Модуль"
           />
-        </div>
+        </div> -->
         <div class="form-field col-lg-6">
           <q-select v-model="model" :options="options" label="Исполнитель" />
         </div>
@@ -67,7 +67,11 @@ import { addNewTask } from "src/api/main/mutations";
 import { useStore } from "vuex";
 
 export default defineComponent({
-  setup() {
+  props: {
+    idModule: Number,
+  },
+
+  setup(props) {
     const $q = useQuasar();
     const store = useStore();
     store.dispatch("GET_EXECUTORS");
@@ -83,6 +87,8 @@ export default defineComponent({
     const statusId = ref("");
     const optionsModules = computed(() => store.getters.OPTIONS_MODULES);
 
+    console.log("idModule", props.idModule);
+
     watch(model, () => {
       indexExecutor.value = options.value.indexOf(model.value);
     });
@@ -97,9 +103,9 @@ export default defineComponent({
       }
     });
 
-    watch(modelModule, () => {
-      indexModule.value = optionsModules.value.indexOf(modelModule.value);
-    });
+    // watch(modelModule, () => {
+    //   indexModule.value = optionsModules.value.indexOf(modelModule.value);
+    // });
 
     const createNewTask = function (e) {
       const apolloClient = new ApolloClient(getClientOptions());
@@ -114,18 +120,8 @@ export default defineComponent({
               "6714467324498160547": SUBJECTS.value[indexExecutor.value].id,
             },
             property8: {
-              "2293521969897910704": MODULES.value[indexModule.value].id,
+              "2293521969897910704": MODULES.value[props.idModule].id,
             },
-
-            //             name: e.target.elements.name.value,
-            // property4: e.target.elements.description.value,
-            // property5: e.target.elements.status.value,
-            // property6: {
-            //   "6714467324498160547": e.target.elements.module.value,
-            // },
-            // property8: {
-            //   "2293521969897910704": SUBJECTS.value[indexExecutor.value].id,
-            // },
           },
         },
       }));

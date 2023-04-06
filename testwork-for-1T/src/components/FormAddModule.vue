@@ -97,7 +97,6 @@ export default defineComponent({
     console.log(1);
     const store = useStore();
     store.dispatch("GET_SUBJECTS");
-    const SUBJECTS = computed(() => store.getters.SUBJECTS);
     const model = ref(null);
     const indexResponsible = ref(0);
     store.dispatch("GET_RESPONSIBLES");
