@@ -49,7 +49,24 @@ mutation ($input: create_type2_input!) {
     }
   }
 `
-
+export const updateUser = gql`
+mutation ($input: update_type2_input! $id:String!) {
+  update_type2(input: $input id:$id) {
+    recordId
+    record {
+      property8 {
+        name
+      }
+      id
+      author_id
+      type_id
+      created_at
+      updated_at
+    }
+    status
+  }
+}
+`
 export const inviteUser = gql`
 mutation userGroupInviteUser($input: UserGroupInviteUserInput!) {
     userGroupInviteUser(input: $input) {
@@ -58,8 +75,8 @@ mutation userGroupInviteUser($input: UserGroupInviteUserInput!) {
   } 
 `
 export const updateModule = gql`
-mutation ($input:  update_type1_input!) {
-  update_type1 (id: "1053233741846621557", input: $input) {
+mutation ($input:  update_type1_input! $id: String!) {
+  update_type1 (id: $id, input: $input) {
     status
     recordId
     record {

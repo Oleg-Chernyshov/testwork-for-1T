@@ -83,7 +83,6 @@ export const GET_SUBJECTS = ({ commit }) => {
     try {
       const { onResult } = useQuery(GetGroupById, { "id": "1358489619049103837" });
       onResult((queryResult) => {
-        console.log("result", queryResult.data.get_group.subject);
         commit("setSubjects", queryResult.data.get_group.subject)
       });
     } catch (e) {

@@ -101,8 +101,6 @@ export default defineComponent({
     const indexResponsible = ref(0);
     store.dispatch("GET_RESPONSIBLES");
     const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
-    const SUBJECTS = computed(() => store.getters.RESPONSIBLES);
-    console.log(SUBJECTS.value);
 
     const refetchModules = store.getters.REFETCH_MODULES;
 

@@ -159,13 +159,7 @@
       <FormAddModule />
     </q-dialog>
     <q-dialog v-model="showForm_updateModule">
-      <FormAddModule />
-    </q-dialog>
-    <q-dialog v-model="showForm_updateModule">
-      <FormUpdateModule :id="id" />
-    </q-dialog>
-    <q-dialog v-model="showForm_updateModule">
-      <FormUpdateModule :id="id" />
+      <FormUpdateModule :idUpdateModule="id" />
     </q-dialog>
   </div>
 </template>
@@ -190,6 +184,7 @@ export default {
 
   setup(props) {
     const id = ref(0);
+    const idUpdateModule = ref(0);
     const idModule = ref(0);
     const showForm_addModule = ref(false);
     const showForm_addTask = ref(false);
@@ -207,6 +202,7 @@ export default {
     };
     const get_module = function (module_index) {
       current_module.values = MODULES.value[module_index.value];
+      console.log(current_module);
     };
 
     //Получение свойства Status для определения статуса задачи по id
@@ -231,11 +227,13 @@ export default {
       showForm_updateModule,
       id,
       idModule,
+      idUpdateModule,
       set_id_module(id) {
         idModule.value = id;
       },
       set_id(env) {
         id.value = env.target.id;
+        idUpdateModule.value = env.target.id;
       },
     };
   },
