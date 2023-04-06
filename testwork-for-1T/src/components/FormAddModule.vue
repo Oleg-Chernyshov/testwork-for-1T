@@ -97,40 +97,30 @@ export default defineComponent({
 
   setup() {
     const $q = useQuasar();
-    const options = ref();
+    // const options = ref([]);
+    console.log(1);
     const store = useStore();
     store.dispatch("GET_SUBJECTS");
     const SUBJECTS = computed(() => store.getters.SUBJECTS);
     const model = ref(null);
     const indexResponsible = ref(0);
+    store.dispatch("GET_RESPONSIBLES");
+    const responsible = computed(() => store.getters.RESPONSIBLES);
+    const options = computed(() => store.getters.OPTIONS);
 
-    const responsible = ref([]);
-    const { onResult } = useQuery(GetGroupById, {
-      id: "1358489619049103837",
-    });
-    onResult((queryResult) => {
-      responsible.value = queryResult.data.get_group.subject;
-      console.log(responsible.value);
+    watch(options, () => {
+      console.log("opt", options.value);
     });
 
     const refetchModules = store.getters.REFETCH_MODULES;
 
     const refetchModulesSetTimeout = function () {
-      setTimeout(refetchModules, 100);
+      setTimeout(refetchModules, 1000);
     };
-
-    watch(responsible, () => {
-      const arr = [];
-      for (let subject of responsible.value) {
-        arr.push(
-          subject.fullname?.first_name + " " + subject.fullname?.last_name
-        );
-      }
-      options.value = arr;
-    });
 
     watch(model, () => {
       indexResponsible.value = options.value.indexOf(model.value);
+      console.log(4);
     });
 
     const createNewModule = function (e) {

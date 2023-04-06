@@ -1,5 +1,6 @@
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
+import { GetGroupById } from "src/api/main/queryes";
 
 export const GET_MODULES = ({ commit }) => {
   const fetching = async () => {
@@ -91,6 +92,31 @@ export const GET_SUBJECTS = ({ commit }) => {
       );
       onResult((queryResult) => {
         commit("setSubjects", queryResult.data.paginate_subject.data)
+      });
+    } catch (e) {
+      console.log("Ошибка:", e);
+    }
+  };
+  fetching();
+}
+
+export const GET_RESPONSIBLES = ({ commit }) => {
+  const fetching = async () => {
+    try {
+      let responsible = [];
+      const { onResult } = useQuery(GetGroupById, {
+        id: "1358489619049103837",
+      });
+      onResult((queryResult) => {
+        let options = []
+        responsible = queryResult.data.get_group.subject
+        for (let subject of responsible) {
+          options.push(
+            subject.fullname?.first_name + " " + subject.fullname?.last_name
+          );
+        }
+
+        commit("setResponsibles", { responsible: responsible, options: options })
       });
     } catch (e) {
       console.log("Ошибка:", e);
