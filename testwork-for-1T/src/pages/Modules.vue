@@ -151,12 +151,9 @@
     </q-dialog>
     <q-dialog v-model="showForm_addModule">
       <FormAddModule />
-<<<<<<< HEAD
-=======
     </q-dialog>
     <q-dialog v-model="showForm_updateModule">
       <FormAddModule />
->>>>>>> 79f42f2
     </q-dialog>
   </div>
 </template>
@@ -176,10 +173,7 @@ export default {
     FormAddModule,
     FormAddTask,
     FormUpdateTask,
-<<<<<<< HEAD
-=======
     FormUpdateModule,
->>>>>>> 79f42f2
   },
 
   setup(props) {
@@ -187,10 +181,7 @@ export default {
     const showForm_addModule = ref(false);
     const showForm_addTask = ref(false);
     const showForm_updateTask = ref(false);
-<<<<<<< HEAD
-=======
     const showForm_updateModule = ref(false);
->>>>>>> 79f42f2
     const store = useStore();
     const colorTask = ref();
     store.dispatch("GET_MODULES");
@@ -225,17 +216,12 @@ export default {
       showTableModules,
       module_index,
       propertyStatus,
-<<<<<<< HEAD
-      showForm,
-      colorTask,
-=======
       showForm_updateTask,
       showForm_updateModule,
       id,
       set_id(env) {
         id.value = env.target.id;
       },
->>>>>>> 79f42f2
     };
   },
 };
