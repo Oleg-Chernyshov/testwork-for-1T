@@ -88,7 +88,6 @@ export default defineComponent({
     });
 
     watch(modelStatus, () => {
-      console.log(modelStatus);
       if (modelStatus.value == "Назначена") {
         statusId.value = "3173475364523847130";
       } else if (modelStatus.value == "Выполнена") {
