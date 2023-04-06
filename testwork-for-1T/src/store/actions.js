@@ -62,7 +62,14 @@ export const GET_MODULES = ({ commit }) => {
 } `
       );
       onResult(queryResult => {
-        commit("setModules", { modules: queryResult.data["paginate_type1"].data, refetch: refetch })
+        let options = []
+        let modules = queryResult.data["paginate_type1"].data
+        for (let module of modules) {
+          options.push(
+            module.name
+          );
+        }
+        commit("setModules", { modules: modules, refetch: refetch, optionsModules: options })
       })
     } catch (e) {
       console.log("Ошибка:", e);
@@ -74,9 +81,9 @@ export const GET_MODULES = ({ commit }) => {
 export const GET_SUBJECTS = ({ commit }) => {
   const fetching = async () => {
     try {
-      const { onResult } = useQuery(GetGroupById, {"id":"1358489619049103837"});
+      const { onResult } = useQuery(GetGroupById, { "id": "1358489619049103837" });
       onResult((queryResult) => {
-        console.log("result",queryResult.data.get_group.subject);
+        console.log("result", queryResult.data.get_group.subject);
         commit("setSubjects", queryResult.data.get_group.subject)
       });
     } catch (e) {
@@ -89,19 +96,43 @@ export const GET_SUBJECTS = ({ commit }) => {
 export const GET_RESPONSIBLES = ({ commit }) => {
   const fetching = async () => {
     try {
-      let responsible = [];
+      let responsibles = [];
       const { onResult, refetch } = useQuery(GetGroupById, {
         id: "1358489619049103837",
       });
       onResult((queryResult) => {
         let options = []
-        responsible = queryResult.data.get_group.subject
-        for (let subject of responsible) {
+        responsibles = queryResult.data.get_group.subject
+        for (let subject of responsibles) {
           options.push(
             subject.fullname?.first_name + " " + subject.fullname?.last_name
           );
         }
-        commit("setResponsibles", { responsible: responsible, options: options, refetch: refetch })
+        commit("setResponsibles", { responsibles: responsibles, optionsForResponsibles: options, refetch: refetch })
+      });
+    } catch (e) {
+      console.log("Ошибка:", e);
+    }
+  };
+  fetching();
+}
+
+export const GET_EXECUTORS = ({ commit }) => {
+  const fetching = async () => {
+    try {
+      let executors = [];
+      const { onResult, refetch } = useQuery(GetGroupById, {
+        id: "6271877799003044991",
+      });
+      onResult((queryResult) => {
+        let options = []
+        executors = queryResult.data.get_group.subject
+        for (let subject of executors) {
+          options.push(
+            subject.fullname?.first_name + " " + subject.fullname?.last_name
+          );
+        }
+        commit("setExecutors", { executors: executors, optionsForExecutors: options, refetch: refetch })
       });
     } catch (e) {
       console.log("Ошибка:", e);

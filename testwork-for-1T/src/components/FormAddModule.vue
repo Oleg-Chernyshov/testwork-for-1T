@@ -54,10 +54,16 @@
           <label class="label" for="endTime">Время окончания</label>
         </div>
         <div class="form-field col-lg-6">
-          <q-select v-model="model" :options="options" label="Ответсвенный"/>
+          <q-select v-model="model" :options="options" label="Ответсвенный" />
         </div>
         <div class="form-field col-lg-12 justify-between flex">
-          <input @click="refetchModulesSetTimeout" name="" class="submit-btn" type="submit" value="Создать" />
+          <input
+            @click="refetchModulesSetTimeout"
+            name=""
+            class="submit-btn"
+            type="submit"
+            value="Создать"
+          />
           <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
       </form>
@@ -67,15 +73,20 @@
 
 <script>
 import { useMutation } from "@vue/apollo-composable";
-import { defineComponent, reactive, ref, computed, watch, onMounted } from "vue";
+import {
+  defineComponent,
+  reactive,
+  ref,
+  computed,
+  watch,
+  onMounted,
+} from "vue";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { addNewModule } from "src/api/main/mutations";
 import { useStore } from "vuex";
-import { GetGroupById } from "src/api/main/queryes";
-import { useQuery } from "@vue/apollo-composable";
 
 export default defineComponent({
   components: {},
@@ -85,14 +96,17 @@ export default defineComponent({
     // const options = ref([]);
     console.log(1);
     const store = useStore();
+    store.dispatch("GET_SUBJECTS");
+    const SUBJECTS = computed(() => store.getters.SUBJECTS);
     const model = ref(null);
     const indexResponsible = ref(0);
     store.dispatch("GET_RESPONSIBLES");
-    const options = computed(() => store.getters.OPTIONS);
-
-    watch(options, () => {
-      console.log("opt", options.value);
-    });
+    const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
+    const SUBJECTS = computed(() => store.getters.RESPONSIBLES);
+    console.log(SUBJECTS.value);
+    // watch(options, () => {
+    //   console.log("opt", options.value);
+    // });
 
     const refetchModules = store.getters.REFETCH_MODULES;
 
@@ -158,6 +172,7 @@ export default defineComponent({
 <style>
 .get-in-touch {
   max-width: 800px;
+  margin: 50px auto;
   position: relative;
 }
 .get-in-touch .title {
@@ -166,6 +181,7 @@ export default defineComponent({
   letter-spacing: 3px;
   font-size: 2em;
   line-height: 48px;
+  padding-bottom: 48px;
   color: #5543ca;
   background: #5543ca;
   background: -moz-linear-gradient(left, #f4524d 0%, #5543ca 100%) !important;
@@ -228,8 +244,8 @@ export default defineComponent({
   width: 200px;
   cursor: pointer;
 }
-.wrapper{
+.wrapper {
   background-color: white;
-  padding: 10px
+  padding: 10px;
 }
 </style>

@@ -59,10 +59,18 @@
           </tr>
         </tbody>
       </table>
-      <q-btn class="q-mt-sm" color="primary" @click="showForm_addModule = !showForm_addModule">Добавить модуль</q-btn>
+      <q-btn
+        class="q-mt-sm"
+        color="primary"
+        @click="showForm_addModule = !showForm_addModule"
+        >Добавить модуль</q-btn
+      >
     </div>
     <div class="modules__module" v-else>
-      <table class="modules__table-module table" v-if="!MODULES[module_index].property8.length == 0">
+      <table
+        class="modules__table-module table"
+        v-if="!MODULES[module_index].property8.length == 0"
+      >
         <thead>
           <tr>
             <th>Задача</th>
@@ -106,24 +114,43 @@
               }}
             </td>
             <td>
-              <button @click.self="showForm_updateTask = !showForm_updateTask; set_id($event)" :id="task.id"> Редактировать </button>
+              <button
+                @click.self="
+                  showForm_updateTask = !showForm_updateTask;
+                  set_id($event);
+                "
+                :id="task.id"
+              >
+                Редактировать
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
-      <q-btn class="q-mt-sm" color="primary" @click="showForm_addTask = !showForm_addTask">Добавить задачу</q-btn>
+      <q-btn
+        class="q-mt-sm"
+        color="primary"
+        @click="showForm_addTask = !showForm_addTask"
+        >Добавить задачу</q-btn
+      >
       <div v-if="MODULES[module_index].property8.length == 0">
         Список задач пуст
       </div>
     </div>
     <q-dialog v-model="showForm_addTask">
-      <FormAddTask/>
+      <FormAddTask />
     </q-dialog>
     <q-dialog v-model="showForm_updateTask">
-      <FormUpdateTask :id ="id"/>
+      <FormUpdateTask :id="id" />
     </q-dialog>
     <q-dialog v-model="showForm_addModule">
-      <FormAddModule/>
+      <FormAddModule />
+    </q-dialog>
+    <q-dialog v-model="showForm_updateModule">
+      <FormAddModule />
+    </q-dialog>
+    <q-dialog v-model="showForm_updateModule">
+      <FormUpdateModule :id="id"/>
     </q-dialog>
     <q-dialog v-model="showForm_updateModule">
       <FormUpdateModule :id="id"/>
@@ -139,22 +166,22 @@ import { useQuery } from "@vue/apollo-composable";
 import FormAddModule from "../components/FormAddModule.vue";
 import FormAddTask from "../components/FormAddTask.vue";
 import FormUpdateTask from "../components/FormUpdateTask.vue";
-import FormUpdateModule from "../components/FormUpdateModule.vue";
+import FormUpdateModule from "../components/formUpdateModule.vue";
 
 export default {
   components: {
     FormAddModule,
     FormAddTask,
     FormUpdateTask,
-    FormUpdateModule
+    FormUpdateModule,
   },
 
-  setup() {
-    const id = ref(0)
-    const showForm_addModule = ref(false)
-    const showForm_updateModule = ref(false)
-    const showForm_addTask = ref(false)
-    const showForm_updateTask = ref(false)
+  setup(props) {
+    const id = ref(0);
+    const showForm_addModule = ref(false);
+    const showForm_addTask = ref(false);
+    const showForm_updateTask = ref(false);
+    const showForm_updateModule = ref(false);
     const store = useStore();
     const colorTask = ref();
     store.dispatch("GET_MODULES");
