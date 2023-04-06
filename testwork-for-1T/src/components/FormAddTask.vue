@@ -41,7 +41,14 @@
           <q-select v-model="model" :options="options" label="Исполнитель" />
         </div>
         <div class="form-field col-lg-12 justify-between flex">
-          <input name="" class="submit-btn" type="submit" value="Создать" />
+          <input
+            name=""
+            @click="refetchModulesSetTimeout"
+            class="submit-btn"
+            type="submit"
+            value="Создать"
+          />
+
           <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
       </form>
@@ -86,8 +93,13 @@ export default defineComponent({
     const SUBJECTS = computed(() => store.getters.EXECUTORS);
     const statusId = ref("");
     const optionsModules = computed(() => store.getters.OPTIONS_MODULES);
+    const refetchModules = store.getters.REFETCH_MODULES;
+    console.log("ref1", refetchModules);
 
-    console.log("idModule", props.idModule);
+    const refetchModulesSetTimeout = function () {
+      setTimeout(refetchModules, 1000);
+      console.log("ref2", refetchModules);
+    };
 
     watch(model, () => {
       indexExecutor.value = options.value.indexOf(model.value);
@@ -150,6 +162,7 @@ export default defineComponent({
       modelModule,
       optionsModules,
       optionsStatus,
+      refetchModulesSetTimeout,
     };
   },
 });
