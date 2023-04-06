@@ -194,7 +194,7 @@ export default {
       id,
       set_id(env){
         id.value = env.target.id
-      }
+      },
       colorTask,
     };
   },

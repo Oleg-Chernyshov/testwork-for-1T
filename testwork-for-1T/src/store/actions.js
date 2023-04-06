@@ -1,7 +1,6 @@
 import { useQuery } from "@vue/apollo-composable";
 import { GetGroupById } from "src/api/main/queryes";
 import gql from "graphql-tag";
-import { GetGroupById } from "src/api/main/queryes";
 
 export const GET_MODULES = ({ commit }) => {
   const fetching = async () => {
