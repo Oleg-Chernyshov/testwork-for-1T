@@ -15,7 +15,6 @@
           <td>{{ res.email.email }}</td>
           <td>{{ res.fullname.first_name }}</td>
           <td>{{ res.fullname.last_name }}</td>
-          <td><q-btn color="red">Удалить</q-btn></td>
         </tr>
       </tbody>
     </table>
@@ -23,7 +22,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, reactive } from "vue";
+import { defineComponent, reactive } from "vue";
 import { GetGroupById } from "src/api/main/queryes";
 import { useQuery } from "@vue/apollo-composable";
 

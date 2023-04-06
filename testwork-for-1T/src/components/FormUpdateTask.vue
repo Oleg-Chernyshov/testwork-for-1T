@@ -2,7 +2,7 @@
     <div class="wrapper">
         <section class="get-in-touch">
           <h3 class="title">Обновить задачу</h3>
-          <form class="contact-form row" @submit.prevent="createNewModule">
+          <form class="contact-form row" @submit.prevent="UpdateModule">
             <div class="form-field col-lg-6">
               <input
                 name="name"

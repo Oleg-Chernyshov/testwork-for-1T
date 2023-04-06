@@ -1,6 +1,6 @@
 <template>
   <div class="modules q-pa-md">
-    <div class="modules__table table" v-if="showTableModules()">
+    <div class="modules__table table" v-if="showTableModules">
       <table class="modules__table-modules">
         <thead>
           <tr>
@@ -15,20 +15,20 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="module in MODULES" :key="module.id">
-            <td>{{ module.name }}</td>
+          <tr v-for="mod in MODULES" :key="mod.id">
+            <td> {{ mod.name }} </td>
             <td>
               {{
-                module.property7?.fullname.first_name +
+                mod.property7?.fullname.first_name +
                 " " +
-                module.property7?.fullname.last_name
+                mod.property7?.fullname.last_name
               }}
             </td>
-            <td>{{ module.property2?.date + " " + module.property2?.time }}</td>
-            <td>{{ module.property3?.date + " " + module.property3?.time }}</td>
+            <td>{{ mod.property2?.date + " " + mod.property2?.time }}</td>
+            <td>{{ mod.property3?.date + " " + mod.property3?.time }}</td>
             <td>
               {{
-                module.property8.reduce(function (a, b) {
+                mod.property8.reduce(function (a, b) {
                   if (b.property5 == "3173475364523847130") {
                     return ++a;
                   } else return 0;
@@ -37,7 +37,7 @@
             </td>
             <td>
               {{
-                module.property8.reduce(function (a, b) {
+                mod.property8.reduce(function (a, b) {
                   if (b.property5 == "9117798227215343609") {
                     return ++a;
                   } else return 0;
@@ -46,7 +46,7 @@
             </td>
             <td>
               {{
-                module.property8.reduce(function (a, b) {
+                mod.property8.reduce(function (a, b) {
                   if (b.property5 == "4106452242288243072") {
                     return ++a;
                   } else return 0;
@@ -54,7 +54,7 @@
               }}
             </td>
             <td>
-              <q-btn color="green" class="q-mr-sm"> Редактировать </q-btn>
+              <button @click.self="showForm_updateModule = !showForm_updateModule" class="q-mr-sm"> Редактировать </button>
             </td>
           </tr>
         </tbody>
@@ -117,6 +117,9 @@
     <q-dialog v-model="showForm_addModule">
       <FormAddModule/>
     </q-dialog>
+    <q-dialog v-model="showForm_updateModule">
+      <FormUpdateModule/>
+    </q-dialog>
   </div>
 </template>
 
@@ -128,17 +131,20 @@ import { useQuery } from "@vue/apollo-composable";
 import FormAddModule from "../components/FormAddModule.vue";
 import FormAddTask from "../components/FormAddTask.vue";
 import FormUpdateTask from "../components/FormUpdateTask.vue";
+import FormUpdateModule from "../components/FormUpdateModule.vue";
 
 export default {
   components: {
     FormAddModule,
     FormAddTask,
-    FormUpdateTask
+    FormUpdateTask,
+    FormUpdateModule
   },
 
   setup(props) {
     const id = ref(0)
     const showForm_addModule = ref(false)
+    const showForm_updateModule = ref(false)
     const showForm_addTask = ref(false)
     const showForm_updateTask = ref(false)
     const store = useStore();
@@ -175,6 +181,7 @@ export default {
       module_index,
       propertyStatus,
       showForm_updateTask,
+      showForm_updateModule,
       id,
       set_id(env){
         id.value = env.target.id
