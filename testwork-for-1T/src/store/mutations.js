@@ -14,7 +14,3 @@ export const SetId = (state, id) => {
 export const setSubjects = (state, subjects) => {
 	state.subjects = subjects
 }
-
-export const responsibles = (state, responsibles) => {
-	state.responsibles = responsibles
-}

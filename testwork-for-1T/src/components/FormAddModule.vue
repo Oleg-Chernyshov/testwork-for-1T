@@ -74,6 +74,8 @@ import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { addNewModule } from "src/api/main/mutations";
 import { useStore } from "vuex";
+import { GetGroupById } from "src/api/main/queryes";
+import { useQuery } from "@vue/apollo-composable";
 
 export default defineComponent({
   components: {},
@@ -85,19 +87,24 @@ export default defineComponent({
     const model = ref(null);
     const indexResponsible = ref(0);
 
+    const responsible = ref([]);
+    const { onResult } = useQuery(GetGroupById, {
+      id: "1358489619049103837",
+    });
+    onResult((queryResult) => {
+      responsible.value = queryResult.data.get_group.subject;
+      console.log(responsible.value);
+    });
+
     const refetchModules = store.getters.REFETCH_MODULES;
 
     const refetchModulesSetTimeout = function () {
       setTimeout(refetchModules, 100);
     };
-    onMounted(() => {
-      store.dispatch("GET_SUBJECTS");
-      const SUBJECTS = computed(() => store.getters.SUBJECTS);
-      console.log(SUBJECTS);
-      console.log("mounted");
+
+    watch(responsible, () => {
       const arr = [];
-      for (let subject of SUBJECTS.value) {
-        console.log(1);
+      for (let subject of responsible.value) {
         arr.push(
           subject.fullname?.first_name + " " + subject.fullname?.last_name
         );
