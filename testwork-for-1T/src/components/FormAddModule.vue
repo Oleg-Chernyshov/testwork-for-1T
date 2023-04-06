@@ -67,7 +67,7 @@
 
 <script>
 import { useMutation } from "@vue/apollo-composable";
-import { defineComponent, reactive, ref, computed, watch } from "vue";
+import { defineComponent, reactive, ref, computed, watch, onMounted } from "vue";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
@@ -82,27 +82,29 @@ export default defineComponent({
     const $q = useQuasar();
     const options = ref();
     const store = useStore();
-    store.dispatch("GET_SUBJECTS");
-    const SUBJECTS = computed(() => store.getters.SUBJECTS);
     const model = ref(null);
     const indexResponsible = ref(0);
 
     const refetchModules = store.getters.REFETCH_MODULES;
-    console.log("refetchModules", refetchModules);
 
     const refetchModulesSetTimeout = function () {
       setTimeout(refetchModules, 100);
     };
-
-    watch(SUBJECTS, () => {
+    onMounted(() => {
+      store.dispatch("GET_SUBJECTS");
+      const SUBJECTS = computed(() => store.getters.SUBJECTS);
+      console.log(SUBJECTS);
+      console.log("mounted");
       const arr = [];
       for (let subject of SUBJECTS.value) {
+        console.log(1);
         arr.push(
           subject.fullname?.first_name + " " + subject.fullname?.last_name
         );
       }
+      console.log(1);
       options.value = arr;
-    });
+    })
 
     watch(model, () => {
       indexResponsible.value = options.value.indexOf(model.value);

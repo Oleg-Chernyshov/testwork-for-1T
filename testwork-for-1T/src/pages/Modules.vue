@@ -98,7 +98,7 @@
               }}
             </td>
             <td>
-              <q-btn color="green"> Редактировать </q-btn>
+              <button @click.self="showForm_updateTask = !showForm_updateTask; set_id($event)" :id="task.id"> Редактировать </button>
             </td>
           </tr>
         </tbody>
@@ -110,6 +110,9 @@
     </div>
     <q-dialog v-model="showForm_addTask">
       <FormAddTask/>
+    </q-dialog>
+    <q-dialog v-model="showForm_updateTask">
+      <FormUpdateTask :id ="id"/>
     </q-dialog>
     <q-dialog v-model="showForm_addModule">
       <FormAddModule/>
@@ -123,17 +126,21 @@ import { useStore } from "vuex";
 import { GetPropertyStatus } from "src/api/main/queryes";
 import { useQuery } from "@vue/apollo-composable";
 import FormAddModule from "../components/FormAddModule.vue";
-import FormAddTask from "../components/FormAddTask.vue"
+import FormAddTask from "../components/FormAddTask.vue";
+import FormUpdateTask from "../components/FormUpdateTask.vue";
 
 export default {
   components: {
     FormAddModule,
     FormAddTask,
+    FormUpdateTask
   },
 
   setup(props) {
+    const id = ref(0)
     const showForm_addModule = ref(false)
     const showForm_addTask = ref(false)
+    const showForm_updateTask = ref(false)
     const store = useStore();
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
@@ -167,6 +174,11 @@ export default {
       showTableModules,
       module_index,
       propertyStatus,
+      showForm_updateTask,
+      id,
+      set_id(env){
+        id.value = env.target.id
+      }
     };
   },
 };
