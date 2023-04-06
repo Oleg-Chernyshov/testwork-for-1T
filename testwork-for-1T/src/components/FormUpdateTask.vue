@@ -121,7 +121,6 @@ export default defineComponent({
             message: "Задача добавлен",
           });
           refetchModulesSetTimeout();
-          console.log(refetchModules);
         })
         .catch((err) => {
           console.log("Ошибка", err);

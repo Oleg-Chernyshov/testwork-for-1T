@@ -9,6 +9,7 @@
             id="name"
             class="input-text js-input"
             type="text"
+            required
           />
           <label class="label" for="name">Название</label>
         </div>
@@ -18,6 +19,7 @@
             id="startData"
             class="input-text js-input"
             type="text"
+            required
           />
           <label class="label" for="startData">Дата начала</label>
         </div>
@@ -27,6 +29,7 @@
             id="startTime"
             class="input-text js-input"
             type="text"
+            required
           />
           <label class="label" for="startTime">Время начала</label>
         </div>
@@ -36,6 +39,7 @@
             id="endData"
             class="input-text js-input"
             type="text"
+            required
           />
           <label class="label" for="endData">Дата окончания</label>
         </div>
@@ -45,6 +49,7 @@
             id="endTime"
             class="input-text js-input"
             type="text"
+            required
           />
           <label class="label" for="endTime">Время окончания</label>
         </div>
@@ -91,10 +96,6 @@ export default defineComponent({
     const indexResponsible = ref(0);
     const MODULES = computed(() => store.getters.MODULES);
     const responsible = ref([]);
-    store.dispatch("GET_SUBJECTS");
-    const SUBJECTS = computed(() => store.getters.EXECUTORS);
-    console.log("SUBJECTS", SUBJECTS.value);
-
     const { onResult } = useQuery(GetGroupById, {
       id: "1358489619049103837",
     });
@@ -130,9 +131,7 @@ export default defineComponent({
           input: {
             name: e.target.elements.name.value,
             property2: {
-              date:
-                e.target.elements.startData.value ??
-                e.target.elements.startData.value,
+              date: e.target.elements.startData.value,
               time: e.target.elements.startTime.value,
             },
             property3: {
@@ -163,7 +162,6 @@ export default defineComponent({
             message: "Ошибка",
           });
         });
-      console.log(SUBJECTS.value);
     };
 
     return {

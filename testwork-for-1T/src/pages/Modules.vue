@@ -31,7 +31,7 @@
                 mod.property8.reduce(function (a, b) {
                   if (b.property5 == "3173475364523847130") {
                     return ++a;
-                  } else return 0;
+                  } else return a;
                 }, 0)
               }}
             </td>
@@ -40,7 +40,7 @@
                 mod.property8.reduce(function (a, b) {
                   if (b.property5 == "9117798227215343609") {
                     return ++a;
-                  } else return 0;
+                  } else return a;
                 }, 0)
               }}
             </td>
@@ -49,7 +49,7 @@
                 mod.property8.reduce(function (a, b) {
                   if (b.property5 == "4106452242288243072") {
                     return ++a;
-                  } else return 0;
+                  } else return a;
                 }, 0)
               }}
             </td>
@@ -193,6 +193,9 @@ export default {
     const store = useStore();
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
+    watch(MODULES, () => {
+      console.log(MODULES.value);
+    });
     const module_index = computed(() => store.getters.MODULE_INDEX);
     const current_module = reactive({});
     const propertyStatus = reactive({});
@@ -202,7 +205,6 @@ export default {
     };
     const get_module = function (module_index) {
       current_module.values = MODULES.value[module_index.value];
-      console.log(current_module);
     };
 
     //Получение свойства Status для определения статуса задачи по id
