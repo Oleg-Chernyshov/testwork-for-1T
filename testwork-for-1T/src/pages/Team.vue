@@ -107,14 +107,12 @@ export default defineComponent({
       const response = mutate();
       response
         .then(function (result) {
-          console.log("getFormExecuterValues", result);
           $q.notify({
             type: "positive",
             message: "Отправлено",
           });
         })
         .catch((err) => {
-          console.log("Ошибка", err);
           $q.notify({
             type: "negative",
             message: "Ошибка отправки",

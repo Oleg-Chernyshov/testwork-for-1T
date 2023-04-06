@@ -105,7 +105,6 @@ export default defineComponent({
     const model = ref(null);
     const indexResponsible = ref(0);
     store.dispatch("GET_RESPONSIBLES");
-    const responsible = computed(() => store.getters.RESPONSIBLES);
     const options = computed(() => store.getters.OPTIONS);
 
     watch(options, () => {
