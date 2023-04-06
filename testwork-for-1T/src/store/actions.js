@@ -1,6 +1,6 @@
 import { useQuery } from "@vue/apollo-composable";
-import gql from "graphql-tag";
 import { GetGroupById } from "src/api/main/queryes";
+import gql from "graphql-tag";
 
 export const GET_MODULES = ({ commit }) => {
   const fetching = async () => {
@@ -74,24 +74,10 @@ export const GET_MODULES = ({ commit }) => {
 export const GET_SUBJECTS = ({ commit }) => {
   const fetching = async () => {
     try {
-      const { onResult } = useQuery(
-        gql`
-					{
-          paginate_subject(page: 1, perPage: 100) {
-            data {
-              id
-              type_id
-              author_id
-              fullname {
-                first_name
-                last_name
-              }
-            }
-          }
-        }`
-      );
+      const { onResult } = useQuery(GetGroupById, { "id": "1358489619049103837" });
       onResult((queryResult) => {
-        commit("setSubjects", queryResult.data.paginate_subject.data)
+        console.log("result", queryResult.data.get_group.subject);
+        commit("setSubjects", queryResult.data.get_group.subject)
       });
     } catch (e) {
       console.log("Ошибка:", e);
