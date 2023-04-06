@@ -78,9 +78,11 @@ import { addNewModule } from "src/api/main/mutations";
 import { useStore } from "vuex";
 
 export default defineComponent({
-  components: {},
-
-  setup() {
+  props: {
+    id: String
+  },
+  setup(props) {
+    console.log(props.id);
     const $q = useQuasar();
     const options = ref();
     const store = useStore();

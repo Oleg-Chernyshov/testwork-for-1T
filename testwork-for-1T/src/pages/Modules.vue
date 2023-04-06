@@ -54,7 +54,7 @@
               }}
             </td>
             <td>
-              <button @click.self="showForm_updateModule = !showForm_updateModule" class="q-mr-sm"> Редактировать </button>
+              <button @click.self="showForm_updateModule = !showForm_updateModule; set_id($event)" class="q-mr-sm" :id="mod.id"> Редактировать </button>
             </td>
           </tr>
         </tbody>
@@ -118,7 +118,7 @@
       <FormAddModule/>
     </q-dialog>
     <q-dialog v-model="showForm_updateModule">
-      <FormUpdateModule/>
+      <FormUpdateModule :id="id"/>
     </q-dialog>
   </div>
 </template>
@@ -132,6 +132,7 @@ import FormAddModule from "../components/FormAddModule.vue";
 import FormAddTask from "../components/FormAddTask.vue";
 import FormUpdateTask from "../components/FormUpdateTask.vue";
 import FormUpdateModule from "../components/FormUpdateModule.vue";
+import { SetId } from "src/store/mutations";
 
 export default {
   components: {
