@@ -56,12 +56,12 @@
             @click="get_module_index(-1)"
           >
             <q-tabs
-              v-for="(module, index) in MODULES"
-              :key="module.id"
+              v-for="(mod, index) in MODULES"
+              :key="mod.id"
               align="left"
               @click="get_module_index(index)"
             >
-              <q-route-tab>{{ module.name }}</q-route-tab>
+              <q-route-tab>{{ mod.name }}</q-route-tab>
             </q-tabs>
           </q-expansion-item>
         </q-list>

@@ -103,9 +103,6 @@ export default defineComponent({
     const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
     const SUBJECTS = computed(() => store.getters.RESPONSIBLES);
     console.log(SUBJECTS.value);
-    // watch(options, () => {
-    //   console.log("opt", options.value);
-    // });
 
     const refetchModules = store.getters.REFETCH_MODULES;
 

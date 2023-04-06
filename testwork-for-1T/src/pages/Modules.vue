@@ -15,20 +15,20 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="module in MODULES" :key="module.id">
-            <td>{{ module.name }}</td>
+          <tr v-for="mod in MODULES" :key="mod.id">
+            <td>{{ mod.name }}</td>
             <td>
               {{
-                module.property7?.fullname.first_name +
+                mod.property7?.fullname.first_name +
                 " " +
-                module.property7?.fullname.last_name
+                mod.property7?.fullname.last_name
               }}
             </td>
-            <td>{{ module.property2?.date + " " + module.property2?.time }}</td>
-            <td>{{ module.property3?.date + " " + module.property3?.time }}</td>
+            <td>{{ mod.property2?.date + " " + mod.property2?.time }}</td>
+            <td>{{ mod.property3?.date + " " + mod.property3?.time }}</td>
             <td>
               {{
-                module.property8.reduce(function (a, b) {
+                mod.property8.reduce(function (a, b) {
                   if (b.property5 == "3173475364523847130") {
                     return ++a;
                   } else return 0;
@@ -37,7 +37,7 @@
             </td>
             <td>
               {{
-                module.property8.reduce(function (a, b) {
+                mod.property8.reduce(function (a, b) {
                   if (b.property5 == "9117798227215343609") {
                     return ++a;
                   } else return 0;
@@ -46,7 +46,7 @@
             </td>
             <td>
               {{
-                module.property8.reduce(function (a, b) {
+                mod.property8.reduce(function (a, b) {
                   if (b.property5 == "4106452242288243072") {
                     return ++a;
                   } else return 0;
@@ -54,13 +54,16 @@
               }}
             </td>
             <td>
-              <q-btn
-                color="green"
-                @click.self="showForm_updateModule = !showForm_updateModule"
+              <button
+                @click.self="
+                  showForm_updateModule = !showForm_updateModule;
+                  set_id($event);
+                "
                 class="q-mr-sm"
+                :id="mod.id"
               >
                 Редактировать
-              </q-btn>
+              </button>
             </td>
           </tr>
         </tbody>
@@ -158,6 +161,12 @@
     <q-dialog v-model="showForm_updateModule">
       <FormAddModule />
     </q-dialog>
+    <q-dialog v-model="showForm_updateModule">
+      <FormUpdateModule :id="id" />
+    </q-dialog>
+    <q-dialog v-model="showForm_updateModule">
+      <FormUpdateModule :id="id" />
+    </q-dialog>
   </div>
 </template>
 
@@ -187,7 +196,6 @@ export default {
     const showForm_updateTask = ref(false);
     const showForm_updateModule = ref(false);
     const store = useStore();
-    const colorTask = ref();
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
@@ -223,11 +231,11 @@ export default {
       showForm_updateModule,
       id,
       idModule,
-      set_id(env) {
-        id.value = env.target.id;
-      },
       set_id_module(id) {
         idModule.value = id;
+      },
+      set_id(env) {
+        id.value = env.target.id;
       },
     };
   },

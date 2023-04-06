@@ -57,3 +57,21 @@ mutation userGroupInviteUser($input: UserGroupInviteUserInput!) {
     }
   } 
 `
+export const updateModule = gql`
+mutation ($input:  update_type1_input!) {
+  update_type1 (id: "1053233741846621557", input: $input) {
+    status
+    recordId
+    record {
+        id
+        type_id
+        author_id
+        level
+        position
+        created_at
+        updated_at
+        name
+    }
+  }
+}
+`
