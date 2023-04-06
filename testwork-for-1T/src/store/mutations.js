@@ -14,3 +14,9 @@ export const SetId = (state, id) => {
 export const setSubjects = (state, subjects) => {
 	state.subjects = subjects
 }
+
+export const setResponsibles = (state, { responsibles, options, refetch }) => {
+	state.responsibles = responsibles
+	state.options = options
+	state.refetchQueryResponsible = refetch
+}

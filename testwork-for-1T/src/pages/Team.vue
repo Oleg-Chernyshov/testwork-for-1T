@@ -54,7 +54,9 @@
             placeholder="Почта"
             v-model="input2_3"
           />
-          <q-btn type="submit">Добавить в группу Ответственные</q-btn>
+          <q-btn type="submit" @click="refetchResponsiblesSetTimeout"
+            >Добавить в группу Ответственные</q-btn
+          >
         </q-form>
       </div>
     </div>
@@ -63,12 +65,13 @@
 
 <script>
 import { useMutation } from "@vue/apollo-composable";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { inviteUser } from "src/api/main/mutations";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
+import { useStore } from "vuex";
 
 export default defineComponent({
   components: {},
@@ -80,7 +83,14 @@ export default defineComponent({
     const input2_1 = ref("");
     const input2_2 = ref("");
     const input2_3 = ref("");
+    const store = useStore();
+    store.dispatch("GET_RESPONSIBLES");
+    const refetchQueryResponsible = store.getters.REFETCH_RESPONSIBLES;
     const $q = useQuasar();
+
+    const refetchResponsiblesSetTimeout = function () {
+      setTimeout(refetchQueryResponsible, 1000);
+    };
     const getFormExecuterValues = function (e, n) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
@@ -97,14 +107,12 @@ export default defineComponent({
       const response = mutate();
       response
         .then(function (result) {
-          console.log("getFormExecuterValues", result);
           $q.notify({
             type: "positive",
             message: "Отправлено",
           });
         })
         .catch((err) => {
-          console.log("Ошибка", err);
           $q.notify({
             type: "negative",
             message: "Ошибка отправки",
@@ -162,6 +170,7 @@ export default defineComponent({
       input2_3,
       getFormExecuterValues,
       getFormResponsibleValues,
+      refetchResponsiblesSetTimeout,
       say(hi) {
         console.log(hi);
       },
