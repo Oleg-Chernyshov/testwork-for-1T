@@ -62,7 +62,14 @@ export const GET_MODULES = ({ commit }) => {
 } `
       );
       onResult(queryResult => {
-        commit("setModules", { modules: queryResult.data["paginate_type1"].data, refetch: refetch })
+        let options = []
+        let modules = queryResult.data["paginate_type1"].data
+        for (let module of modules) {
+          options.push(
+            module.name
+          );
+        }
+        commit("setModules", { modules: modules, refetch: refetch, optionsModules: options })
       })
     } catch (e) {
       console.log("Ошибка:", e);

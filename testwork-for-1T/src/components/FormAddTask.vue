@@ -31,14 +31,11 @@
           />
         </div>
         <div class="form-field col-lg-6">
-          <input
-            name="module"
-            id="module"
-            class="input-text js-input"
-            type="text"
-            required
+          <q-select
+            v-model="modelModule"
+            :options="optionsModules"
+            label="Модуль"
           />
-          <label class="label" for="module">Модуль</label>
         </div>
         <div class="form-field col-lg-6">
           <q-select v-model="model" :options="options" label="Исполнитель" />
@@ -77,11 +74,14 @@ export default defineComponent({
     const options = computed(() => store.getters.OPTIONS_EXECUTORS);
     const model = ref(null);
     const modelStatus = ref(null);
+    const modelModule = ref(null);
     const indexExecutor = ref(0);
+    const indexModule = ref(0);
+    const MODULES = computed(() => store.getters.MODULES);
     const optionsStatus = ["Назначена", "Выполнена", "Завершена"];
     const SUBJECTS = computed(() => store.getters.EXECUTORS);
     const statusId = ref("");
-    const MODULES = computed(() => store.getters.MODULES);
+    const optionsModules = computed(() => store.getters.OPTIONS_MODULES);
 
     watch(model, () => {
       indexExecutor.value = options.value.indexOf(model.value);
@@ -97,6 +97,10 @@ export default defineComponent({
       }
     });
 
+    watch(modelModule, () => {
+      indexModule.value = optionsModules.value.indexOf(modelModule.value);
+    });
+
     const createNewTask = function (e) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
@@ -110,7 +114,7 @@ export default defineComponent({
               "6714467324498160547": SUBJECTS.value[indexExecutor.value].id,
             },
             property8: {
-              "2293521969897910704": e.target.elements.module.value,
+              "2293521969897910704": MODULES.value[indexModule.value].id,
             },
 
             //             name: e.target.elements.name.value,
@@ -147,6 +151,8 @@ export default defineComponent({
       modelStatus,
       model,
       createNewTask,
+      modelModule,
+      optionsModules,
       optionsStatus,
     };
   },

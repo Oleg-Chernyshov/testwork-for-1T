@@ -41,3 +41,7 @@ export const OPTIONS_EXECUTORS = (state) => {
 export const REFETCH_EXECUTORS = (state) => {
 	return state.refetchQueryExecutors
 }
+
+export const OPTIONS_MODULES = (state) => {
+	return state.optionsModules
+}

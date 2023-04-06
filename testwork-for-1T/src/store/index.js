@@ -12,6 +12,7 @@ export const state = {
   responsibles: [],
   optionsForResponsibles: [],
   executors: [],
+  optionsModules: [],
   optionsForExecutors: [],
   refetchQueryExecutors: {}
 }

@@ -1,6 +1,7 @@
-export const setModules = (state, { modules, refetch }) => {
+export const setModules = (state, { modules, refetch, optionsModules }) => {
 	state.refetchModules = refetch
 	state.modules = modules
+	state.optionsModules = optionsModules
 }
 
 export const setModuleIndex = (state, index) => {
