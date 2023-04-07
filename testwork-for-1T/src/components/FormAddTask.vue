@@ -58,12 +58,7 @@
 
 <script>
 import { useMutation } from "@vue/apollo-composable";
-import {
-  defineComponent,
-  ref,
-  computed,
-  watch
-} from "vue";
+import { defineComponent, ref, computed, watch } from "vue";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
@@ -96,7 +91,6 @@ export default defineComponent({
 
     const refetchModulesSetTimeout = function () {
       setTimeout(refetchModules, 1000);
-      console.log("ref2", refetchModules);
     };
 
     watch(model, () => {
@@ -114,8 +108,6 @@ export default defineComponent({
         statusId.value = "4106452242288243072";
       }
     });
-
-    
 
     const createNewTask = function (e) {
       console.log(MODULES.value[indexModule.value].id);

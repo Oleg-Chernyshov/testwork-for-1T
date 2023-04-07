@@ -2,14 +2,17 @@
   <div class="wrapper">
     <section class="get-in-touch">
       <h3 class="title">Редактирование модуля</h3>
-      <form class="contact-form row" @submit.prevent="UpdateModule">
+      <form
+        class="contact-form row"
+        insertCurrentData
+        @submit.prevent="UpdateModule($event, funSubmit)"
+      >
         <div class="form-field col-lg-6">
           <input
             name="name"
             id="name"
             class="input-text js-input"
             type="text"
-            required
           />
           <label class="label" for="name">Название</label>
         </div>
@@ -19,7 +22,6 @@
             id="startData"
             class="input-text js-input"
             type="text"
-            required
           />
           <label class="label" for="startData">Дата начала</label>
         </div>
@@ -29,7 +31,6 @@
             id="startTime"
             class="input-text js-input"
             type="text"
-            required
           />
           <label class="label" for="startTime">Время начала</label>
         </div>
@@ -39,7 +40,6 @@
             id="endData"
             class="input-text js-input"
             type="text"
-            required
           />
           <label class="label" for="endData">Дата окончания</label>
         </div>
@@ -49,7 +49,6 @@
             id="endTime"
             class="input-text js-input"
             type="text"
-            required
           />
           <label class="label" for="endTime">Время окончания</label>
         </div>
@@ -58,11 +57,17 @@
         </div>
         <div class="form-field col-lg-12 justify-between flex">
           <input
-            @click="refetchModulesSetTimeout"
             name=""
+            @click="funSubmit = false"
             class="submit-btn"
             type="submit"
             value="Создать"
+          />
+          <q-btn
+            type="submit"
+            @click="funSubmit = true"
+            color="primary"
+            label="Текущие данные"
           />
           <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
@@ -87,6 +92,7 @@ import { useStore } from "vuex";
 export default defineComponent({
   props: {
     idUpdateModule: String,
+    mod: Object,
   },
   setup(props) {
     const $q = useQuasar();
@@ -94,6 +100,7 @@ export default defineComponent({
     const store = useStore();
     const model = ref(null);
     const indexResponsible = ref(0);
+    let funSubmit = false;
     // const MODULES = computed(() => store.getters.MODULES);
     // const SUBJECTS = computed(() => store.getters.EXECUTORS);
 
@@ -104,12 +111,12 @@ export default defineComponent({
     onResult((queryResult) => {
       responsible.value = queryResult.data.get_group.subject;
     });
-
     const refetchModules = store.getters.REFETCH_MODULES;
-
     const refetchModulesSetTimeout = function () {
       setTimeout(refetchModules, 1000);
     };
+
+    // const insertCurrentData = function (e) {};
 
     watch(responsible, () => {
       const arr = [];
@@ -125,7 +132,20 @@ export default defineComponent({
       indexResponsible.value = options.value.indexOf(model.value);
     });
 
-    const UpdateModule = function (e) {
+    const UpdateModule = function (e, num) {
+      // console.log("pre", funSubmit);
+      // console.log("pre_n", num);
+      // if (num) {
+      //   funSubmit = false;
+      //   console.log("do", funSubmit);
+      //   e.target.elements.name.value = props.mod.name;
+      //   e.target.elements.startData.value = props.mod.property2?.date;
+      //   e.target.elements.startTime.value = props.mod.property2?.time;
+      //   e.target.elements.endData.value = props.mod.property3?.data;
+      //   e.target.elements.endTime.value = props.mod.property3?.time;
+      //   return funSubmit;
+      // }
+      // console.log(num);
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(updateModule, () => ({
@@ -152,6 +172,7 @@ export default defineComponent({
       response
         .then(function (result) {
           console.log("createNewModule", result);
+          refetchModulesSetTimeout();
           $q.notify({
             type: "positive",
             message: "Модуль обновлены",
@@ -168,9 +189,9 @@ export default defineComponent({
 
     return {
       UpdateModule,
+      funSubmit,
       options,
       model,
-      refetchModulesSetTimeout,
       refetchModules,
     };
   },
