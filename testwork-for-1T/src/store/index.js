@@ -14,7 +14,8 @@ export const state = {
   executors: [],
   optionsModules: [],
   optionsForExecutors: [],
-  refetchQueryExecutors: {}
+  refetchQueryExecutors: {},
+  userId: 0
 }
 
 const store = createStore({

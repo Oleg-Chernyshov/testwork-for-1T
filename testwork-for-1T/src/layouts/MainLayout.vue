@@ -109,7 +109,7 @@ export default defineComponent({
     //Получение всех страниц
     const { onResult } = useQuery(GetAllPages);
     onResult((queryResult) => {
-      console.log(queryResult.data.pages.data);
+      console.log("Pages", queryResult.data.pages.data);
     });
 
     //Получение всех типов

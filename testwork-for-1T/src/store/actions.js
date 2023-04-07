@@ -1,6 +1,8 @@
 import { useQuery } from "@vue/apollo-composable";
 import { GetGroupById } from "src/api/main/queryes";
 import gql from "graphql-tag";
+import { state } from "./index.js"
+
 
 export const GET_MODULES = ({ commit }) => {
   const fetching = async () => {
@@ -34,6 +36,8 @@ export const GET_MODULES = ({ commit }) => {
           first_name
           last_name
         }
+        user_id
+        id
       }
       property8{
         name
@@ -62,8 +66,18 @@ export const GET_MODULES = ({ commit }) => {
 } `
       );
       onResult(queryResult => {
+        console.log(state.userId);
         let options = []
         let modules = queryResult.data["paginate_type1"].data
+
+        let modulesFroCurrentUser = []
+        for (let mod of modules) {
+          if (mod.property7.user_id == state.userId) {
+            modulesFroCurrentUser.push(mod);
+          }
+          modules = modulesFroCurrentUser
+        }
+
         for (let module of modules) {
           options.push(
             module.name
@@ -142,4 +156,8 @@ export const GET_EXECUTORS = ({ commit }) => {
 
 export const GET_ID = ({ commit }, id) => {
   commit("SetId", id)
+}
+
+export const GET_USER_INFO = ({ commit }, userInfo) => {
+  commit("setUserId", userInfo.recordId)
 }

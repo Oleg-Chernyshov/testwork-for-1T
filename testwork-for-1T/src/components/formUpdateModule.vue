@@ -94,7 +94,9 @@ export default defineComponent({
     const store = useStore();
     const model = ref(null);
     const indexResponsible = ref(0);
-    const MODULES = computed(() => store.getters.MODULES);
+    // const MODULES = computed(() => store.getters.MODULES);
+    // const SUBJECTS = computed(() => store.getters.EXECUTORS);
+
     const responsible = ref([]);
     const { onResult } = useQuery(GetGroupById, {
       id: "1358489619049103837",

@@ -45,3 +45,7 @@ export const REFETCH_EXECUTORS = (state) => {
 export const OPTIONS_MODULES = (state) => {
 	return state.optionsModules
 }
+
+export const USER_ID = (state) => {
+	return state.userId
+}

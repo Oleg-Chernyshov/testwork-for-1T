@@ -92,3 +92,24 @@ mutation ($input:  update_type1_input! $id: String!) {
   }
 }
 `
+
+export const createRule = gql`
+mutation permissionRuleCreate($input: PermissionRuleCreateInput!) {
+  permissionRuleCreate(input: $input) {
+    recordId
+    status
+    record {
+      id
+      author_id
+      level
+      model_type
+      model_id
+      config
+      owner_id
+      owner_type
+      created_at
+      updated_at
+    }
+  }
+}
+`
