@@ -133,17 +133,15 @@ export default defineComponent({
     });
 
     const UpdateModule = function (e, num) {
-      console.log("pre", funSubmit);
-      console.log("pre_n", num);
       if (num) {
         funSubmit = false;
-        console.log("do", funSubmit);
-        console.log("sofdj", props.mod.property3);
         e.target.elements.name.value = props.mod.name;
         e.target.elements.startData.value = props.mod.property2?.date;
         e.target.elements.startTime.value = props.mod.property2?.time;
         e.target.elements.endData.value = props.mod.property3?.date;
         e.target.elements.endTime.value = props.mod.property3?.time;
+        // Пока не работает, т.к. есть среди субъектов те, которых не в группе ответственые
+        // model.value = props.mod.property7.fullname.first_name + " " + props.mod.property7.fullname.last_name;
         return funSubmit;
       }
       console.log(num);

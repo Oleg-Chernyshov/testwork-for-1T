@@ -57,7 +57,7 @@
               <button
                 @click.self="
                   showForm_updateModule = !showForm_updateModule;
-                  set_id($event, mod);
+                  set_id($event, mod, task);
                 "
                 class="q-mr-sm"
                 :id="mod.id"
@@ -126,7 +126,7 @@
               <button
                 @click.self="
                   showForm_updateTask = !showForm_updateTask;
-                  set_id($event);
+                  set_id($event, mod, task);
                 "
                 :id="task.id"
               >
@@ -153,7 +153,7 @@
       <FormAddTask :idModule="idModule" />
     </q-dialog>
     <q-dialog v-model="showForm_updateTask">
-      <FormUpdateTask :id="id" />
+      <FormUpdateTask :task="currentTaskClickUp" :id="id" />
     </q-dialog>
     <q-dialog v-model="showForm_addModule">
       <FormAddModule />
@@ -191,6 +191,7 @@ export default {
     const showForm_updateTask = ref(false);
     const showForm_updateModule = ref(false);
     const currentModuleClickUp = ref();
+    const currentTaskClickUp = ref();
 
     const store = useStore();
     store.dispatch("GET_MODULES");
@@ -230,16 +231,18 @@ export default {
       showForm_updateTask,
       showForm_updateModule,
       currentModuleClickUp,
+      currentTaskClickUp,
       id,
       idModule,
       idUpdateModule,
       set_id_module(id) {
         idModule.value = id;
       },
-      set_id(env, mod) {
+      set_id(env, mod, task) {
         id.value = env.target.id;
         idUpdateModule.value = env.target.id;
         currentModuleClickUp.value = mod;
+        currentTaskClickUp.value = task;
       },
     };
   },
