@@ -14,7 +14,7 @@ export const UserSignIn = gql`mutation UserSignIn($input: UserSignInInput!) {
   }`
 
 export const UserSignUp = gql`mutation UserSignUp($input: UserSignUpInput!) {
-    userSignUp(input: $input) { 
+    userSignUp(input: $input) {
           recordId
           record {
               id

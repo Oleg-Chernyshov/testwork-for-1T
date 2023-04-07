@@ -62,9 +62,6 @@ export default defineComponent({
           input: { login: email.value, password: password.value },
         })
           .then((MutationResult) => {
-            //========Кл
-            store.dispatch("GET_USER_INFO", MutationResult.data.userSignIn);
-            //========Кл
             sessionStorage.setItem(
               "token",
               MutationResult.data.userSignIn.record.access_token

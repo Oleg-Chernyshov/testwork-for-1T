@@ -27,7 +27,3 @@ export const setExecutors = (state, { executors, optionsForExecutors, refetch })
 	state.optionsForExecutors = optionsForExecutors
 	state.refetchQueryExecutors = refetch
 }
-
-export const setUserId = (state, userId) => {
-	state.userId = userId
-}
