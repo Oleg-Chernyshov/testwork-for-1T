@@ -133,19 +133,20 @@ export default defineComponent({
     });
 
     const UpdateModule = function (e, num) {
-      // console.log("pre", funSubmit);
-      // console.log("pre_n", num);
-      // if (num) {
-      //   funSubmit = false;
-      //   console.log("do", funSubmit);
-      //   e.target.elements.name.value = props.mod.name;
-      //   e.target.elements.startData.value = props.mod.property2?.date;
-      //   e.target.elements.startTime.value = props.mod.property2?.time;
-      //   e.target.elements.endData.value = props.mod.property3?.data;
-      //   e.target.elements.endTime.value = props.mod.property3?.time;
-      //   return funSubmit;
-      // }
-      // console.log(num);
+      console.log("pre", funSubmit);
+      console.log("pre_n", num);
+      if (num) {
+        funSubmit = false;
+        console.log("do", funSubmit);
+        console.log("sofdj", props.mod.property3);
+        e.target.elements.name.value = props.mod.name;
+        e.target.elements.startData.value = props.mod.property2?.date;
+        e.target.elements.startTime.value = props.mod.property2?.time;
+        e.target.elements.endData.value = props.mod.property3?.date;
+        e.target.elements.endTime.value = props.mod.property3?.time;
+        return funSubmit;
+      }
+      console.log(num);
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(updateModule, () => ({
