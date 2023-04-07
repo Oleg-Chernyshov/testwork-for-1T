@@ -30,13 +30,6 @@
             label="Статус"
           />
         </div>
-        <!-- <div class="form-field col-lg-6">
-          <q-select
-            v-model="modelModule"
-            :options="optionsModules"
-            label="Модуль"
-          />
-        </div> -->
         <div class="form-field col-lg-6">
           <q-select v-model="model" :options="options" label="Исполнитель" />
         </div>

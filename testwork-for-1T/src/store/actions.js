@@ -1,5 +1,6 @@
 import { useQuery } from "@vue/apollo-composable";
 import { GetGroupById } from "src/api/main/queryes";
+import { state } from "./index.js";
 import gql from "graphql-tag";
 
 export const GET_MODULES = ({ commit }) => {
@@ -119,7 +120,9 @@ export const GET_RESPONSIBLES = ({ commit }) => {
 export const GET_EXECUTORS = ({ commit }) => {
   const fetching = async () => {
     try {
+      if(state.executors.length === 0){
       let executors = [];
+      console.log(123);
       const { onResult, refetch } = useQuery(GetGroupById, {
         id: "6271877799003044991",
       });
@@ -133,6 +136,7 @@ export const GET_EXECUTORS = ({ commit }) => {
         }
         commit("setExecutors", { executors: executors, optionsForExecutors: options, refetch: refetch })
       });
+    }
     } catch (e) {
       console.log("Ошибка:", e);
     }
