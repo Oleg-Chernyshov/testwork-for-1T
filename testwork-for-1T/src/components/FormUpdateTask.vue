@@ -81,7 +81,7 @@ export default defineComponent({
     const modelModule = ref(null);
     const indexExecutor = ref(0);
     const optionsStatus = ["Назначена", "Выполнена", "Завершена"];
-    const SUBJECTS = computed(() => store.getters.EXECUTORS);
+    const EXECUTORS = computed(() => store.getters.EXECUTORS);
     const refetchModules = store.getters.REFETCH_MODULES;
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
@@ -96,11 +96,11 @@ export default defineComponent({
 
     watch(modelStatus, () => {
       if (modelStatus.value == "Назначена") {
-        statusId.value = "3173475364523847130";
+        statusId.value = "1700970386717883161";
       } else if (modelStatus.value == "Выполнена") {
-        statusId.value = "9117798227215343609";
+        statusId.value = "967659251654331262";
       } else {
-        statusId.value = "4106452242288243072";
+        statusId.value = "1383309069201480491";
       }
     });
 
@@ -114,9 +114,9 @@ export default defineComponent({
         e.target.elements.name.value = props.task.name;
         e.target.elements.description.value = props.task.property4;
         let statusId = props.task.property5;
-        if (statusId == "3173475364523847130") {
+        if (statusId == "1700970386717883161") {
           modelStatus.value = "Назначена";
-        } else if (statusId == "9117798227215343609") {
+        } else if (statusId == "967659251654331262") {
           modelStatus.value = "Выполнена";
         } else {
           modelStatus.value = "Завершена";
@@ -136,10 +136,10 @@ export default defineComponent({
             property4: e.target.elements.description.value,
             property5: statusId.value,
             property6: {
-              "6714467324498160547": SUBJECTS.value[indexExecutor.value].id,
+              "2598174384277431501": EXECUTORS.value[indexExecutor.value].id,
             },
             property8: {
-              "2293521969897910704": MODULES.value[module_index.value].id,
+              "2673961667589284866": MODULES.value[module_index.value].id,
             },
           },
           id: props.id,

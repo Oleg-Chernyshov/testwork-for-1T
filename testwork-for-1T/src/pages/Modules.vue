@@ -29,7 +29,7 @@
             <td>
               {{
                 mod.property8.reduce(function (a, b) {
-                  if (b.property5 == "3173475364523847130") {
+                  if (b.property5 == "1700970386717883161") {
                     return ++a;
                   } else return a;
                 }, 0)
@@ -38,7 +38,7 @@
             <td>
               {{
                 mod.property8.reduce(function (a, b) {
-                  if (b.property5 == "9117798227215343609") {
+                  if (b.property5 == "967659251654331262") {
                     return ++a;
                   } else return a;
                 }, 0)
@@ -47,7 +47,7 @@
             <td>
               {{
                 mod.property8.reduce(function (a, b) {
-                  if (b.property5 == "4106452242288243072") {
+                  if (b.property5 == "1383309069201480491") {
                     return ++a;
                   } else return a;
                 }, 0)
@@ -97,20 +97,20 @@
             </td>
             <td
               :class="
-                task.property5 == 3173475364523847130
+                task.property5 == 1700970386717883161
                   ? 'assigned'
-                  : task.property5 == 9117798227215343609
+                  : task.property5 == 967659251654331262
                   ? 'accomplished'
                   : 'completed'
               "
             >
               {{
                 (function () {
-                  if (task.property5 == "3173475364523847130") {
+                  if (task.property5 == "1700970386717883161") {
                     return "Назначена";
-                  } else if (task.property5 == "9117798227215343609")
+                  } else if (task.property5 == "967659251654331262")
                     return "Выполнена";
-                  else if (task.property5 == "4106452242288243072")
+                  else if (task.property5 == "1383309069201480491")
                     return "Завершена";
                 })()
               }}

@@ -96,11 +96,10 @@ export default defineComponent({
     // const options = ref([]);
     console.log(1);
     const store = useStore();
-    store.dispatch("GET_SUBJECTS");
-    const SUBJECTS = computed(() => store.getters.SUBJECTS);
     const model = ref(null);
     const indexResponsible = ref(0);
     store.dispatch("GET_RESPONSIBLES");
+    const RESPONSIBLES = computed(() => store.getters.RESPONSIBLES);
     const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
 
     const refetchModules = store.getters.REFETCH_MODULES;
@@ -130,7 +129,8 @@ export default defineComponent({
               time: e.target.elements.endTime.value,
             },
             property7: {
-              "6714467324498160547": SUBJECTS.value[indexResponsible.value].id,
+              "2598174384277431501":
+                RESPONSIBLES.value[indexResponsible.value].id,
             },
           },
         },

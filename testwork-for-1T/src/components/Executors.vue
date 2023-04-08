@@ -8,35 +8,29 @@
         <th>Фамилия</th>
       </thead>
       <tbody>
-        <tr v-if="loading"> loading</tr>
-        <tr v-else v-for="executor in executors.values" :key="executor.id">
+        <tr v-for="executor in executors" :key="executor.id">
           <td>{{ executor.email.email }}</td>
           <td>{{ executor.fullname.first_name }}</td>
           <td>{{ executor.fullname.last_name }}</td>
         </tr>
       </tbody>
     </table>
-    
   </div>
 </template>
 
 <script>
-import { defineComponent, reactive } from "vue";
-import { useQuery } from "@vue/apollo-composable";
-import { GetGroupById } from "src/api/main/queryes";
+import { defineComponent, computed } from "vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
-  setup(props, { emit }) {
-    const executors = reactive([]);
-    const { onResult, loading } = useQuery(GetGroupById, {"id":"6271877799003044991"});
-    onResult((queryResult) => {
-      executors.values = queryResult.data.get_group.subject;
-      console.log("execute", executors.values);
-    });
+  setup() {
+    const store = useStore();
+
+    store.dispatch("GET_RESPONSIBLES");
+    const executors = computed(() => store.getters.EXECUTORS);
 
     return {
       executors,
-      loading
     };
   },
 });
@@ -77,4 +71,5 @@ export default defineComponent({
 }
 .table tbody tr td:last-child {
   border-radius: 0 8px 8px 0;
-}</style>
+}
+</style>

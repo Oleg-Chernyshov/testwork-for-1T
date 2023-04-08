@@ -95,6 +95,7 @@ export default defineComponent({
     mod: Object,
   },
   setup(props) {
+    console.log("props.idUpdateModule", props.idUpdateModule);
     const $q = useQuasar();
     // const options = ref();
     const store = useStore();
@@ -103,7 +104,7 @@ export default defineComponent({
     let funSubmit = false;
     store.dispatch("GET_RESPONSIBLES");
     const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
-    const responsible = ref([]);
+    const responsible = computed(() => store.getters.RESPONSIBLES);
     const refetchModules = store.getters.REFETCH_MODULES;
     const refetchModulesSetTimeout = function () {
       setTimeout(refetchModules, 1000);
@@ -141,7 +142,7 @@ export default defineComponent({
               time: e.target.elements.endTime.value,
             },
             property7: {
-              "6714467324498160547":
+              "2598174384277431501":
                 responsible.value[indexResponsible.value].id,
             },
           },
