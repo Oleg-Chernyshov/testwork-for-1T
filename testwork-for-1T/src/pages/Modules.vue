@@ -59,7 +59,7 @@
                   showForm_updateModule = !showForm_updateModule;
                   set_id($event, mod, task);
                 "
-                class="q-mr-sm"
+                class="q-mr-sm btn"
                 :id="mod.id"
               >
                 Редактировать
@@ -125,6 +125,7 @@
             </td>
             <td>
               <button
+                class="q-mr-sm btn"
                 @click.self="
                   showForm_updateTask = !showForm_updateTask;
                   set_id($event, mod, task);
@@ -133,7 +134,7 @@
               >
                 Редактировать
               </button>
-              <button @click.self="deleteTask(task.id)">Удалить</button>
+              <button class="btn" @click="deleteTask(task.id)">Удалить</button>
             </td>
           </tr>
         </tbody>
@@ -276,6 +277,38 @@ export default {
 </script>
 
 <style lang="scss">
+button.btn {
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.08);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.08);
+  color: #fff;
+  display: inline-block;
+  width: 130px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  padding: 8px 16px;
+  margin: 0 20px 0 0;
+  text-decoration: none;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: background-color 0.1s linear;
+  -moz-transition: background-color 0.1s linear;
+  -o-transition: background-color 0.1s linear;
+  transition: background-color 0.1s linear;
+}
+button.btn {
+  background-color: rgb(62, 123, 255);
+  border: 1px solid rgb(33, 126, 74);
+}
+
+button.btn:hover {
+  background-color: rgb(75, 183, 141);
+}
+
 .assigned {
   background-color: rgb(199, 21, 160);
 }
