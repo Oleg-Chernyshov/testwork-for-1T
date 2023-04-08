@@ -113,3 +113,10 @@ mutation permissionRuleCreate($input: PermissionRuleCreateInput!) {
   }
 }
 `
+
+export const DeleteTask = gql`mutation delete_type2($id: String!) {
+  delete_type2 (id: $id) {
+    status
+    recordId
+  }
+}`

@@ -76,6 +76,7 @@
       >
     </div>
     <div class="modules__module" v-else>
+      <h5>{{ MODULES[module_index].name }}</h5>
       <table
         class="modules__table-module table"
         v-if="!MODULES[module_index].property8.length == 0"
@@ -132,6 +133,7 @@
               >
                 Редактировать
               </button>
+              <button @click.self="deleteTask(task.id)">Удалить</button>
             </td>
           </tr>
         </tbody>
@@ -168,11 +170,16 @@
 import { computed, reactive, watch, ref } from "vue";
 import { useStore } from "vuex";
 import { GetPropertyStatus } from "src/api/main/queryes";
-import { useQuery } from "@vue/apollo-composable";
+import { DeleteTask } from "src/api/main/mutations";
+import { useQuery, useMutation } from "@vue/apollo-composable";
+import { getClientOptions } from "src/apollo/index";
+import { provideApolloClient } from "@vue/apollo-composable";
+import { ApolloClient } from "@apollo/client/core";
 import FormAddModule from "../components/FormAddModule.vue";
 import FormAddTask from "../components/FormAddTask.vue";
 import FormUpdateTask from "../components/FormUpdateTask.vue";
 import FormUpdateModule from "../components/formUpdateModule.vue";
+import { useQuasar } from "quasar";
 
 export default {
   components: {
@@ -182,32 +189,50 @@ export default {
     FormUpdateModule,
   },
 
-  setup(props) {
+  setup() {
     const id = ref(0);
     const idUpdateModule = ref(0);
     const idModule = ref(0);
     const showForm_addModule = ref(false);
+    const store = useStore();
     const showForm_addTask = ref(false);
     const showForm_updateTask = ref(false);
     const showForm_updateModule = ref(false);
     const currentModuleClickUp = ref();
     const currentTaskClickUp = ref();
-
-    const store = useStore();
     store.dispatch("GET_MODULES");
+    const refetchModules = computed(() => store.getters.REFETCH_MODULES);
     const MODULES = computed(() => store.getters.MODULES);
-    watch(MODULES, () => {
-      console.log(MODULES.value);
-    });
     const module_index = computed(() => store.getters.MODULE_INDEX);
     const current_module = reactive({});
     const propertyStatus = reactive({});
+    const $q = useQuasar();
 
     const showTableModules = () => {
       return module_index.value <= -1;
     };
     const get_module = function (module_index) {
       current_module.values = MODULES.value[module_index.value];
+    };
+
+    const refetchModulesSetTimeout = function () {
+      setTimeout(refetchModules.value, 1000);
+    };
+
+    const deleteTask = function (id) {
+      const apolloClient = new ApolloClient(getClientOptions());
+      provideApolloClient(apolloClient);
+      const { mutate } = useMutation(DeleteTask, () => ({
+        variables: {
+          id: id,
+        },
+      }));
+      mutate();
+      $q.notify({
+        type: "positive",
+        message: "Задача удалена",
+      });
+      refetchModulesSetTimeout();
     };
 
     //Получение свойства Status для определения статуса задачи по id
@@ -232,6 +257,7 @@ export default {
       showForm_updateModule,
       currentModuleClickUp,
       currentTaskClickUp,
+      deleteTask,
       id,
       idModule,
       idUpdateModule,

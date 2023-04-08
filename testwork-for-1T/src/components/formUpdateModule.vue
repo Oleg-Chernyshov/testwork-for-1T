@@ -79,14 +79,11 @@
 <script>
 import { useMutation } from "@vue/apollo-composable";
 import { defineComponent, ref, computed, watch } from "vue";
-import { GetGroupById } from "src/api/main/queryes";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { updateModule } from "../api/main/mutations";
-import { useQuery } from "@vue/apollo-composable";
-import { addNewModule } from "src/api/main/mutations";
 import { useStore } from "vuex";
 
 export default defineComponent({
@@ -126,7 +123,6 @@ export default defineComponent({
         // model.value = props.mod.property7.fullname.first_name + " " + props.mod.property7.fullname.last_name;
         return funSubmit;
       }
-      console.log(num);
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(updateModule, () => ({
