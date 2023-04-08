@@ -302,11 +302,11 @@ button.btn {
 }
 button.btn {
   background-color: rgb(62, 123, 255);
-  border: 1px solid rgb(33, 126, 74);
+  border: 1px solid rgb(0, 0, 0);
 }
 
 button.btn:hover {
-  background-color: rgb(75, 183, 141);
+  background-color: rgb(26, 80, 161);
 }
 
 .assigned {
