@@ -46,17 +46,16 @@
               }}
             </td>
             <td>
-              <!-- <button
+              <button
                 class="q-mr-sm btn"
                 @click.self="
                   showForm_updateTask = !showForm_updateTask;
-                  set_id($event, mod, task);
+                  set_id(task);
                 "
-                :id="task.id"
               >
                 Редактировать
               </button>
-              <button class="btn" @click="deleteTask(task.id)">Удалить</button> -->
+              <!-- <button class="btn" @click="deleteTask(task.id)">Удалить</button> -->
             </td>
           </tr>
         </tbody>
@@ -72,12 +71,17 @@
         >Добавить задачу</q-btn
       > -->
     </div>
+    <q-dialog v-model="showForm_updateTask">
+      <FormUpdateTask :task="currentTaskClickUp" />
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
 import { computed, reactive, watch, ref, defineComponent } from "vue";
 import { useStore } from "vuex";
+import FormUpdateTask from "../components/FormUpdateTask.vue";
+const currentTaskClickUp = ref();
 import { GetPropertyStatus } from "src/api/main/queryes";
 import { DeleteTask } from "src/api/main/mutations";
 import { useQuery, useMutation } from "@vue/apollo-composable";
@@ -86,20 +90,27 @@ import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import FormAddModule from "../components/FormAddModule.vue";
 import FormAddTask from "../components/FormAddTask.vue";
-import FormUpdateTask from "../components/FormUpdateTask.vue";
 import FormUpdateModule from "../components/formUpdateModule.vue";
 import { useQuasar } from "quasar";
 
 export default defineComponent({
+  components: {
+    FormUpdateTask,
+  },
   setup() {
+    const showForm_updateTask = ref(false);
     const store = useStore();
     store.dispatch("GET_ALL_TASKS");
     const allTasks = computed(() => store.getters.ALL_TASKS);
-    watch(allTasks, () => {
-      console.log(allTasks.value);
-    });
+    const refetchTasks = computed(() => store.getters.REFETCH_MODULES);
+
     return {
       allTasks,
+      showForm_updateTask,
+      currentTaskClickUp,
+      set_id(task) {
+        currentTaskClickUp.value = task;
+      },
     };
   },
 });
