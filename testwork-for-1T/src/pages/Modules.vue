@@ -75,6 +75,7 @@
         >Добавить модуль</q-btn
       >
     </div>
+
     <div class="modules__module" v-else>
       <h5>{{ MODULES[module_index].name }}</h5>
       <table

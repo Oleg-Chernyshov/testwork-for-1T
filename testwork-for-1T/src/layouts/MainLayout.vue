@@ -64,6 +64,16 @@
               <q-route-tab>{{ mod.name }}</q-route-tab>
             </q-tabs>
           </q-expansion-item>
+
+          <q-expansion-item
+            to="/AllTasks"
+            expand-separator
+            icon=""
+            label="ЗАДАЧИ"
+            caption=""
+            default-opened
+          >
+          </q-expansion-item>
         </q-list>
       </q-list>
     </q-drawer>
