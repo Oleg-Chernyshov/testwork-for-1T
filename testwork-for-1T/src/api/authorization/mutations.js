@@ -32,3 +32,5 @@ export const UserSignUpSetPassword = gql`mutation UserSignUpSetPassword($input: 
           status
     }
   }`
+
+

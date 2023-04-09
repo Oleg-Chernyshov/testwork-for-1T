@@ -69,10 +69,10 @@ mutation ($input: update_type2_input! $id:String!) {
 `
 export const inviteUser = gql`
 mutation userGroupInviteUser($input: UserGroupInviteUserInput!) {
-    userGroupInviteUser(input: $input) {
+  userGroupInviteUser(input: $input) {
       status
-    }
-  } 
+  }
+}
 `
 export const updateModule = gql`
 mutation ($input:  update_type1_input! $id: String!) {
@@ -113,3 +113,10 @@ mutation permissionRuleCreate($input: PermissionRuleCreateInput!) {
   }
 }
 `
+
+export const DeleteTask = gql`mutation delete_type2($id: String!) {
+  delete_type2 (id: $id) {
+    status
+    recordId
+  }
+}`
