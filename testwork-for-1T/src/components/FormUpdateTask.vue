@@ -71,7 +71,7 @@ export default defineComponent({
     task: Object,
   },
   setup(props) {
-    console.log(props.task);
+    console.log("ID_PROPS", props.id);
     const $q = useQuasar();
     const store = useStore();
     store.dispatch("GET_EXECUTORS");

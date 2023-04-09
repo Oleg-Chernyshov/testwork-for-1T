@@ -72,7 +72,7 @@
       > -->
     </div>
     <q-dialog v-model="showForm_updateTask">
-      <FormUpdateTask :task="currentTaskClickUp" />
+      <FormUpdateTask :id="taskId" :task="currentTaskClickUp" />
     </q-dialog>
   </q-page>
 </template>
@@ -99,6 +99,7 @@ export default defineComponent({
   },
   setup() {
     const showForm_updateTask = ref(false);
+    const taskId = ref();
     const store = useStore();
     store.dispatch("GET_ALL_TASKS");
     const allTasks = computed(() => store.getters.ALL_TASKS);
@@ -108,8 +109,10 @@ export default defineComponent({
       allTasks,
       showForm_updateTask,
       currentTaskClickUp,
+      taskId,
       set_id(task) {
         currentTaskClickUp.value = task;
+        taskId.value = task.id;
       },
     };
   },
@@ -151,5 +154,47 @@ export default defineComponent({
 }
 .table tbody tr td:last-child {
   border-radius: 0 8px 8px 0;
+}
+
+button.btn {
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.08);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.08);
+  color: #fff;
+  display: inline-block;
+  width: 130px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  padding: 8px 16px;
+  margin: 0 20px 0 0;
+  text-decoration: none;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: background-color 0.1s linear;
+  -moz-transition: background-color 0.1s linear;
+  -o-transition: background-color 0.1s linear;
+  transition: background-color 0.1s linear;
+}
+button.btn {
+  background-color: rgb(62, 123, 255);
+  border: 1px solid rgb(0, 0, 0);
+}
+
+button.btn:hover {
+  background-color: rgb(26, 80, 161);
+}
+
+.assigned {
+  background-color: rgb(199, 21, 160);
+}
+.accomplished {
+  background-color: rgb(235, 220, 20);
+}
+.completed {
+  background-color: rgb(100, 207, 67);
 }
 </style>

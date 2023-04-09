@@ -54,9 +54,7 @@
             placeholder="Почта"
             v-model="input2_3"
           />
-          <q-btn type="submit" @click="refetchResponsiblesSetTimeout"
-            >Добавить в группу Ответственные</q-btn
-          >
+          <q-btn type="submit">Добавить в группу Ответственные</q-btn>
         </q-form>
       </div>
     </div>
@@ -85,12 +83,18 @@ export default defineComponent({
     const input2_3 = ref("");
     const store = useStore();
     store.dispatch("GET_RESPONSIBLES");
+    const refetchQueryExecutors = store.getters.REFETCH_EXECUTORS;
     const refetchQueryResponsible = store.getters.REFETCH_RESPONSIBLES;
     const $q = useQuasar();
 
     const refetchResponsiblesSetTimeout = function () {
       setTimeout(refetchQueryResponsible, 1000);
     };
+
+    const refetchQueryExecutorsSetTimeout = function () {
+      setTimeout(refetchQueryExecutors, 1000);
+    };
+
     const getFormExecuterValues = function (e, n) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
@@ -111,6 +115,7 @@ export default defineComponent({
             type: "positive",
             message: "Отправлено",
           });
+          refetchResponsiblesSetTimeout();
         })
         .catch((err) => {
           $q.notify({
@@ -146,6 +151,7 @@ export default defineComponent({
             type: "positive",
             message: "Отправлено",
           });
+          refetchQueryExecutorsSetTimeout();
         })
         .catch((err) => {
           console.log("Ошибка", err);
@@ -170,7 +176,6 @@ export default defineComponent({
       input2_3,
       getFormExecuterValues,
       getFormResponsibleValues,
-      refetchResponsiblesSetTimeout,
     };
   },
 });
