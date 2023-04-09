@@ -4,7 +4,7 @@ import { setContext } from "@apollo/client/link/context";
 export /* async */ function getClientOptions(/* {app, router, ...} */ options) {
   const httpLink = createHttpLink({
     // uri: "https://firm-dassie-25.hasura.app/v1/graphql",
-    uri: "https://app.dev.druid.1t.ru/graphql",
+    uri: "https://app.stud.druid.1t.ru/graphql",
   })
 
   const authLink = setContext((_, { headers }) => {

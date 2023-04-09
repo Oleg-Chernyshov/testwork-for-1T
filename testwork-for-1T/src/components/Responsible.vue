@@ -8,10 +8,7 @@
         <th>Фамилия</th>
       </thead>
       <tbody>
-        <tr v-if="loading">
-          loading
-        </tr>
-        <tr v-else v-for="res in responsible.values" :key="res.id">
+        <tr v-for="res in responsible" :key="res.id">
           <td>{{ res.email.email }}</td>
           <td>{{ res.fullname.first_name }}</td>
           <td>{{ res.fullname.last_name }}</td>
@@ -22,23 +19,18 @@
 </template>
 
 <script>
-import { defineComponent, reactive } from "vue";
-import { GetGroupById } from "src/api/main/queryes";
-import { useQuery } from "@vue/apollo-composable";
+import { defineComponent, computed, watch } from "vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
-  setup(props, { emit }) {
-    const responsible = reactive([]);
-    const { onResult, loading } = useQuery(GetGroupById, {
-      id: "1358489619049103837",
-    });
-    onResult((queryResult) => {
-      responsible.values = queryResult.data.get_group.subject;
-    });
+  setup() {
+    const store = useStore();
+
+    store.dispatch("GET_EXECUTORS");
+    const responsible = computed(() => store.getters.RESPONSIBLES);
 
     return {
       responsible,
-      loading,
     };
   },
 });

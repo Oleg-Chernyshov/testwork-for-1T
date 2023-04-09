@@ -76,7 +76,6 @@ export const GetAllTypes = gql`{
 
 export const GetGroupById = gql`query($id: String!){
     get_group(id: $id) {
-      name
       subject {
         id
         type_id

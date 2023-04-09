@@ -5,7 +5,7 @@ module.exports = {
   client: {
     service: {
       name: 'my-service',
-      url: 'https://app.dev.druid.1t.ru/graphql',
+      url: 'https://app.stud.druid.1t.ru/graphql',
     },
     // Files processed by the extension
     includes: ['src/**/*.vue', 'src/**/*.js', 'src/**/*.ts'],

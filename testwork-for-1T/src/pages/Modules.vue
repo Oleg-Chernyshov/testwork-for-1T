@@ -29,7 +29,7 @@
             <td>
               {{
                 mod.property8.reduce(function (a, b) {
-                  if (b.property5 == "3173475364523847130") {
+                  if (b.property5 == "1700970386717883161") {
                     return ++a;
                   } else return a;
                 }, 0)
@@ -38,7 +38,7 @@
             <td>
               {{
                 mod.property8.reduce(function (a, b) {
-                  if (b.property5 == "9117798227215343609") {
+                  if (b.property5 == "967659251654331262") {
                     return ++a;
                   } else return a;
                 }, 0)
@@ -47,7 +47,7 @@
             <td>
               {{
                 mod.property8.reduce(function (a, b) {
-                  if (b.property5 == "4106452242288243072") {
+                  if (b.property5 == "1383309069201480491") {
                     return ++a;
                   } else return a;
                 }, 0)
@@ -59,7 +59,7 @@
                   showForm_updateModule = !showForm_updateModule;
                   set_id($event, mod, task);
                 "
-                class="q-mr-sm"
+                class="q-mr-sm btn"
                 :id="mod.id"
               >
                 Редактировать
@@ -76,6 +76,7 @@
       >
     </div>
     <div class="modules__module" v-else>
+      <h5>{{ MODULES[module_index].name }}</h5>
       <table
         class="modules__table-module table"
         v-if="!MODULES[module_index].property8.length == 0"
@@ -97,20 +98,20 @@
             </td>
             <td
               :class="
-                task.property5 == 3173475364523847130
+                task.property5 == 1700970386717883161
                   ? 'assigned'
-                  : task.property5 == 9117798227215343609
+                  : task.property5 == 967659251654331262
                   ? 'accomplished'
                   : 'completed'
               "
             >
               {{
                 (function () {
-                  if (task.property5 == "3173475364523847130") {
+                  if (task.property5 == "1700970386717883161") {
                     return "Назначена";
-                  } else if (task.property5 == "9117798227215343609")
+                  } else if (task.property5 == "967659251654331262")
                     return "Выполнена";
-                  else if (task.property5 == "4106452242288243072")
+                  else if (task.property5 == "1383309069201480491")
                     return "Завершена";
                 })()
               }}
@@ -124,6 +125,7 @@
             </td>
             <td>
               <button
+                class="q-mr-sm btn"
                 @click.self="
                   showForm_updateTask = !showForm_updateTask;
                   set_id($event, mod, task);
@@ -132,6 +134,7 @@
               >
                 Редактировать
               </button>
+              <button class="btn" @click="deleteTask(task.id)">Удалить</button>
             </td>
           </tr>
         </tbody>
@@ -168,11 +171,16 @@
 import { computed, reactive, watch, ref } from "vue";
 import { useStore } from "vuex";
 import { GetPropertyStatus } from "src/api/main/queryes";
-import { useQuery } from "@vue/apollo-composable";
+import { DeleteTask } from "src/api/main/mutations";
+import { useQuery, useMutation } from "@vue/apollo-composable";
+import { getClientOptions } from "src/apollo/index";
+import { provideApolloClient } from "@vue/apollo-composable";
+import { ApolloClient } from "@apollo/client/core";
 import FormAddModule from "../components/FormAddModule.vue";
 import FormAddTask from "../components/FormAddTask.vue";
 import FormUpdateTask from "../components/FormUpdateTask.vue";
 import FormUpdateModule from "../components/formUpdateModule.vue";
+import { useQuasar } from "quasar";
 
 export default {
   components: {
@@ -182,32 +190,50 @@ export default {
     FormUpdateModule,
   },
 
-  setup(props) {
+  setup() {
     const id = ref(0);
     const idUpdateModule = ref(0);
     const idModule = ref(0);
     const showForm_addModule = ref(false);
+    const store = useStore();
     const showForm_addTask = ref(false);
     const showForm_updateTask = ref(false);
     const showForm_updateModule = ref(false);
     const currentModuleClickUp = ref();
     const currentTaskClickUp = ref();
-
-    const store = useStore();
     store.dispatch("GET_MODULES");
+    const refetchModules = computed(() => store.getters.REFETCH_MODULES);
     const MODULES = computed(() => store.getters.MODULES);
-    watch(MODULES, () => {
-      console.log(MODULES.value);
-    });
     const module_index = computed(() => store.getters.MODULE_INDEX);
     const current_module = reactive({});
     const propertyStatus = reactive({});
+    const $q = useQuasar();
 
     const showTableModules = () => {
       return module_index.value <= -1;
     };
     const get_module = function (module_index) {
       current_module.values = MODULES.value[module_index.value];
+    };
+
+    const refetchModulesSetTimeout = function () {
+      setTimeout(refetchModules.value, 1000);
+    };
+
+    const deleteTask = function (id) {
+      const apolloClient = new ApolloClient(getClientOptions());
+      provideApolloClient(apolloClient);
+      const { mutate } = useMutation(DeleteTask, () => ({
+        variables: {
+          id: id,
+        },
+      }));
+      mutate();
+      $q.notify({
+        type: "positive",
+        message: "Задача удалена",
+      });
+      refetchModulesSetTimeout();
     };
 
     //Получение свойства Status для определения статуса задачи по id
@@ -232,6 +258,7 @@ export default {
       showForm_updateModule,
       currentModuleClickUp,
       currentTaskClickUp,
+      deleteTask,
       id,
       idModule,
       idUpdateModule,
@@ -250,6 +277,38 @@ export default {
 </script>
 
 <style lang="scss">
+button.btn {
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.08);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.08);
+  color: #fff;
+  display: inline-block;
+  width: 130px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  padding: 8px 16px;
+  margin: 0 20px 0 0;
+  text-decoration: none;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: background-color 0.1s linear;
+  -moz-transition: background-color 0.1s linear;
+  -o-transition: background-color 0.1s linear;
+  transition: background-color 0.1s linear;
+}
+button.btn {
+  background-color: rgb(62, 123, 255);
+  border: 1px solid rgb(0, 0, 0);
+}
+
+button.btn:hover {
+  background-color: rgb(26, 80, 161);
+}
+
 .assigned {
   background-color: rgb(199, 21, 160);
 }

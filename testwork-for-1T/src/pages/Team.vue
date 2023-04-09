@@ -100,7 +100,7 @@ export default defineComponent({
             name: e.target.elements.name.value,
             surname: e.target.elements.surname.value,
             email: e.target.elements.eMail.value,
-            page_group_id: "2289312306467874395",
+            page_group_id: "8434793229479617275",
           },
         },
       }));
@@ -134,7 +134,7 @@ export default defineComponent({
             name: e.target.elements.name.value,
             surname: e.target.elements.surname.value,
             email: e.target.elements.eMail.value,
-            page_group_id: "3532947332290869241",
+            page_group_id: "1305438642755218144",
           },
         },
       }));
@@ -171,9 +171,6 @@ export default defineComponent({
       getFormExecuterValues,
       getFormResponsibleValues,
       refetchResponsiblesSetTimeout,
-      say(hi) {
-        console.log(hi);
-      },
     };
   },
 });

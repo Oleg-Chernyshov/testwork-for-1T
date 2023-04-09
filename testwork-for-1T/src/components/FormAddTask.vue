@@ -67,18 +67,17 @@ export default defineComponent({
   setup(props) {
     const $q = useQuasar();
     const store = useStore();
-    store.dispatch("GET_EXECUTORS");
-    const options = computed(() => store.getters.OPTIONS_EXECUTORS);
     const model = ref(null);
     const modelStatus = ref(null);
     const modelModule = ref(null);
     const indexExecutor = ref(0);
     const indexModule = ref(0);
-    const MODULES = computed(() => store.getters.MODULES);
     const optionsStatus = ["Назначена", "Выполнена", "Завершена"];
-    const SUBJECTS = computed(() => store.getters.EXECUTORS);
+    store.dispatch("GET_EXECUTORS");
+    const executors = computed(() => store.getters.EXECUTORS);
+    const MODULES = computed(() => store.getters.MODULES);
+    const options = computed(() => store.getters.OPTIONS_EXECUTORS);
     const statusId = ref("");
-    const optionsModules = computed(() => store.getters.OPTIONS_MODULES);
     const refetchModules = store.getters.REFETCH_MODULES;
     console.log("ref1", refetchModules);
 
@@ -94,11 +93,11 @@ export default defineComponent({
     });
     watch(modelStatus, () => {
       if (modelStatus.value == "Назначена") {
-        statusId.value = "3173475364523847130";
+        statusId.value = "1700970386717883161";
       } else if (modelStatus.value == "Выполнена") {
-        statusId.value = "9117798227215343609";
+        statusId.value = "967659251654331262";
       } else {
-        statusId.value = "4106452242288243072";
+        statusId.value = "1383309069201480491";
       }
     });
 
@@ -113,10 +112,10 @@ export default defineComponent({
             property4: e.target.elements.description.value,
             property5: statusId.value,
             property6: {
-              "6714467324498160547": SUBJECTS.value[indexExecutor.value].id,
+              "2598174384277431501": executors.value[indexExecutor.value].id,
             },
             property8: {
-              "2293521969897910704": MODULES.value[props.idModule].id,
+              "2673961667589284866": MODULES.value[props.idModule].id,
             },
           },
         },
@@ -144,7 +143,6 @@ export default defineComponent({
       model,
       createNewTask,
       modelModule,
-      optionsModules,
       optionsStatus,
       refetchModulesSetTimeout,
     };

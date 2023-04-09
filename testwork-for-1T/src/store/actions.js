@@ -79,26 +79,26 @@ export const GET_MODULES = ({ commit }) => {
   fetching();
 }
 
-export const GET_SUBJECTS = ({ commit }) => {
-  const fetching = async () => {
-    try {
-      const { onResult } = useQuery(GetGroupById, { "id": "1358489619049103837" });
-      onResult((queryResult) => {
-        commit("setSubjects", queryResult.data.get_group.subject)
-      });
-    } catch (e) {
-      console.log("Ошибка:", e);
-    }
-  };
-  fetching();
-}
+// export const GET_SUBJECTS = ({ commit }) => {
+//   const fetching = async () => {
+//     try {
+//       const { onResult } = useQuery(GetGroupById, { "id": "1358489619049103837" });
+//       onResult((queryResult) => {
+//         commit("setSubjects", queryResult.data.get_group.subject)
+//       });
+//     } catch (e) {
+//       console.log("Ошибка:", e);
+//     }
+//   };
+//   fetching();
+// }
 
 export const GET_RESPONSIBLES = ({ commit }) => {
   const fetching = async () => {
     try {
       let responsibles = [];
       const { onResult, refetch } = useQuery(GetGroupById, {
-        id: "1358489619049103837",
+        id: "3662509860808044515",
       });
       onResult((queryResult) => {
         let options = []
@@ -119,12 +119,13 @@ export const GET_RESPONSIBLES = ({ commit }) => {
 
 export const GET_EXECUTORS = ({ commit }) => {
   const fetching = async () => {
+    console.log(534);
     try {
       if(state.executors.length === 0){
       let executors = [];
       console.log(123);
       const { onResult, refetch } = useQuery(GetGroupById, {
-        id: "6271877799003044991",
+        id: "4428325871296613250",
       });
       onResult((queryResult) => {
         let options = []
@@ -134,6 +135,7 @@ export const GET_EXECUTORS = ({ commit }) => {
             subject.fullname?.first_name + " " + subject.fullname?.last_name
           );
         }
+        console.log(123);
         commit("setExecutors", { executors: executors, optionsForExecutors: options, refetch: refetch })
       });
     }
