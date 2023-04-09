@@ -96,37 +96,18 @@ export default defineComponent({
   },
   setup(props) {
     const $q = useQuasar();
-    const options = ref();
+    // const options = ref();
     const store = useStore();
     const model = ref(null);
     const indexResponsible = ref(0);
     let funSubmit = false;
-    // const MODULES = computed(() => store.getters.MODULES);
-    // const SUBJECTS = computed(() => store.getters.EXECUTORS);
-
+    store.dispatch("GET_RESPONSIBLES");
+    const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
     const responsible = ref([]);
-    const { onResult } = useQuery(GetGroupById, {
-      id: "1358489619049103837",
-    });
-    onResult((queryResult) => {
-      responsible.value = queryResult.data.get_group.subject;
-    });
     const refetchModules = store.getters.REFETCH_MODULES;
     const refetchModulesSetTimeout = function () {
       setTimeout(refetchModules, 1000);
     };
-
-    // const insertCurrentData = function (e) {};
-
-    watch(responsible, () => {
-      const arr = [];
-      for (let subject of responsible.value) {
-        arr.push(
-          subject.fullname?.first_name + " " + subject.fullname?.last_name
-        );
-      }
-      options.value = arr;
-    });
 
     watch(model, () => {
       indexResponsible.value = options.value.indexOf(model.value);
@@ -140,7 +121,7 @@ export default defineComponent({
         e.target.elements.startTime.value = props.mod.property2?.time;
         e.target.elements.endData.value = props.mod.property3?.date;
         e.target.elements.endTime.value = props.mod.property3?.time;
-        // Пока не работает, т.к. есть среди субъектов те, которых не в группе ответственые
+        // Пока не работает, т.к. есть среди субъектов те, которых нет в группе ответственые
         // model.value = props.mod.property7.fullname.first_name + " " + props.mod.property7.fullname.last_name;
         return funSubmit;
       }

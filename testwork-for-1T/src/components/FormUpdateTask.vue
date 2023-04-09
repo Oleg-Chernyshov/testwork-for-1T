@@ -125,9 +125,6 @@ export default defineComponent({
           props.task.property6.fullname.first_name +
           " " +
           props.task.property6.fullname.last_name;
-
-        // Пока не работает, т.к. есть среди субъектов те, которых не в группе ответственые
-        // model.value = props.mod.property7.fullname.first_name + " " + props.mod.property7.fullname.last_name;
         return funSubmit;
       }
       const apolloClient = new ApolloClient(getClientOptions());
