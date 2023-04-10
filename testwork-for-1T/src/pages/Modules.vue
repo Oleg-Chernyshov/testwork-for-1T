@@ -271,6 +271,7 @@ export default {
         currentModuleClickUp.value = mod;
         currentTaskClickUp.value = task;
       },
+      MODULES
     };
   },
 };

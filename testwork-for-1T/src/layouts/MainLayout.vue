@@ -87,7 +87,12 @@ import { defineComponent, ref, computed, reactive, watch } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { GetAllPages, GetAllTypes } from "src/api/main/queryes";
 import { useStore } from "vuex";
+import { GetGroupById } from "src/api/main/queryes";
 
+
+import { getClientOptions } from "src/apollo/index";
+import { provideApolloClient } from "@vue/apollo-composable";
+import { ApolloClient } from "@apollo/client/core";
 export default defineComponent({
   name: "MainLayout",
   setup() {
@@ -119,6 +124,63 @@ export default defineComponent({
         console.log(queryResult.data);
       });
     }
+
+    {
+      let email = sessionStorage.getItem('email')
+      const { onResult, refetch } = useQuery(GetGroupById, {
+        id: "3662509860808044515",
+      });
+      onResult((queryResult) => {
+        let responsibles = []
+        let flag = 1
+        responsibles = queryResult.data.get_group.subject
+        for (let subject of responsibles) {
+          if (subject.email.email == email){
+              sessionStorage.setItem(
+                "role",
+                "Ответсвенный"
+              )
+              console.log(1);
+              flag = 0
+              break
+            }
+          }
+          if(flag){
+            console.log(2);
+            const apolloClient = new ApolloClient(getClientOptions());
+            provideApolloClient(apolloClient);
+
+            const { onResult, refetch } = useQuery(GetGroupById, {
+              id: "4428325871296613250",
+            });
+
+            onResult((queryResult) => {
+            responsibles = []
+            responsibles = queryResult.data.get_group.subject
+            for (let subject of responsibles) {
+              if (subject.email.email == email){
+                sessionStorage.setItem(
+                  "role",
+                  "Исполнитель"
+                 )
+                }
+              }
+              if(flag){
+                console.log(3);
+                sessionStorage.setItem(
+                  "role",
+                  "Владелец"
+                 )
+              }
+            });
+          }
+      });
+    }
+
+    {
+    
+    }
+      
 
     return {
       isAdmin,
