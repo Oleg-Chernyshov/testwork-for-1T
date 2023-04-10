@@ -10,13 +10,13 @@ const routes = [
   {
     path: '/app',
     component: () => import('layouts/MainLayout.vue'),
-
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
       { path: '/Team', component: () => import('pages/Team.vue') },
       { path: '/Executors', component: () => import('components/Executors.vue') },
       { path: '/Responsible', component: () => import('components/Responsible.vue') },
       { path: '/Modules', component: () => import('pages/Modules.vue') },
+      { path: '/AllTasks', component: () => import('pages/Tasks.vue') },
     ]
   },
 

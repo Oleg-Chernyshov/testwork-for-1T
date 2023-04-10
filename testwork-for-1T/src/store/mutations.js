@@ -27,3 +27,8 @@ export const setExecutors = (state, { executors, optionsForExecutors, refetch })
 	state.optionsForExecutors = optionsForExecutors
 	state.refetchQueryExecutors = refetch
 }
+
+export const setAllTasks = (state, { allTasks, refetch }) => {
+	state.allTasks = allTasks
+	state.refetchQueryAllTasks = refetch
+}
