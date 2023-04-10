@@ -49,3 +49,7 @@ export const OPTIONS_MODULES = (state) => {
 export const USER_ID = (state) => {
 	return state.userId
 }
+
+export const ALL_TASKS = (state) => {
+	return state.allTasks
+}

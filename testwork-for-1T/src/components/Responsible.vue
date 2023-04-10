@@ -26,8 +26,10 @@ export default defineComponent({
   setup() {
     const store = useStore();
 
-    store.dispatch("GET_EXECUTORS");
+    store.dispatch("GET_RESPONSIBLES");
     const responsible = computed(() => store.getters.RESPONSIBLES);
+
+  console.log(responsible);
 
     return {
       responsible,

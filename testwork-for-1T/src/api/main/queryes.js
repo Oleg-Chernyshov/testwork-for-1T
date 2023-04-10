@@ -97,3 +97,24 @@ export const GetPropertyStatus = gql`query {
     }
   }
 `
+
+export const GetAllTasks = gql`{
+  paginate_type2(
+    page: 1
+    perPage: 100
+  ) {
+    data {
+        id
+        name
+      property4
+      property5
+      property6{
+        fullname{
+          first_name
+          last_name
+        }
+      }
+    }
+  }
+}
+`

@@ -4,17 +4,18 @@ import * as actions from './actions'
 import * as mutations from './mutations'
 
 export const state = {
-  modules: [],
   module_index: -1,
+  modules: [],
   subjects: [],
-  // refetchModules: "23t524hiovdf",
-  refetchQueryResponsible: {},
+  allTasks: [],
   responsibles: [],
-  optionsForResponsibles: [],
   executors: [],
   optionsModules: [],
+  optionsForResponsibles: [],
   optionsForExecutors: [],
-  refetchQueryExecutors: {}
+  refetchQueryExecutors: {},
+  refetchQueryAllTasks: {},
+  refetchQueryResponsible: {},
 }
 
 const store = createStore({

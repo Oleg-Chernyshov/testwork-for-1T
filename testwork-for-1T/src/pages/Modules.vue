@@ -75,6 +75,7 @@
         >Добавить модуль</q-btn
       >
     </div>
+
     <div class="modules__module" v-else>
       <h5>{{ MODULES[module_index].name }}</h5>
       <table
@@ -204,6 +205,7 @@ export default {
     store.dispatch("GET_MODULES");
     const refetchModules = computed(() => store.getters.REFETCH_MODULES);
     const MODULES = computed(() => store.getters.MODULES);
+    console.log(MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
     const current_module = reactive({});
     const propertyStatus = reactive({});
