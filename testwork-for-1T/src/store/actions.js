@@ -141,19 +141,6 @@ export const GET_EXECUTORS = ({ commit }) => {
   fetching();
 }
 
-export const GET_ALL_TASKS = ({ commit }) => {
-  const fetching = async () => {
-    try {
-      const { onResult, refetch } = useQuery(GetAllTasks);
-      onResult((queryResult) => {
-        commit("setAllTasks", { allTasks: queryResult.data.paginate_type2.data, refetch: refetch })
-      });
-    } catch (e) {
-      console.log("Ошибка:", e);
-    }
-  };
-  fetching();
-}
 
 export const GET_ALL_TASKS = ({ commit }) => {
   const fetching = async () => {
