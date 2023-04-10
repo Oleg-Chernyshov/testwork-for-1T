@@ -64,6 +64,7 @@ import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { useStore } from "vuex";
+import { response } from "../functions/functions";
 
 export default defineComponent({
   props: {
@@ -103,10 +104,6 @@ export default defineComponent({
       }
     });
 
-    const refetchModulesSetTimeout = function () {
-      setTimeout(refetchModules, 1000);
-    };
-
     const updateTask = function (e, num) {
       if (num) {
         funSubmit = false;
@@ -144,23 +141,23 @@ export default defineComponent({
           id: props.id,
         },
       }));
-      const response = mutate();
-      response
-        .then(function (result) {
-          console.log("updated task", result);
-          $q.notify({
-            type: "positive",
-            message: "Задача добавлен",
-          });
-          refetchModulesSetTimeout();
-        })
-        .catch((err) => {
-          console.log("Ошибка", err);
-          $q.notify({
-            type: "negative",
-            message: "Ошибка",
-          });
-        });
+      response("Задача обновлена", "Ошибка", mutate, refetchModules, $q);
+
+      // response
+      //   .then(function (result) {
+      //     console.log("updated task", result);
+      //     $q.notify({
+      //       type: "positive",
+      //       message: "Задача добавлен",
+      //     });
+      //   })
+      //   .catch((err) => {
+      //     console.log("Ошибка", err);
+      //     $q.notify({
+      //       type: "negative",
+      //       message: "Ошибка",
+      //     });
+      //   });
     };
 
     return {

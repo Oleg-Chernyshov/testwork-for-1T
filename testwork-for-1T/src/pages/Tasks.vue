@@ -69,6 +69,7 @@ import { updateUser } from "../api/main/mutations";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
+import { response } from "../functions/functions";
 
 export default defineComponent({
   components: {
@@ -82,9 +83,6 @@ export default defineComponent({
     const allTasks = computed(() => store.getters.ALL_TASKS);
     const refetchTasks = computed(() => store.getters.REFETCH_ALL_TASKS);
 
-    const refetchTasksSetTimeout = function () {
-      setTimeout(refetchTasks.value, 1000);
-    };
     const updateTask = function (task) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
@@ -104,22 +102,7 @@ export default defineComponent({
           id: task.id,
         },
       }));
-      const response = mutate();
-      response
-        .then(function (result) {
-          $q.notify({
-            type: "positive",
-            message: "Задача добавлен",
-          });
-          refetchTasksSetTimeout();
-        })
-        .catch((err) => {
-          console.log("Ошибка", err);
-          $q.notify({
-            type: "negative",
-            message: "Ошибка",
-          });
-        });
+      response("Выполнена", "Ошибка", mutate, refetchTasks.value, $q);
     };
 
     return {

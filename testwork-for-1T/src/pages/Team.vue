@@ -70,6 +70,7 @@ import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { useStore } from "vuex";
+import { response } from "../functions/functions";
 
 export default defineComponent({
   components: {},
@@ -87,14 +88,6 @@ export default defineComponent({
     const refetchQueryResponsible = store.getters.REFETCH_RESPONSIBLES;
     const $q = useQuasar();
 
-    const refetchResponsiblesSetTimeout = function () {
-      setTimeout(refetchQueryResponsible, 1000);
-    };
-
-    const refetchQueryExecutorsSetTimeout = function () {
-      setTimeout(refetchQueryExecutors, 1000);
-    };
-
     const getFormExecuterValues = function (e, n) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
@@ -108,21 +101,13 @@ export default defineComponent({
           },
         },
       }));
-      const response = mutate();
-      response
-        .then(function (result) {
-          $q.notify({
-            type: "positive",
-            message: "Отправлено",
-          });
-          refetchResponsiblesSetTimeout();
-        })
-        .catch((err) => {
-          $q.notify({
-            type: "negative",
-            message: "Ошибка отправки",
-          });
-        });
+      response(
+        "Исполнитель добавлен",
+        "Ошибка",
+        mutate,
+        refetchQueryExecutors,
+        $q
+      );
       [
         e.target.elements.name.value,
         e.target.elements.surname.value,
@@ -143,23 +128,15 @@ export default defineComponent({
           },
         },
       }));
-      const response = mutate();
-      response
-        .then(function (result) {
-          console.log("getFormExecuterValues", result);
-          $q.notify({
-            type: "positive",
-            message: "Отправлено",
-          });
-          refetchQueryExecutorsSetTimeout();
-        })
-        .catch((err) => {
-          console.log("Ошибка", err);
-          $q.notify({
-            type: "negative",
-            message: "Ошибка отправки",
-          });
-        });
+
+      response(
+        "Ответственный добавлен",
+        "Ошибка",
+        mutate,
+        refetchQueryResponsible,
+        $q
+      );
+
       [
         e.target.elements.name.value,
         e.target.elements.surname.value,
