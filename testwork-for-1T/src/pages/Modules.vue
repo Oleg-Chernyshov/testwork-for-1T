@@ -182,6 +182,7 @@ import FormAddTask from "../components/FormAddTask.vue";
 import FormUpdateTask from "../components/FormUpdateTask.vue";
 import FormUpdateModule from "../components/formUpdateModule.vue";
 import { useQuasar } from "quasar";
+import { response } from "../functions/functions";
 
 export default {
   components: {
@@ -218,10 +219,6 @@ export default {
       current_module.values = MODULES.value[module_index.value];
     };
 
-    const refetchModulesSetTimeout = function () {
-      setTimeout(refetchModules.value, 1000);
-    };
-
     const deleteTask = function (id) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
@@ -230,12 +227,7 @@ export default {
           id: id,
         },
       }));
-      mutate();
-      $q.notify({
-        type: "positive",
-        message: "Задача удалена",
-      });
-      refetchModulesSetTimeout();
+      response("Задача удалена", "Ошибка", mutate, refetchModules.value, $q);
     };
 
     //Получение свойства Status для определения статуса задачи по id
