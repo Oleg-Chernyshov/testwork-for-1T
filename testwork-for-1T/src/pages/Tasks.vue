@@ -111,6 +111,8 @@ export default defineComponent({
       currentTaskClickUp,
       taskId,
       set_id(task) {
+        console.log("TASK", task);
+        store.commit("setModuleId", task.property8.id);
         currentTaskClickUp.value = task;
         taskId.value = task.id;
       },

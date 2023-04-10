@@ -6,6 +6,10 @@ export const MODULE_INDEX = (state) => {
 	return state.module_index
 }
 
+export const MODULE_ID = (state) => {
+	return state.moduleId
+}
+
 export const ID = (state) => {
 	b74277e
 	return state.id

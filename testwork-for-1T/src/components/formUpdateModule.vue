@@ -92,9 +92,7 @@ export default defineComponent({
     mod: Object,
   },
   setup(props) {
-    console.log("props.idUpdateModule", props.idUpdateModule);
     const $q = useQuasar();
-    // const options = ref();
     const store = useStore();
     const model = ref(null);
     const indexResponsible = ref(0);

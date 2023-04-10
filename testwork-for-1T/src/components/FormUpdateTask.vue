@@ -71,7 +71,6 @@ export default defineComponent({
     task: Object,
   },
   setup(props) {
-    console.log("ID_PROPS", props.id);
     const $q = useQuasar();
     const store = useStore();
     store.dispatch("GET_EXECUTORS");
@@ -88,6 +87,7 @@ export default defineComponent({
     const statusId = ref("");
     const optionsModules = computed(() => store.getters.OPTIONS_MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
+    const module_id = computed(() => store.getters.MODULE_ID);
     let funSubmit = false;
 
     watch(model, () => {
@@ -129,6 +129,10 @@ export default defineComponent({
       }
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
+      let moduleId =
+        module_id.value != ""
+          ? module_id.value
+          : MODULES.value[module_index.value].id;
       const { mutate } = useMutation(updateUser, () => ({
         variables: {
           input: {
@@ -139,12 +143,13 @@ export default defineComponent({
               "2598174384277431501": EXECUTORS.value[indexExecutor.value].id,
             },
             property8: {
-              "2673961667589284866": MODULES.value[module_index.value].id,
+              "2673961667589284866": moduleId,
             },
           },
           id: props.id,
         },
       }));
+      store.commit("setModuleId", "");
       const response = mutate();
       response
         .then(function (result) {
