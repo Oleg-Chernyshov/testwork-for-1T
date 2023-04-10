@@ -113,6 +113,10 @@ export const GetAllTasks = gql`{
           first_name
           last_name
         }
+        id
+      }
+      property8{
+        id
       }
     }
   }

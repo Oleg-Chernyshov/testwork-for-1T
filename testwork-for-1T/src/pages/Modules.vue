@@ -246,7 +246,9 @@ export default {
 
     watch(
       () => store.getters.MODULE_INDEX,
-      () => get_module(module_index)
+      () => {
+        get_module(module_index);
+      }
     );
     return {
       showForm_addTask,
