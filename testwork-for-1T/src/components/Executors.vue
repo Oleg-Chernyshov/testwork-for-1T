@@ -29,6 +29,7 @@ export default defineComponent({
     store.dispatch("GET_EXECUTORS");
     const executors = computed(() => store.getters.EXECUTORS);
 
+    console.log(executors);
     return {
       executors,
     };
