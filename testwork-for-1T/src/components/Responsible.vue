@@ -29,6 +29,8 @@ export default defineComponent({
     store.dispatch("GET_RESPONSIBLES");
     const responsible = computed(() => store.getters.RESPONSIBLES);
 
+  console.log(responsible);
+
     return {
       responsible,
     };
