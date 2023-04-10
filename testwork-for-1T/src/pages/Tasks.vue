@@ -107,12 +107,10 @@ export default defineComponent({
       const response = mutate();
       response
         .then(function (result) {
-          console.log("updated task", result);
           $q.notify({
             type: "positive",
             message: "Задача добавлен",
           });
-          console.log(refetchTasks);
           refetchTasksSetTimeout();
         })
         .catch((err) => {
