@@ -75,95 +75,18 @@
         >Добавить модуль</q-btn
       >
     </div>
-    <div class="modules__module" v-else>
-      <h5>{{ MODULES[module_index].name }}</h5>
-      <table
-        class="modules__table-module table"
-        v-if="!MODULES[module_index].property8.length == 0"
-      >
-        <thead>
-          <tr>
-            <th>Задача</th>
-            <th>Описание</th>
-            <th>Статус</th>
-            <th>Исполнитель</th>
-            <th>Действия</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="task in MODULES[module_index]?.property8" :key="task.id">
-            <td>{{ task.name }}</td>
-            <td>
-              {{ task.property4 }}
-            </td>
-            <td
-              :class="
-                task.property5 == 1700970386717883161
-                  ? 'assigned'
-                  : task.property5 == 967659251654331262
-                  ? 'accomplished'
-                  : 'completed'
-              "
-            >
-              {{
-                (function () {
-                  if (task.property5 == "1700970386717883161") {
-                    return "Назначена";
-                  } else if (task.property5 == "967659251654331262")
-                    return "Выполнена";
-                  else if (task.property5 == "1383309069201480491")
-                    return "Завершена";
-                })()
-              }}
-            </td>
-            <td>
-              {{
-                task.property6?.fullname.first_name +
-                " " +
-                task.property6?.fullname.last_name
-              }}
-            </td>
-            <td>
-              <button
-                class="q-mr-sm btn"
-                @click.self="
-                  showForm_updateTask = !showForm_updateTask;
-                  set_id($event, mod, task);
-                "
-                :id="task.id"
-              >
-                Редактировать
-              </button>
-              <button class="btn" @click="deleteTask(task.id)">Удалить</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <q-btn
-        class="q-mt-sm"
-        color="primary"
-        @click="
-          showForm_addTask = !showForm_addTask;
-          set_id_module(module_index);
-        "
-        >Добавить задачу</q-btn
-      >
-      <div v-if="MODULES[module_index].property8.length == 0">
-        Список задач пуст
-      </div>
-    </div>
-    <q-dialog v-model="showForm_addTask">
-      <FormAddTask :idModule="idModule" />
-    </q-dialog>
-    <q-dialog v-model="showForm_updateTask">
-      <FormUpdateTask :task="currentTaskClickUp" :id="id" />
-    </q-dialog>
+   
+    <modulesModule v-else />
+
+    
+    
     <q-dialog v-model="showForm_addModule">
       <FormAddModule />
     </q-dialog>
     <q-dialog v-model="showForm_updateModule">
       <FormUpdateModule :mod="currentModuleClickUp" :idUpdateModule="id" />
     </q-dialog>
+
   </div>
 </template>
 
@@ -180,6 +103,7 @@ import FormAddModule from "../components/FormAddModule.vue";
 import FormAddTask from "../components/FormAddTask.vue";
 import FormUpdateTask from "../components/FormUpdateTask.vue";
 import FormUpdateModule from "../components/formUpdateModule.vue";
+import modulesModule from "../pages/composables/modulesModule.vue"
 import { useQuasar } from "quasar";
 
 export default {
@@ -188,16 +112,14 @@ export default {
     FormAddTask,
     FormUpdateTask,
     FormUpdateModule,
+    modulesModule
   },
 
   setup() {
     const id = ref(0);
     const idUpdateModule = ref(0);
     const idModule = ref(0);
-    const showForm_addModule = ref(false);
     const store = useStore();
-    const showForm_addTask = ref(false);
-    const showForm_updateTask = ref(false);
     const showForm_updateModule = ref(false);
     const currentModuleClickUp = ref();
     const currentTaskClickUp = ref();
@@ -247,18 +169,12 @@ export default {
       () => get_module(module_index)
     );
     return {
-      showForm_addTask,
-      showForm_addModule,
-      MODULES,
       current_module,
       showTableModules,
-      module_index,
       propertyStatus,
-      showForm_updateTask,
       showForm_updateModule,
       currentModuleClickUp,
       currentTaskClickUp,
-      deleteTask,
       id,
       idModule,
       idUpdateModule,
