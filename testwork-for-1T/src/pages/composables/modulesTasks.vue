@@ -95,6 +95,12 @@ import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import FormAddTask from "components/FormAddTask.vue";
 import FormUpdateTask from "components/FormUpdateTask.vue";
+import { getClientOptions } from "src/apollo/index";
+import { provideApolloClient } from "@vue/apollo-composable";
+import { ApolloClient } from "@apollo/client/core";
+import { DeleteTask } from "src/api/main/mutations.js";
+import { useMutation } from "@vue/apollo-composable";
+import { useQuasar } from "quasar";
 
 
 export default {
@@ -107,17 +113,20 @@ export default {
     const id = ref(0);
     const idUpdateModule = ref(0);
     const idModule = ref(0);
-    const showForm_addModule = ref(false);
     const store = useStore();
     const showForm_addTask = ref(false);
     const showForm_updateTask = ref(false);
-    const showForm_updateModule = ref(false);
     const currentModuleClickUp = ref();
     const currentTaskClickUp = ref();
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
+    const $q = useQuasar();
+    const refetchModules = computed(() => store.getters.REFETCH_MODULES);
     
+    const refetchModulesSetTimeout = function () {
+      setTimeout(refetchModules.value, 1000);
+    };
 
     const deleteTask = function (id) {
       const apolloClient = new ApolloClient(getClientOptions());
@@ -138,15 +147,14 @@ export default {
     
     return {
       showForm_addTask,
-      showForm_addModule,
+      showForm_updateTask,
       MODULES,
       module_index,
-      showForm_updateTask,
-      showForm_updateModule,
       deleteTask,
       id,
       idModule,
       idUpdateModule,
+      currentTaskClickUp,
       set_id_module(id) {
         idModule.value = id;
       },

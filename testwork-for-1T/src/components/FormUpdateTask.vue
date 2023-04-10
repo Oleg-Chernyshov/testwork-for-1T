@@ -107,7 +107,7 @@ export default defineComponent({
     const refetchModulesSetTimeout = function () {
       setTimeout(refetchModules, 1000);
     };
-
+    
     const updateTask = function (e, num) {
       if (num) {
         funSubmit = false;
