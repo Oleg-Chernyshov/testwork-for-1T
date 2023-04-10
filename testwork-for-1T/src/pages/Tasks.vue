@@ -46,14 +46,8 @@
               }}
             </td>
             <td>
-              <button
-                class="q-mr-sm btn"
-                @click.self="
-                  showForm_updateTask = !showForm_updateTask;
-                  set_id(task);
-                "
-              >
-                Редактировать
+              <button class="q-mr-sm btn" @click.self="updateTask(task)">
+                Выполнена
               </button>
               <!-- <button class="btn" @click="deleteTask(task.id)">Удалить</button> -->
             </td>
@@ -61,36 +55,19 @@
         </tbody>
       </table>
       <div v-else>Список задач пуст</div>
-      <!-- <q-btn
-        class="q-mt-sm"
-        color="primary"
-        @click="
-          showForm_addTask = !showForm_addTask;
-          set_id_module(module_index);
-        "
-        >Добавить задачу</q-btn
-      > -->
     </div>
-    <q-dialog v-model="showForm_updateTask">
-      <FormUpdateTask :id="taskId" :task="currentTaskClickUp" />
-    </q-dialog>
   </q-page>
 </template>
 
 <script>
-import { computed, reactive, watch, ref, defineComponent } from "vue";
 import { useStore } from "vuex";
 import FormUpdateTask from "../components/FormUpdateTask.vue";
-const currentTaskClickUp = ref();
-import { GetPropertyStatus } from "src/api/main/queryes";
-import { DeleteTask } from "src/api/main/mutations";
-import { useQuery, useMutation } from "@vue/apollo-composable";
+import { useMutation } from "@vue/apollo-composable";
+import { defineComponent, ref, computed, watch } from "vue";
 import { getClientOptions } from "src/apollo/index";
+import { updateUser } from "../api/main/mutations";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
-import FormAddModule from "../components/FormAddModule.vue";
-import FormAddTask from "../components/FormAddTask.vue";
-import FormUpdateModule from "../components/formUpdateModule.vue";
 import { useQuasar } from "quasar";
 
 export default defineComponent({
@@ -98,24 +75,59 @@ export default defineComponent({
     FormUpdateTask,
   },
   setup() {
-    const showForm_updateTask = ref(false);
-    const taskId = ref();
     const store = useStore();
+    const $q = useQuasar();
     store.dispatch("GET_ALL_TASKS");
+    const currentTaskClickUp = ref();
     const allTasks = computed(() => store.getters.ALL_TASKS);
-    const refetchTasks = computed(() => store.getters.REFETCH_MODULES);
+    const refetchTasks = computed(() => store.getters.REFETCH_ALL_TASKS);
+
+    const refetchTasksSetTimeout = function () {
+      setTimeout(refetchTasks.value, 1000);
+    };
+    const updateTask = function (task) {
+      const apolloClient = new ApolloClient(getClientOptions());
+      provideApolloClient(apolloClient);
+      const { mutate } = useMutation(updateUser, () => ({
+        variables: {
+          input: {
+            name: task.name,
+            property4: task.property4,
+            property5: "967659251654331262",
+            property6: {
+              "2598174384277431501": task.property6.id,
+            },
+            property8: {
+              "2673961667589284866": task.property8.id,
+            },
+          },
+          id: task.id,
+        },
+      }));
+      const response = mutate();
+      response
+        .then(function (result) {
+          console.log("updated task", result);
+          $q.notify({
+            type: "positive",
+            message: "Задача добавлен",
+          });
+          console.log(refetchTasks);
+          refetchTasksSetTimeout();
+        })
+        .catch((err) => {
+          console.log("Ошибка", err);
+          $q.notify({
+            type: "negative",
+            message: "Ошибка",
+          });
+        });
+    };
 
     return {
       allTasks,
-      showForm_updateTask,
+      updateTask,
       currentTaskClickUp,
-      taskId,
-      set_id(task) {
-        console.log("TASK", task);
-        store.commit("setModuleId", task.property8.id);
-        currentTaskClickUp.value = task;
-        taskId.value = task.id;
-      },
     };
   },
 });

@@ -8,10 +8,6 @@ export const setModuleIndex = (state, index) => {
 	state.module_index = index
 }
 
-export const setModuleId = (state, moduleId) => {
-	state.moduleId = moduleId
-}
-
 export const SetId = (state, id) => {
 	state.id = id
 }
