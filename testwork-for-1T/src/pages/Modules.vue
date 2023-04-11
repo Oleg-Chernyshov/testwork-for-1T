@@ -15,6 +15,8 @@ import { GetPropertyStatus } from "src/api/main/queryes";
 import { useQuery } from "@vue/apollo-composable";
 import modulesTasks from "../pages/composables/modulesTasks.vue"
 import modulesModules from "../pages/composables/modulesModules.vue"
+import { response } from "../functions/functions";
+
 
 export default {
   components: {
@@ -41,7 +43,6 @@ export default {
       current_module.values = MODULES.value[module_index.value];
     };
 
-
     //Получение свойства Status для определения статуса задачи по id
     const { onResult } = useQuery(GetPropertyStatus);
     onResult((queryResult) => {
@@ -50,7 +51,9 @@ export default {
 
     watch(
       () => store.getters.MODULE_INDEX,
-      () => get_module(module_index)
+      () => {
+        get_module(module_index);
+      }
     );
     return {
       current_module,

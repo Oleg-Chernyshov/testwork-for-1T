@@ -7,7 +7,6 @@ export const MODULE_INDEX = (state) => {
 }
 
 export const ID = (state) => {
-	b74277e
 	return state.id
 }
 
@@ -42,10 +41,18 @@ export const REFETCH_EXECUTORS = (state) => {
 	return state.refetchQueryExecutors
 }
 
+export const REFETCH_ALL_TASKS = (state) => {
+	return state.refetchQueryAllTasks
+}
+
 export const OPTIONS_MODULES = (state) => {
 	return state.optionsModules
 }
 
 export const USER_ID = (state) => {
 	return state.userId
+}
+
+export const ALL_TASKS = (state) => {
+	return state.allTasks
 }

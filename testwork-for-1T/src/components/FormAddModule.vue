@@ -57,13 +57,7 @@
           <q-select v-model="model" :options="options" label="Ответсвенный" />
         </div>
         <div class="form-field col-lg-12 justify-between flex">
-          <input
-            @click="refetchModulesSetTimeout"
-            name=""
-            class="submit-btn"
-            type="submit"
-            value="Создать"
-          />
+          <input name="" class="submit-btn" type="submit" value="Создать" />
           <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
       </form>
@@ -87,6 +81,7 @@ import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { addNewModule } from "src/api/main/mutations";
 import { useStore } from "vuex";
+import { response } from "../functions/functions";
 
 export default defineComponent({
   components: {},
@@ -103,10 +98,6 @@ export default defineComponent({
     const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
 
     const refetchModules = store.getters.REFETCH_MODULES;
-
-    const refetchModulesSetTimeout = function () {
-      setTimeout(refetchModules, 1000);
-    };
 
     watch(model, () => {
       indexResponsible.value = options.value.indexOf(model.value);
@@ -135,29 +126,13 @@ export default defineComponent({
           },
         },
       }));
-      const response = mutate();
-      response
-        .then(function (result) {
-          console.log("createNewModule", result);
-          $q.notify({
-            type: "positive",
-            message: "Модуль добавлен",
-          });
-        })
-        .catch((err) => {
-          console.log("Ошибка", err);
-          $q.notify({
-            type: "negative",
-            message: "Ошибка",
-          });
-        });
+      response("Модуль добавлен", "Ошибка", mutate, refetchModules, $q);
     };
 
     return {
       createNewModule,
       options,
       model,
-      refetchModulesSetTimeout,
       refetchModules,
     };
   },
