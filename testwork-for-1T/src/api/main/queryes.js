@@ -1,5 +1,7 @@
 import gql from "graphql-tag"
 
+const currentUserId = "placeholder"
+
 export const GetAllPages = gql`
     query {
         pages(perPage: 10, page: 1) {
@@ -164,7 +166,8 @@ export const GetUserTasks = gql`query
       hasMorePages
     }
   }
-}`
+}
+`
 
 export const GetUserModules = gql`query getUserModules {
   paginate_subject(page: 1, perPage: 100, where: { column: "user_id", operator: EQ, value: ${currentUserId} }) {
