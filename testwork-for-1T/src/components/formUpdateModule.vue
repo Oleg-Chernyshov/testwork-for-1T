@@ -154,11 +154,11 @@ export default defineComponent({
       const response = mutate();
       response
         .then(function (result) {
-          console.log("createNewModule", result);
           refetchModulesSetTimeout();
+          
           $q.notify({
             type: "positive",
-            message: "Модуль обновлены",
+            message: "Модули обновлены",
           });
         })
         .catch((err) => {
