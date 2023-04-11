@@ -52,7 +52,6 @@ import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { addNewTask, createRule } from "src/api/main/mutations";
 import { useStore } from "vuex";
-import { response } from "../functions/functions";
 
 export default defineComponent({
   props: {
@@ -129,18 +128,19 @@ export default defineComponent({
         response_2
           .then(function (result){
             console.log(result);
+         
+            $q.notify({
+              type: "positive",
+              message: "Модуль добавлен",
+            });
           })
-          $q.notify({
-            type: "positive",
-            message: "Модуль добавлен",
-          });
-        })
         .catch((err) => {
           console.log("Ошибка", err);
           $q.notify({
             type: "negative",
             message: "Ошибка",
-          });
+          }); 
+        })
       })
     };
     return {

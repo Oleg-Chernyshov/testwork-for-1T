@@ -83,7 +83,7 @@ import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
-import { updateModule } from "../api/main/mutations";
+import { updateModule, createRule } from "../api/main/mutations";
 import { useStore } from "vuex";
 
 export default defineComponent({
@@ -154,12 +154,30 @@ export default defineComponent({
       const response = mutate();
       response
         .then(function (result) {
+          console.log(result);
           refetchModulesSetTimeout();
-          
-          $q.notify({
-            type: "positive",
-            message: "Модули обновлены",
-          });
+          const { mutate } = useMutation(createRule, ()=>({
+            variables:{
+                input: {
+                  model_type: "object",
+                  model_id: props.idUpdateModule,
+                  owner_type: "subject",
+                  owner_id: responsible.value[indexResponsible.value].id,
+                  level: 7
+                }
+              }
+          }))
+          console.log(1);
+          const response_2 = mutate()
+          response_2
+          .then(function (result){
+            console.log(result);
+
+            $q.notify({
+              type: "positive",
+              message: "Модули обновлены",
+            });
+          })
         })
         .catch((err) => {
           console.log("Ошибка", err);
