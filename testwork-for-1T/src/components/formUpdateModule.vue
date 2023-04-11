@@ -1,5 +1,6 @@
 <template>
   <div class="wrapper">
+    
     <section class="get-in-touch">
       <h3 class="title">Редактирование модуля</h3>
       <form
@@ -13,6 +14,7 @@
             id="name"
             class="input-text js-input"
             type="text"
+            v-model="form.name"
           />
           <label class="label" for="name">Название</label>
         </div>
@@ -22,6 +24,7 @@
             id="startData"
             class="input-text js-input"
             type="text"
+            v-model="form.startData"
           />
           <label class="label" for="startData">Дата начала</label>
         </div>
@@ -31,6 +34,7 @@
             id="startTime"
             class="input-text js-input"
             type="text"
+            v-model="form.startTime"
           />
           <label class="label" for="startTime">Время начала</label>
         </div>
@@ -40,6 +44,7 @@
             id="endData"
             class="input-text js-input"
             type="text"
+            v-model="form.endData"
           />
           <label class="label" for="endData">Дата окончания</label>
         </div>
@@ -49,6 +54,7 @@
             id="endTime"
             class="input-text js-input"
             type="text"
+            v-model="form.endTime"
           />
           <label class="label" for="endTime">Время окончания</label>
         </div>
@@ -104,6 +110,15 @@ export default defineComponent({
     const refetchModulesSetTimeout = function () {
       setTimeout(refetchModules, 1000);
     };
+    const form = ref({
+      
+      name: props.mod.name,
+      startData: props.mod.property2?.date,
+      startTime: props.mod.property2?.time,
+      endData: props.mod.property3?.date,
+      endTime: props.mod.property3?.time
+
+    })
 
     watch(model, () => {
       indexResponsible.value = options.value.indexOf(model.value);
@@ -168,6 +183,7 @@ export default defineComponent({
       options,
       model,
       refetchModules,
+      form
     };
   },
 });
