@@ -79,9 +79,8 @@ import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
-import { addNewModule } from "src/api/main/mutations";
+import { addNewModule, createRule } from "src/api/main/mutations";
 import { useStore } from "vuex";
-import { response } from "../functions/functions";
 
 export default defineComponent({
   components: {},
@@ -101,7 +100,6 @@ export default defineComponent({
 
     watch(model, () => {
       indexResponsible.value = options.value.indexOf(model.value);
-      console.log(4);
     });
 
     const createNewModule = function (e) {
@@ -126,7 +124,38 @@ export default defineComponent({
           },
         },
       }));
-      response("Модуль добавлен", "Ошибка", mutate, refetchModules, $q);
+      const response = mutate();
+      response
+        .then(function (result) {
+          console.log(result);
+          const { mutate } = useMutation(createRule, ()=>({
+            variables:{
+                input: {
+                  model_type: "object",
+                  model_id: result.data.create_type1.recordId,
+                  owner_type: "subject",
+                  owner_id: RESPONSIBLES.value[indexResponsible.value].id,
+                  level: 7
+                }
+              }
+            }))
+            const response_2 = mutate()
+            response_2
+              .then(function (result){
+                console.log(result);
+              })
+          $q.notify({
+            type: "positive",
+            message: "Модуль добавлен",
+          });
+        })
+        .catch((err) => {
+          console.log("Ошибка", err);
+          $q.notify({
+            type: "negative",
+            message: "Ошибка",
+          });
+        });
     };
 
     return {

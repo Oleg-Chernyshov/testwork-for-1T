@@ -32,6 +32,7 @@ export const GET_RESPONSIBLES = ({ commit }) => {
         id: '3662509860808044515',
       })
       onResult((queryResult) => {
+        console.log(queryResult);
         let options = []
         responsibles = queryResult.data.get_group.subject
         for (let subject of responsibles) {

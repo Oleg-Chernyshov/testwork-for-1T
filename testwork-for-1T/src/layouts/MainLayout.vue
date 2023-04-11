@@ -115,6 +115,7 @@ export default defineComponent({
 
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
+    console.log(MODULES);
 
 
     //Получение всех страниц
