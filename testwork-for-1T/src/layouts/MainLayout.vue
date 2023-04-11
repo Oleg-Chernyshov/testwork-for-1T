@@ -19,6 +19,7 @@
       <q-list>
         <q-list bordered class="rounded-borders">
           <q-expansion-item
+            v-if="role === 'Владелец'"
             to="/Team"
             expand-separator
             icon=""
@@ -35,6 +36,7 @@
             </q-tabs>
           </q-expansion-item>
           <q-expansion-item
+            v-if="role === 'Владелец'"
             to="/Deleted"
             expand-separator
             icon=""
@@ -47,6 +49,7 @@
             </q-tabs>
           </q-expansion-item>
           <q-expansion-item
+            v-if="role == 'Ответсвенный' || role == 'Владелец'"
             to="/Modules"
             expand-separator
             icon=""
@@ -69,12 +72,12 @@
           </q-expansion-item>
 
           <q-expansion-item
+            v-if="role == 'Исполнитель' || role == 'Владелец'"
             to="/AllTasks"
             expand-separator
             icon=""
             label="ЗАДАЧИ"
             caption=""
-            default-opened
           >
           </q-expansion-item>
         </q-list>
@@ -82,8 +85,6 @@
     </q-drawer>
 
     <q-page-container>
-      <div v-if="isAdmin">It's admin!</div>
-      <div v-else>It's user!</div>
       <router-view v-slot="{ Component }">
         <transition name="bounce">
           <keep-alive>
@@ -96,28 +97,30 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, reactive, watch } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { GetAllPages, GetAllTypes } from "src/api/main/queryes";
 import { useStore } from "vuex";
+import { GetGroupById } from "src/api/main/queryes";
 
+import { getClientOptions } from "src/apollo/index";
+import { provideApolloClient } from "@vue/apollo-composable";
+import { ApolloClient } from "@apollo/client/core";
 export default defineComponent({
   name: "MainLayout",
   setup() {
     const leftDrawerOpen = ref(false);
-    const authorId = ref("");
-    const UserSignInId = ref("");
+    const role = ref("");
     const store = useStore();
     const get_module_index = function (index) {
       store.commit("setModuleIndex", index);
     };
-
+    store.dispatch("GET_RESPONSIBLES");
+    store.dispatch("GET_EXECUTORS");
+    const responsible = computed(() => store.getters.RESPONSIBLES);
+    const executors = computed(() => store.getters.EXECUTORS);
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
-
-    const isAdmin = computed(() => {
-      return authorId.value === UserSignInId.value;
-    });
 
     //Получение всех страниц
     const { onResult } = useQuery(GetAllPages);
@@ -133,8 +136,50 @@ export default defineComponent({
       });
     }
 
+    {
+      let email = sessionStorage.getItem("email");
+      const { onResult, refetch } = useQuery(GetGroupById, {
+        id: "3662509860808044515",
+      });
+      onResult((queryResult) => {
+        let flag = 1;
+        for (let subject of responsible.value) {
+          if (subject.email.email == email) {
+            sessionStorage.setItem("role", "Ответсвенный");
+            role.value = "Ответсвенный";
+            flag = 0;
+            break;
+          }
+        }
+        if (flag) {
+          const apolloClient = new ApolloClient(getClientOptions());
+          provideApolloClient(apolloClient);
+
+          const { onResult, refetch } = useQuery(GetGroupById, {
+            id: "4428325871296613250",
+          });
+
+          onResult((queryResult) => {
+            for (let subject of executors.value) {
+              if (subject.email.email == email) {
+                sessionStorage.setItem("role", "Исполнитель");
+                role.value = "Исполнитель";
+              }
+            }
+            if (flag) {
+              sessionStorage.setItem("role", "Владелец");
+              role.value = "Владелец";
+            }
+          });
+        }
+      });
+    }
+
+    {
+    }
+
     return {
-      isAdmin,
+      role,
       leftDrawerOpen,
       tab: "mail",
       get_module_index,

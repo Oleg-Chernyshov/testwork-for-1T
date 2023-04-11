@@ -1,5 +1,7 @@
 import gql from 'graphql-tag'
 
+const currentUserId = 'placeholder'
+
 export const GetAllPages = gql`
   query {
     pages(perPage: 10, page: 1) {
