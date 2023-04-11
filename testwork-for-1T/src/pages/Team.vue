@@ -63,7 +63,7 @@
 
 <script>
 import { useMutation } from "@vue/apollo-composable";
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, watch } from "vue";
 import { inviteUser } from "src/api/main/mutations";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
@@ -84,11 +84,22 @@ export default defineComponent({
     const input2_3 = ref("");
     const store = useStore();
     store.dispatch("GET_RESPONSIBLES");
-    const refetchQueryExecutors = store.getters.REFETCH_EXECUTORS;
-    const refetchQueryResponsible = store.getters.REFETCH_RESPONSIBLES;
+    store.dispatch("GET_EXECUTORS");
+    const refetchQueryExecutors = computed(
+      () => store.getters.REFETCH_EXECUTORS
+    );
+    const refetchQueryResponsible = computed(
+      () => store.getters.REFETCH_RESPONSIBLES
+    );
+    watch(refetchQueryExecutors, () =>
+      console.log("exec", refetchQueryExecutors.value)
+    );
+    watch(refetchQueryResponsible, () =>
+      console.log("responsible", refetchQueryResponsible.value)
+    );
     const $q = useQuasar();
 
-    const getFormExecuterValues = function (e, n) {
+    const getFormExecuterValues = function (e) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(inviteUser, () => ({
@@ -105,14 +116,12 @@ export default defineComponent({
         "Исполнитель добавлен",
         "Ошибка",
         mutate,
-        refetchQueryExecutors,
+        refetchQueryExecutors.value,
         $q
       );
-      [
-        e.target.elements.name.value,
-        e.target.elements.surname.value,
-        e.target.elements.eMail.value,
-      ] = ["", "", ""];
+      input1_1.value = "";
+      input1_2.value = "";
+      input1_3.value = "";
     };
 
     const getFormResponsibleValues = function (e) {
@@ -133,15 +142,12 @@ export default defineComponent({
         "Ответственный добавлен",
         "Ошибка",
         mutate,
-        refetchQueryResponsible,
+        refetchQueryResponsible.value,
         $q
       );
-
-      [
-        e.target.elements.name.value,
-        e.target.elements.surname.value,
-        e.target.elements.eMail.value,
-      ] = ["", "", ""];
+      input2_1.value = "";
+      input2_2.value = "";
+      input2_3.value = "";
     };
 
     return {
