@@ -18,7 +18,7 @@
     <q-drawer class="q-pt-xl" v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
         <q-list bordered class="rounded-borders">
-          <q-expansion-item
+          <q-expansion-item v-if="role === 'Владелец' "
             to="/Team"
             expand-separator
             icon=""
@@ -34,7 +34,7 @@
               <q-route-tab to="/Responsible" label="Ответственные" />
             </q-tabs>
           </q-expansion-item>
-          <q-expansion-item
+          <q-expansion-item v-if="role === 'Владелец'"
             to="/Deleted"
             expand-separator
             icon=""
@@ -46,7 +46,7 @@
               <q-route-tab to="/Deleted" label="Исключенные" />
             </q-tabs>
           </q-expansion-item>
-          <q-expansion-item
+          <q-expansion-item v-if="role == 'Ответсвенный' || role == 'Владелец'"
             to="/Modules"
             expand-separator
             icon=""
@@ -65,13 +65,12 @@
             </q-tabs>
           </q-expansion-item>
 
-          <q-expansion-item
+          <q-expansion-item v-if="role == 'Исполнитель' || role == 'Владелец'"
             to="/AllTasks"
             expand-separator
             icon=""
             label="ЗАДАЧИ"
             caption=""
-            default-opened
           >
           </q-expansion-item>
         </q-list>
@@ -79,8 +78,6 @@
     </q-drawer>
 
     <q-page-container>
-      <div v-if="isAdmin">It's admin!</div>
-      <div v-else>It's user!</div>
       <router-view v-slot="{ Component }">
         <transition name="bounce">
           <keep-alive>
@@ -93,7 +90,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, reactive, watch } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { GetAllPages, GetAllTypes } from "src/api/main/queryes";
 import { useStore } from "vuex";
@@ -107,8 +104,7 @@ export default defineComponent({
   name: "MainLayout",
   setup() {
     const leftDrawerOpen = ref(false);
-    const authorId = ref("");
-    const UserSignInId = ref("");
+    const role = ref("")
     const store = useStore();
     const get_module_index = function (index) {
       store.commit("setModuleIndex", index);
@@ -117,9 +113,6 @@ export default defineComponent({
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
 
-    const isAdmin = computed(() => {
-      return authorId.value === UserSignInId.value;
-    });
 
     //Получение всех страниц
     const { onResult } = useQuery(GetAllPages);
@@ -150,13 +143,12 @@ export default defineComponent({
                 "role",
                 "Ответсвенный"
               )
-              console.log(1);
+              role.value = "Ответсвенный"
               flag = 0
               break
             }
           }
           if(flag){
-            console.log(2);
             const apolloClient = new ApolloClient(getClientOptions());
             provideApolloClient(apolloClient);
 
@@ -173,14 +165,15 @@ export default defineComponent({
                   "role",
                   "Исполнитель"
                  )
+                 role.value = "Исполнитель"
                 }
               }
               if(flag){
-                console.log(3);
                 sessionStorage.setItem(
                   "role",
                   "Владелец"
                  )
+                 role.value = "Владелец"
               }
             });
           }
@@ -193,7 +186,7 @@ export default defineComponent({
       
 
     return {
-      isAdmin,
+      role,
       leftDrawerOpen,
       get_module_index,
       toggleLeftDrawer() {

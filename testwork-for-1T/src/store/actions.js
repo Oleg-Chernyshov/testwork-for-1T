@@ -30,6 +30,7 @@ export const GET_MODULES = ({ commit }) => {
         time
       }
       property7{
+        id
         fullname{
           first_name
           last_name

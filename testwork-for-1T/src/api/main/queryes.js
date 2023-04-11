@@ -122,3 +122,100 @@ export const GetAllTasks = gql`{
   }
 }
 `
+
+export const GetUserTasks = gql`query
+ getUserTasks {
+  paginate_subject(page: 1, perPage: 100, where: { column: "user_id", operator: EQ, value: ${currentUserId} }) {
+    data {
+      id
+      type_id
+      author_id
+      level
+      position
+      created_at
+      updated_at
+      user_id
+      fullname {
+        first_name
+        last_name
+      }
+      property6 {
+        id
+        name
+        property4
+        created_at
+        property6 {
+          id
+          fullname {
+            first_name
+            last_name
+          }
+        }
+      }
+    }
+    paginatorInfo {
+      perPage
+      currentPage
+      lastPage
+      total
+      count
+      from
+      to
+      hasMorePages
+    }
+  }
+}`
+
+export const GetUserModules = gql`query getUserModules {
+  paginate_subject(page: 1, perPage: 100, where: { column: "user_id", operator: EQ, value: ${currentUserId} }) {
+    data {
+      id
+      type_id
+      author_id
+      level
+      position
+      created_at
+      updated_at
+      user_id
+      fullname {
+        first_name
+        last_name
+      }
+      property7 {
+        id
+        name
+        created_at
+        property7 {
+          id
+          fullname {
+            first_name
+            last_name
+          }
+        }
+        property2 {
+          date
+          time
+        }
+        property3 {
+          date
+          time
+        }
+        property8 {
+          id
+          property5
+        }
+      }
+    }
+    paginatorInfo {
+      perPage
+      currentPage
+      lastPage
+      total
+      count
+      from
+      to
+      hasMorePages
+    }
+  }
+}
+`
