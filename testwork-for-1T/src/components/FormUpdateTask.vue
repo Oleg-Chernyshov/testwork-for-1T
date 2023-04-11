@@ -59,7 +59,7 @@
 import { useMutation } from "@vue/apollo-composable";
 import { defineComponent, ref, computed, watch } from "vue";
 import { getClientOptions } from "src/apollo/index";
-import { updateUser } from "../api/main/mutations";
+import { updateUser, createRule } from "../api/main/mutations";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
@@ -141,9 +141,41 @@ export default defineComponent({
           id: props.id,
         },
       }));
-      response("Задача обновлена", "Ошибка", mutate, refetchModules, $q);
-    };
+      const response = mutate();
+      response
+        .then(function (result) {
+          console.log(result);
+          const { mutate } = useMutation(createRule, ()=>({
+            variables:{
+                input: {
+                  model_type: "object",
+                  model_id: props.id,
+                  owner_type: "subject",
+                  owner_id: EXECUTORS.value[indexExecutor.value].id,
+                  level: 7
+                }
+              }
+          }))
+          console.log(1);
+          const response_2 = mutate()
+          response_2
+          .then(function (result){
+            console.log(result);
 
+            $q.notify({
+              type: "positive",
+              message: "Модули обновлены",
+            });
+          })
+        })
+        .catch((err) => {
+          console.log("Ошибка", err);
+          $q.notify({
+            type: "negative",
+            message: "Ошибка",
+          });
+        });
+    };
     return {
       options,
       modelStatus,
