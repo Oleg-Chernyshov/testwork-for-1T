@@ -56,12 +56,15 @@
             @click="get_module_index(-1)"
           >
             <q-tabs
+              indicator-color="transparent"
               v-for="(mod, index) in MODULES"
               :key="mod.id"
               align="left"
               @click="get_module_index(index)"
             >
-              <q-route-tab>{{ mod.name }}</q-route-tab>
+              <q-route-tab to="/Modules">
+                <div>{{ mod.name }}</div>
+              </q-route-tab>
             </q-tabs>
           </q-expansion-item>
 
@@ -133,6 +136,7 @@ export default defineComponent({
     return {
       isAdmin,
       leftDrawerOpen,
+      tab: "mail",
       get_module_index,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
