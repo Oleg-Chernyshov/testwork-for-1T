@@ -5,7 +5,7 @@
       <form
         class="contact-form row"
         insertCurrentData
-        @submit.prevent="UpdateModule($event, funSubmit)"
+        @submit.prevent="UpdateModule($event)"
       >
         <div class="form-field col-lg-6">
           <input
@@ -13,6 +13,7 @@
             id="name"
             class="input-text js-input"
             type="text"
+            v-model="form.name"
           />
           <label class="label" for="name">Название</label>
         </div>
@@ -22,6 +23,7 @@
             id="startData"
             class="input-text js-input"
             type="text"
+            v-model="form.startData"
           />
           <label class="label" for="startData">Дата начала</label>
         </div>
@@ -31,6 +33,7 @@
             id="startTime"
             class="input-text js-input"
             type="text"
+            v-model="form.startTime"
           />
           <label class="label" for="startTime">Время начала</label>
         </div>
@@ -40,6 +43,7 @@
             id="endData"
             class="input-text js-input"
             type="text"
+            v-model="form.endData"
           />
           <label class="label" for="endData">Дата окончания</label>
         </div>
@@ -49,6 +53,7 @@
             id="endTime"
             class="input-text js-input"
             type="text"
+            v-model="form.endTime"
           />
           <label class="label" for="endTime">Время окончания</label>
         </div>
@@ -56,19 +61,7 @@
           <q-select v-model="model" :options="options" label="Ответсвенный" />
         </div>
         <div class="form-field col-lg-12 justify-between flex">
-          <input
-            name=""
-            @click="funSubmit = false"
-            class="submit-btn"
-            type="submit"
-            value="Создать"
-          />
-          <q-btn
-            type="submit"
-            @click="funSubmit = true"
-            color="primary"
-            label="Текущие данные"
-          />
+          <input name="" class="submit-btn" type="submit" value="Создать" />
           <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
       </form>
@@ -96,39 +89,28 @@ export default defineComponent({
     const store = useStore();
     const model = ref(null);
     const indexResponsible = ref(0);
-    let funSubmit = false;
+
+    const form = ref({
+      name: props.mod.name,
+      startData: props.mod.property2?.date,
+      startTime: props.mod.property2?.time,
+      endData: props.mod.property3?.date,
+      endTime: props.mod.property3?.time,
+    });
+
     store.dispatch("GET_RESPONSIBLES");
-    console.log(
-      "store",
-      store.dispatch("GET_RESPONSIBLES").then((result) => {
-        console.log(result);
-      })
-    );
     const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
     watch(options, () => {
       console.log(options.value);
     });
     const responsible = computed(() => store.getters.RESPONSIBLES);
     const refetchModules = store.getters.REFETCH_MODULES;
-    const refetchModulesSetTimeout = function () {
-      setTimeout(refetchModules, 1000);
-    };
 
     watch(model, () => {
       indexResponsible.value = options.value.indexOf(model.value);
     });
 
     const UpdateModule = function (e, num) {
-      if (num) {
-        funSubmit = false;
-        e.target.elements.name.value = props.mod.name;
-        e.target.elements.startData.value = props.mod.property2?.date;
-        e.target.elements.startTime.value = props.mod.property2?.time;
-        e.target.elements.endData.value = props.mod.property3?.date;
-        e.target.elements.endTime.value = props.mod.property3?.time;
-        return funSubmit;
-      }
-
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(updateModule, () => ({
@@ -151,31 +133,15 @@ export default defineComponent({
           id: props.idUpdateModule,
         },
       }));
-      const response = mutate();
-      response
-        .then(function (result) {
-          console.log("createNewModule", result);
-          refetchModulesSetTimeout();
-          $q.notify({
-            type: "positive",
-            message: "Модуль обновлены",
-          });
-        })
-        .catch((err) => {
-          console.log("Ошибка", err);
-          $q.notify({
-            type: "negative",
-            message: "Ошибка",
-          });
-        });
+      response("Модуль обновлены", "Ошибка", mutate, refetchModules.value, $q);
     };
 
     return {
       UpdateModule,
-      funSubmit,
       options,
       model,
       refetchModules,
+      form,
     };
   },
 });
