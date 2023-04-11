@@ -120,3 +120,11 @@ export const DeleteTask = gql`mutation delete_type2($id: String!) {
     recordId
   }
 }`
+
+export const createQueue = gql`
+  mutation {
+    notificationSubscribe {
+      hash
+    }
+  }
+`;
