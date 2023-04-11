@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, watch } from "vue";
+import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
 
 export default defineComponent({
@@ -28,8 +28,6 @@ export default defineComponent({
 
     store.dispatch("GET_RESPONSIBLES");
     const responsible = computed(() => store.getters.RESPONSIBLES);
-
-  console.log(responsible);
 
     return {
       responsible,

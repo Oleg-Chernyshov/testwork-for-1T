@@ -1,6 +1,5 @@
 import { useQuery } from '@vue/apollo-composable'
 import { GetGroupById, GetAllTasks, GetAllModules } from 'src/api/main/queryes'
-import gql from 'graphql-tag'
 
 export const GET_MODULES = ({ commit }) => {
   const fetching = async () => {
@@ -40,6 +39,7 @@ export const GET_RESPONSIBLES = ({ commit }) => {
             subject.fullname?.first_name + ' ' + subject.fullname?.last_name,
           )
         }
+        console.log('act', responsibles, options)
         commit('setResponsibles', {
           responsibles: responsibles,
           optionsForResponsibles: options,
