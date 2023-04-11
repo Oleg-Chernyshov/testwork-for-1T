@@ -90,12 +90,8 @@ import { useStore } from "vuex";
 import { GetPropertyStatus } from "src/api/main/queryes";
 import { useQuery } from "@vue/apollo-composable";
 import FormAddModule from "components/FormAddModule.vue";
-import FormUpdateModule from "components/formUpdateModule.vue";
-import { getClientOptions } from "src/apollo/index";
-import { provideApolloClient } from "@vue/apollo-composable";
-import { ApolloClient } from "@apollo/client/core";
-import { useMutation } from "@vue/apollo-composable";
-import { useQuasar } from "quasar";
+import FormUpdateModule from "src/components/FormUpdateModule.vue";
+
 
 
 export default {
@@ -112,6 +108,7 @@ export default {
     const showForm_addModule = ref(false);
     const showForm_updateModule = ref(false);
     const currentModuleClickUp = ref();
+    const currentTaskClickUp = ref();
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
@@ -143,6 +140,13 @@ export default {
       idUpdateModule,
       showForm_updateModule,
       showForm_addModule,
+      MODULES,
+      set_id(env, mod, task) {
+        id.value = env.target.id;
+        idUpdateModule.value = env.target.id;
+        currentModuleClickUp.value = mod;
+        currentTaskClickUp.value = task;
+      },
     };
   },
 };

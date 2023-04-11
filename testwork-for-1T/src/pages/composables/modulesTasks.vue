@@ -148,13 +148,13 @@ export default {
     return {
       showForm_addTask,
       showForm_updateTask,
-      MODULES,
       module_index,
       deleteTask,
       id,
       idModule,
       idUpdateModule,
       currentTaskClickUp,
+      MODULES,
       set_id_module(id) {
         idModule.value = id;
       },
