@@ -6,7 +6,7 @@
       <form
         class="contact-form row"
         insertCurrentData
-        @submit.prevent="UpdateModule($event, funSubmit)"
+        @submit.prevent="UpdateModule($event)"
       >
         <div class="form-field col-lg-6">
           <input
@@ -62,19 +62,7 @@
           <q-select v-model="model" :options="options" label="Ответсвенный" />
         </div>
         <div class="form-field col-lg-12 justify-between flex">
-          <input
-            name=""
-            @click="funSubmit = false"
-            class="submit-btn"
-            type="submit"
-            value="Создать"
-          />
-          <q-btn
-            type="submit"
-            @click="funSubmit = true"
-            color="primary"
-            label="Текущие данные"
-          />
+          <input name="" class="submit-btn" type="submit" value="Создать" />
           <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
       </form>
@@ -91,6 +79,7 @@ import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { updateModule } from "../api/main/mutations";
 import { useStore } from "vuex";
+import { response } from "../functions/functions";
 
 export default defineComponent({
   props: {
@@ -102,40 +91,24 @@ export default defineComponent({
     const store = useStore();
     const model = ref(null);
     const indexResponsible = ref(0);
-    let funSubmit = false;
-    store.dispatch("GET_RESPONSIBLES");
-    const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
-    const responsible = computed(() => store.getters.RESPONSIBLES);
-    const refetchModules = store.getters.REFETCH_MODULES;
-    const refetchModulesSetTimeout = function () {
-      setTimeout(refetchModules, 1000);
-    };
     const form = ref({
-      
       name: props.mod.name,
       startData: props.mod.property2?.date,
       startTime: props.mod.property2?.time,
       endData: props.mod.property3?.date,
-      endTime: props.mod.property3?.time
-
-    })
-
+      endTime: props.mod.property3?.time,
+    });
+    store.dispatch("GET_RESPONSIBLES");
+    const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
+    watch(options, () => {
+      console.log(options.value);
+    });
+    const responsible = computed(() => store.getters.RESPONSIBLES);
+    const refetchModules = computed(() => store.getters.REFETCH_MODULES);
     watch(model, () => {
       indexResponsible.value = options.value.indexOf(model.value);
     });
-
     const UpdateModule = function (e, num) {
-      if (num) {
-        funSubmit = false;
-        e.target.elements.name.value = props.mod.name;
-        e.target.elements.startData.value = props.mod.property2?.date;
-        e.target.elements.startTime.value = props.mod.property2?.time;
-        e.target.elements.endData.value = props.mod.property3?.date;
-        e.target.elements.endTime.value = props.mod.property3?.time;
-        // Пока не работает, т.к. есть среди субъектов те, которых нет в группе ответственые
-        // model.value = props.mod.property7.fullname.first_name + " " + props.mod.property7.fullname.last_name;
-        return funSubmit;
-      }
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(updateModule, () => ({
@@ -158,32 +131,19 @@ export default defineComponent({
           id: props.idUpdateModule,
         },
       }));
-      const response = mutate();
-      response
-        .then(function (result) {
-          console.log("createNewModule", result);
-          refetchModulesSetTimeout();
-          $q.notify({
-            type: "positive",
-            message: "Модуль обновлены",
-          });
-        })
-        .catch((err) => {
-          console.log("Ошибка", err);
-          $q.notify({
-            type: "negative",
-            message: "Ошибка",
-          });
-        });
+      response("Модуль обновлены", "Ошибка", mutate, refetchModules.value, $q);
+      e.target.elements.startData.value = "";
+      e.target.elements.startTime.value = "";
+      e.target.elements.endData.value = "";
+      e.target.elements.endTime.value = "";
+      model.value = null;
     };
-
     return {
       UpdateModule,
-      funSubmit,
       options,
       model,
       refetchModules,
-      form
+      form,
     };
   },
 });

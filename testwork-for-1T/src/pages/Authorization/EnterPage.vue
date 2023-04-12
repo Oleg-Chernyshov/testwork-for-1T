@@ -44,9 +44,14 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useMutation } from "@vue/apollo-composable";
+import { useMutation, useQuery } from "@vue/apollo-composable";
 import { UserSignIn } from "src/api/authorization/mutations";
 import { useStore } from "vuex";
+import { UserQuery } from "src/api/authorization/queryes";
+
+import { getClientOptions } from "src/apollo/index";
+import { provideApolloClient } from "@vue/apollo-composable";
+import { ApolloClient } from "@apollo/client/core";
 
 export default defineComponent({
   setup() {
@@ -67,7 +72,22 @@ export default defineComponent({
               MutationResult.data.userSignIn.record.access_token
             );
             store.dispatch("GET_ID", MutationResult.data.userSignIn.recordId);
-            router.push("/app");
+
+            const apolloClient = new ApolloClient(getClientOptions());
+            provideApolloClient(apolloClient);
+
+            const { onResult } = useQuery(UserQuery, {"id": String(MutationResult.data.userSignIn.recordId)})
+            onResult((queryResult) => {
+              console.log(queryResult);
+              console.log(queryResult.data.user.email);
+              sessionStorage.setItem(
+                "email",
+                queryResult.data.user.email
+              )
+              router.push("/app");
+            })
+
+            
           })
           .catch((e) => {
             error.value = "Неверный логин или пароль";

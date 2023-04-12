@@ -30,13 +30,6 @@
             label="Статус"
           />
         </div>
-        <!-- <div class="form-field col-lg-6">
-          <q-select
-            v-model="modelModule"
-            :options="optionsModules"
-            label="Модуль"
-          />
-        </div> -->
         <div class="form-field col-lg-6">
           <q-select v-model="model" :options="options" label="Исполнитель" />
         </div>
@@ -81,7 +74,6 @@ export default defineComponent({
     const options = computed(() => store.getters.OPTIONS_EXECUTORS);
     const statusId = ref("");
     const refetchModules = store.getters.REFETCH_MODULES;
-    console.log("ref1", refetchModules);
 
     watch(model, () => {
       indexExecutor.value = options.value.indexOf(model.value);
@@ -118,7 +110,10 @@ export default defineComponent({
           },
         },
       }));
+      console.log("refetchModules", refetchModules);
       response("Задача добавена", "Ошибка", mutate, refetchModules, $q);
+      e.target.elements.name.value = "";
+      e.target.elements.description.value = "";
     };
     return {
       options,

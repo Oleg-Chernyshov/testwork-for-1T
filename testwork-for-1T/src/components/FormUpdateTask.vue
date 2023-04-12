@@ -2,12 +2,10 @@
   <div class="wrapper">
     <section class="get-in-touch">
       <h3 class="title">Обновить задачу</h3>
-      <form
-        class="contact-form row"
-        @submit.prevent="updateTask($event, funSubmit)"
-      >
+      <form class="contact-form row" @submit.prevent="updateTask($event)">
         <div class="form-field col-lg-6">
           <input
+            v-model="form.name"
             name="name"
             id="name"
             class="input-text js-input"
@@ -17,6 +15,7 @@
         </div>
         <div class="form-field col-lg-6">
           <input
+            v-model="form.description"
             name="description"
             id="description"
             class="input-text js-input"
@@ -35,19 +34,7 @@
           <q-select v-model="model" :options="options" label="Исполнитель" />
         </div>
         <div class="form-field col-lg-12 justify-between flex">
-          <input
-            name=""
-            @click="funSubmit = false"
-            class="submit-btn"
-            type="submit"
-            value="Создать"
-          />
-          <q-btn
-            type="submit"
-            @click="funSubmit = true"
-            color="primary"
-            label="Текущие данные"
-          />
+          <input name="" class="submit-btn" type="submit" value="Создать" />
           <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
       </form>
@@ -65,7 +52,6 @@ import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { useStore } from "vuex";
 import { response } from "../functions/functions";
-
 export default defineComponent({
   props: {
     id: String,
@@ -88,8 +74,32 @@ export default defineComponent({
     const statusId = ref("");
     const optionsModules = computed(() => store.getters.OPTIONS_MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
-    let funSubmit = false;
-
+    const form = ref({
+      name: props.task.name,
+      description: props.task.property4,
+      modelStatus: () => {
+        let statusId = props.task.property5;
+        if (statusId == "1700970386717883161") {
+          modelStatus.value = "Назначена";
+        } else if (statusId == "967659251654331262") {
+          modelStatus.value = "Выполнена";
+        } else {
+          modelStatus.value = "Завершена";
+        }
+      },
+    });
+    statusId.value = props.task.property5;
+    if (props.task.property5 == "1700970386717883161") {
+      modelStatus.value = "Назначена";
+    } else if (props.task.property5 == "967659251654331262") {
+      modelStatus.value = "Выполнена";
+    } else {
+      modelStatus.value = "Завершена";
+    }
+    model.value =
+      props.task.property6.fullname.first_name +
+      " " +
+      props.task.property6.fullname.last_name;
     watch(model, () => {
       indexExecutor.value = options.value.indexOf(model.value);
     });
@@ -103,26 +113,7 @@ export default defineComponent({
         statusId.value = "1383309069201480491";
       }
     });
-
-    const updateTask = function (e, num) {
-      if (num) {
-        funSubmit = false;
-        e.target.elements.name.value = props.task.name;
-        e.target.elements.description.value = props.task.property4;
-        let statusId = props.task.property5;
-        if (statusId == "1700970386717883161") {
-          modelStatus.value = "Назначена";
-        } else if (statusId == "967659251654331262") {
-          modelStatus.value = "Выполнена";
-        } else {
-          modelStatus.value = "Завершена";
-        }
-        model.value =
-          props.task.property6.fullname.first_name +
-          " " +
-          props.task.property6.fullname.last_name;
-        return funSubmit;
-      }
+    const updateTask = function (e) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(updateUser, () => ({
@@ -142,24 +133,7 @@ export default defineComponent({
         },
       }));
       response("Задача обновлена", "Ошибка", mutate, refetchModules, $q);
-
-      // response
-      //   .then(function (result) {
-      //     console.log("updated task", result);
-      //     $q.notify({
-      //       type: "positive",
-      //       message: "Задача добавлен",
-      //     });
-      //   })
-      //   .catch((err) => {
-      //     console.log("Ошибка", err);
-      //     $q.notify({
-      //       type: "negative",
-      //       message: "Ошибка",
-      //     });
-      //   });
     };
-
     return {
       options,
       modelStatus,
@@ -167,8 +141,8 @@ export default defineComponent({
       modelModule,
       optionsModules,
       optionsStatus,
-      funSubmit,
       updateTask,
+      form,
     };
   },
 });

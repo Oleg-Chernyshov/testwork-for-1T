@@ -126,7 +126,13 @@ export default defineComponent({
           },
         },
       }));
+      console.log("refetchModules", refetchModules);
       response("Модуль добавлен", "Ошибка", mutate, refetchModules, $q);
+      e.target.elements.name.value = "";
+      e.target.elements.startData.value = "";
+      e.target.elements.startTime.value = "";
+      e.target.elements.endData.value = "";
+      e.target.elements.endTime.value = "";
     };
 
     return {
