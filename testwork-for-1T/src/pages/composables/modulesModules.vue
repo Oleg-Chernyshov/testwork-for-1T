@@ -90,7 +90,7 @@ import { useStore } from "vuex";
 import { GetPropertyStatus } from "src/api/main/queryes";
 import { useQuery } from "@vue/apollo-composable";
 import FormAddModule from "components/FormAddModule.vue";
-import FormUpdateModule from "src/components/FormUpdateModule.vue";
+import FormUpdateModule from "src/components/formUpdateModule.vue";
 
 
 
