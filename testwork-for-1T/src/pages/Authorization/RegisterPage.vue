@@ -77,6 +77,7 @@
 import { defineComponent, ref} from 'vue'
 import { UserSignUp, UserSignUpSetPassword } from 'src/api/authorization/mutations'
 import { useMutation } from '@vue/apollo-composable'
+import { useRouter } from "vue-router";
 
 export default defineComponent({
     setup() {
@@ -90,6 +91,7 @@ export default defineComponent({
         const code = ref("")
         const name = ref("")
         const surname = ref("")
+        const $router = useRouter()
         return{
             email,
             prompt,

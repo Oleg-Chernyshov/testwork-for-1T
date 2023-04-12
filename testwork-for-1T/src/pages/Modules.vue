@@ -1,7 +1,10 @@
 <template>
   <div class="modules q-pa-md">
+    
     <modulesModules v-if="showTableModules()" />
+   
     <modulesTasks v-else />
+
   </div>
 </template>
 
@@ -10,13 +13,15 @@ import { computed, reactive, watch, ref } from "vue";
 import { useStore } from "vuex";
 import { GetPropertyStatus } from "src/api/main/queryes";
 import { useQuery } from "@vue/apollo-composable";
-import modulesTasks from "../pages/composables/modulesTasks.vue";
-import modulesModules from "../pages/composables/modulesModules.vue";
+import modulesTasks from "../pages/composables/modulesTasks.vue"
+import modulesModules from "../pages/composables/modulesModules.vue"
+
+
 
 export default {
   components: {
     modulesTasks,
-    modulesModules,
+    modulesModules
   },
 
   setup() {
@@ -38,6 +43,7 @@ export default {
       current_module.values = MODULES.value[module_index.value];
     };
 
+    //Получение свойства Status для определения статуса задачи по id
     const { onResult } = useQuery(GetPropertyStatus);
     onResult((queryResult) => {
       propertyStatus.values = queryResult.data.property.meta.options;
@@ -57,6 +63,7 @@ export default {
       id,
       idModule,
       idUpdateModule,
+      MODULES
     };
   },
 };
