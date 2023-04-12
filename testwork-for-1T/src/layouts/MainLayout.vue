@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, onMounted } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { GetAllPages, GetAllTypes } from "src/api/main/queryes";
 import { useStore } from "vuex";
@@ -106,6 +106,8 @@ import { GetGroupById } from "src/api/main/queryes";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
+
+import stompApi from "src/rabbitmq/connect";
 export default defineComponent({
   name: "MainLayout",
   setup() {
@@ -123,6 +125,11 @@ export default defineComponent({
     const MODULES = computed(() => store.getters.MODULES);
     console.log(MODULES);
 
+
+    onMounted(()=>{
+      stompApi.queueCreate().then((result) => {console.log(result);})
+      stompApi.stompConnect()
+    })
     //Получение всех страниц
     const { onResult } = useQuery(GetAllPages);
     onResult((queryResult) => {

@@ -12,7 +12,10 @@
     "@quasar/extras": "^1.0.0",
     "@vue/apollo-composable": "^4.0.0-beta.4",
     "core-js": "^3.6.5",
+    "js-cookie": "^3.0.1",
+    "net": "^1.0.2",
     "quasar": "^2.6.0",
+    "stompjs": "^2.3.3",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0",
     "vuex": "^4.0.1"
