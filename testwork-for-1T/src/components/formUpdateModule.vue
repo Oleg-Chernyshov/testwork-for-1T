@@ -5,7 +5,7 @@
       <form
         class="contact-form row"
         insertCurrentData
-        @submit.prevent="UpdateModule($event, funSubmit)"
+        @submit.prevent="UpdateModule($event)"
       >
         <div class="form-field col-lg-6">
           <input
@@ -13,6 +13,7 @@
             id="name"
             class="input-text js-input"
             type="text"
+            v-model="form.name"
           />
           <label class="label" for="name">Название</label>
         </div>
@@ -22,6 +23,7 @@
             id="startData"
             class="input-text js-input"
             type="text"
+            v-model="form.startData"
           />
           <label class="label" for="startData">Дата начала</label>
         </div>
@@ -31,6 +33,7 @@
             id="startTime"
             class="input-text js-input"
             type="text"
+            v-model="form.startTime"
           />
           <label class="label" for="startTime">Время начала</label>
         </div>
@@ -40,6 +43,7 @@
             id="endData"
             class="input-text js-input"
             type="text"
+            v-model="form.endData"
           />
           <label class="label" for="endData">Дата окончания</label>
         </div>
@@ -49,6 +53,7 @@
             id="endTime"
             class="input-text js-input"
             type="text"
+            v-model="form.endTime"
           />
           <label class="label" for="endTime">Время окончания</label>
         </div>
@@ -56,19 +61,7 @@
           <q-select v-model="model" :options="options" label="Ответсвенный" />
         </div>
         <div class="form-field col-lg-12 justify-between flex">
-          <input
-            name=""
-            @click="funSubmit = false"
-            class="submit-btn"
-            type="submit"
-            value="Создать"
-          />
-          <q-btn
-            type="submit"
-            @click="funSubmit = true"
-            color="primary"
-            label="Текущие данные"
-          />
+          <input name="" class="submit-btn" type="submit" value="Создать" />
           <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
       </form>
@@ -85,6 +78,7 @@ import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { updateModule, createRule } from "../api/main/mutations";
 import { useStore } from "vuex";
+import { response } from "../functions/functions";
 
 export default defineComponent({
   props: {
@@ -96,7 +90,13 @@ export default defineComponent({
     const store = useStore();
     const model = ref(null);
     const indexResponsible = ref(0);
-    let funSubmit = false;
+    const form = ref({
+      name: props.mod.name,
+      startData: props.mod.property2?.date,
+      startTime: props.mod.property2?.time,
+      endData: props.mod.property3?.date,
+      endTime: props.mod.property3?.time,
+    });
     store.dispatch("GET_RESPONSIBLES");
     console.log(
       "store",
@@ -109,15 +109,10 @@ export default defineComponent({
       console.log(options.value);
     });
     const responsible = computed(() => store.getters.RESPONSIBLES);
-    const refetchModules = store.getters.REFETCH_MODULES;
-    const refetchModulesSetTimeout = function () {
-      setTimeout(refetchModules, 1000);
-    };
-
+    const refetchModules = computed(() => store.getters.REFETCH_MODULES);
     watch(model, () => {
       indexResponsible.value = options.value.indexOf(model.value);
     });
-
     const UpdateModule = function (e, num) {
       if (num) {
         funSubmit = false;
@@ -187,13 +182,12 @@ export default defineComponent({
           });
         });
     };
-
     return {
       UpdateModule,
-      funSubmit,
       options,
       model,
       refetchModules,
+      form,
     };
   },
 });

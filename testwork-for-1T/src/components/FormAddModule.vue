@@ -124,6 +124,7 @@ export default defineComponent({
           },
         },
       }));
+<<<<<<< HEAD
       const response = mutate();
       response
         .then(function (result) {
@@ -156,6 +157,15 @@ export default defineComponent({
             message: "Ошибка",
           });
         });
+=======
+      console.log("refetchModules", refetchModules);
+      response("Модуль добавлен", "Ошибка", mutate, refetchModules, $q);
+      e.target.elements.name.value = "";
+      e.target.elements.startData.value = "";
+      e.target.elements.startTime.value = "";
+      e.target.elements.endData.value = "";
+      e.target.elements.endTime.value = "";
+>>>>>>> test2
     };
 
     return {

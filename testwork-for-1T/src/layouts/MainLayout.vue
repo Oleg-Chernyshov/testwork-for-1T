@@ -18,7 +18,8 @@
     <q-drawer class="q-pt-xl" v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
         <q-list bordered class="rounded-borders">
-          <q-expansion-item v-if="role === 'Владелец' "
+          <q-expansion-item
+            v-if="role === 'Владелец'"
             to="/Team"
             expand-separator
             icon=""
@@ -34,7 +35,8 @@
               <q-route-tab to="/Responsible" label="Ответственные" />
             </q-tabs>
           </q-expansion-item>
-          <q-expansion-item v-if="role === 'Владелец'"
+          <q-expansion-item
+            v-if="role === 'Владелец'"
             to="/Deleted"
             expand-separator
             icon=""
@@ -46,7 +48,8 @@
               <q-route-tab to="/Deleted" label="Исключенные" />
             </q-tabs>
           </q-expansion-item>
-          <q-expansion-item v-if="role == 'Ответсвенный' || role == 'Владелец'"
+          <q-expansion-item
+            v-if="role == 'Ответсвенный' || role == 'Владелец'"
             to="/Modules"
             expand-separator
             icon=""
@@ -68,7 +71,8 @@
             </q-tabs>
           </q-expansion-item>
 
-          <q-expansion-item v-if="role == 'Исполнитель' || role == 'Владелец'"
+          <q-expansion-item
+            v-if="role == 'Исполнитель' || role == 'Владелец'"
             to="/AllTasks"
             expand-separator
             icon=""
@@ -99,7 +103,6 @@ import { GetAllPages, GetAllTypes } from "src/api/main/queryes";
 import { useStore } from "vuex";
 import { GetGroupById } from "src/api/main/queryes";
 
-
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
@@ -107,16 +110,18 @@ export default defineComponent({
   name: "MainLayout",
   setup() {
     const leftDrawerOpen = ref(false);
-    const role = ref("")
+    const role = ref("");
     const store = useStore();
     const get_module_index = function (index) {
       store.commit("setModuleIndex", index);
     };
-
+    store.dispatch("GET_RESPONSIBLES");
+    store.dispatch("GET_EXECUTORS");
+    const responsible = computed(() => store.getters.RESPONSIBLES);
+    const executors = computed(() => store.getters.EXECUTORS);
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
     console.log(MODULES);
-
 
     //Получение всех страниц
     const { onResult } = useQuery(GetAllPages);
@@ -133,61 +138,46 @@ export default defineComponent({
     }
 
     {
-      let email = sessionStorage.getItem('email')
+      let email = sessionStorage.getItem("email");
       const { onResult, refetch } = useQuery(GetGroupById, {
         id: "3662509860808044515",
       });
       onResult((queryResult) => {
-        let responsibles = []
-        let flag = 1
-        responsibles = queryResult.data.get_group.subject
-        for (let subject of responsibles) {
-          if (subject.email.email == email){
-              sessionStorage.setItem(
-                "role",
-                "Ответсвенный"
-              )
-              role.value = "Ответсвенный"
-              flag = 0
-              break
+        let flag = 1;
+        for (let subject of responsible.value) {
+          if (subject.email.email == email) {
+            sessionStorage.setItem("role", "Ответсвенный");
+            role.value = "Ответсвенный";
+            flag = 0;
+            break;
+          }
+        }
+        if (flag) {
+          const apolloClient = new ApolloClient(getClientOptions());
+          provideApolloClient(apolloClient);
+
+          const { onResult, refetch } = useQuery(GetGroupById, {
+            id: "4428325871296613250",
+          });
+
+          onResult((queryResult) => {
+            for (let subject of executors.value) {
+              if (subject.email.email == email) {
+                sessionStorage.setItem("role", "Исполнитель");
+                role.value = "Исполнитель";
+              }
             }
-          }
-          if(flag){
-            const apolloClient = new ApolloClient(getClientOptions());
-            provideApolloClient(apolloClient);
-
-            const { onResult, refetch } = useQuery(GetGroupById, {
-              id: "4428325871296613250",
-            });
-
-            onResult((queryResult) => {
-            responsibles = []
-            responsibles = queryResult.data.get_group.subject
-            for (let subject of responsibles) {
-              if (subject.email.email == email){
-                sessionStorage.setItem(
-                  "role",
-                  "Исполнитель"
-                 )
-                 role.value = "Исполнитель"
-                }
-              }
-              if(flag){
-                sessionStorage.setItem(
-                  "role",
-                  "Владелец"
-                 )
-                 role.value = "Владелец"
-              }
-            });
-          }
+            if (flag) {
+              sessionStorage.setItem("role", "Владелец");
+              role.value = "Владелец";
+            }
+          });
+        }
       });
     }
 
     {
-    
     }
-      
 
     return {
       role,
