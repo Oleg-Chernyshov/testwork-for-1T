@@ -7,8 +7,8 @@ import { createQueue } from "src/api/main/mutations";
 import Cookies from "js-cookie";
 import Client from "src/rabbitmq/client";
 import { getClientOptions } from "src/apollo/index";
-  const apolloClient = new ApolloClient(getClientOptions());
-  provideApolloClient(apolloClient);
+const apolloClient = new ApolloClient(getClientOptions());
+provideApolloClient(apolloClient);
 const { mutate: creatingQueue } = useMutation(createQueue);
 
 const queueCreate = async () => {
