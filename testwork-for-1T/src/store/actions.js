@@ -4,8 +4,9 @@ import { GetGroupById, GetAllTasks, GetAllModules } from 'src/api/main/queryes'
 export const GET_MODULES = ({ commit }) => {
   const fetching = async () => {
     try {
+      
       const { onResult, refetch } = useQuery(GetAllModules)
-      onResult((queryResult) => {
+      onResult((queryResult) => {console.log(1);
         let options = []
         let modules = queryResult.data['paginate_type1'].data
         for (let module of modules) {
@@ -81,10 +82,11 @@ export const GET_EXECUTORS = ({ commit }) => {
 }
 
 export const GET_ALL_TASKS = ({ commit }) => {
+  
   const fetching = async () => {
     try {
       const { onResult, refetch } = useQuery(GetAllTasks)
-      onResult((queryResult) => {
+      onResult((queryResult) => {console.log(2);
         commit('setAllTasks', {
           allTasks: queryResult.data.paginate_type2.data,
           refetch: refetch,

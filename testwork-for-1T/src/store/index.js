@@ -16,6 +16,7 @@ export const state = {
   refetchQueryExecutors: {},
   refetchQueryAllTasks: {},
   refetchQueryResponsible: {},
+  refetchModules: {},
 }
 
 const store = createStore({

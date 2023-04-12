@@ -7,7 +7,6 @@ import { createQueue } from "src/api/main/mutations";
 import Cookies from "js-cookie";
 import Client from "src/rabbitmq/client";
 import { getClientOptions } from "src/apollo/index";
-import { useStore } from "vuex";
 
 const apolloClient = new ApolloClient(getClientOptions());
 provideApolloClient(apolloClient);
@@ -21,6 +20,7 @@ const queueCreate = async () => {
 };
 
 const stompConnect = (store) => {
+  console.log(store);
   const queue = Cookies.get("queue");
 
   const onConnect = async () => {
@@ -32,6 +32,9 @@ const stompConnect = (store) => {
       console.log("Receive message:", messageObj);
       
       store.dispatch("GET_MODULES");
+      const refetch_modules = store.getters.REFETCH_MODULES
+      refetch_modules()
+      const refetch_all_tasks = store.getters.GET_ALL_TASKS
       store.dispatch("GET_ALL_TASKS");
       message.ack();
     };
