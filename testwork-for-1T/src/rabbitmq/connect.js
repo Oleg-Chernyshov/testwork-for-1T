@@ -1,14 +1,17 @@
 import {
   provideApolloClient,
-  useMutation,
+  useMutation
 } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { createQueue } from "src/api/main/mutations";
 import Cookies from "js-cookie";
 import Client from "src/rabbitmq/client";
 import { getClientOptions } from "src/apollo/index";
+import { useStore } from "vuex";
+
 const apolloClient = new ApolloClient(getClientOptions());
 provideApolloClient(apolloClient);
+
 const { mutate: creatingQueue } = useMutation(createQueue);
 
 const queueCreate = async () => {
@@ -17,8 +20,7 @@ const queueCreate = async () => {
   return createdQueue;
 };
 
-const stompConnect = () => {
-  console.log(1);
+const stompConnect = (store) => {
   const queue = Cookies.get("queue");
 
   const onConnect = async () => {
@@ -28,7 +30,9 @@ const stompConnect = () => {
       const messageObj = JSON.parse(message.body);
 
       console.log("Receive message:", messageObj);
-
+      
+      store.dispatch("GET_MODULES");
+      store.dispatch("GET_ALL_TASKS");
       message.ack();
     };
 

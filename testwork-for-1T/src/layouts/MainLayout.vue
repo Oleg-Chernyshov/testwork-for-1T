@@ -123,24 +123,23 @@ export default defineComponent({
     const executors = computed(() => store.getters.EXECUTORS);
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
-    console.log(MODULES);
 
 
     onMounted(()=>{
-      stompApi.queueCreate().then((result) => {console.log(result);})
-      stompApi.stompConnect()
+      stompApi.queueCreate().then((result) => {})
+      stompApi.stompConnect(store)
     })
     //Получение всех страниц
     const { onResult } = useQuery(GetAllPages);
     onResult((queryResult) => {
-      console.log("Pages", queryResult.data.pages.data);
+      //console.log("Pages", queryResult.data.pages.data);
     });
 
     //Получение всех типов
     {
       const { onResult } = useQuery(GetAllTypes);
       onResult((queryResult) => {
-        console.log(queryResult.data);
+        //console.log(queryResult.data);
       });
     }
 

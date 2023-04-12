@@ -32,7 +32,6 @@ export const GET_RESPONSIBLES = ({ commit }) => {
         id: '3662509860808044515',
       })
       onResult((queryResult) => {
-        console.log(queryResult);
         let options = []
         responsibles = queryResult.data.get_group.subject
         for (let subject of responsibles) {
@@ -40,7 +39,6 @@ export const GET_RESPONSIBLES = ({ commit }) => {
             subject.fullname?.first_name + ' ' + subject.fullname?.last_name,
           )
         }
-        console.log('act', responsibles, options)
         commit('setResponsibles', {
           responsibles: responsibles,
           optionsForResponsibles: options,
@@ -87,7 +85,6 @@ export const GET_ALL_TASKS = ({ commit }) => {
     try {
       const { onResult, refetch } = useQuery(GetAllTasks)
       onResult((queryResult) => {
-        console.log(queryResult.data.paginate_type2.data)
         commit('setAllTasks', {
           allTasks: queryResult.data.paginate_type2.data,
           refetch: refetch,

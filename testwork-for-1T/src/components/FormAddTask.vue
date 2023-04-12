@@ -67,19 +67,22 @@ export default defineComponent({
     const indexExecutor = ref(0);
     const indexModule = ref(0);
     const optionsStatus = ["Назначена", "Выполнена", "Завершена"];
+
     store.dispatch("GET_EXECUTORS");
     const executors = computed(() => store.getters.EXECUTORS);
     const MODULES = computed(() => store.getters.MODULES);
     const options = computed(() => store.getters.OPTIONS_EXECUTORS);
+
     const statusId = ref("");
-    const refetchModules = store.getters.REFETCH_MODULES;
 
     watch(model, () => {
       indexExecutor.value = options.value.indexOf(model.value);
     });
+
     watch(modelModule, () => {
       indexModule.value = optionsModules.value.indexOf(modelModule.value);
     });
+
     watch(modelStatus, () => {
       if (modelStatus.value == "Назначена") {
         statusId.value = "1700970386717883161";
@@ -91,7 +94,6 @@ export default defineComponent({
     });
 
     const createNewTask = function (e) {
-      console.log(MODULES.value[indexModule.value].id);
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(addNewTask, () => ({
@@ -126,23 +128,19 @@ export default defineComponent({
         const response_2 = mutate()
         response_2
           .then(function (result){
-            console.log(result);
-         
             $q.notify({
               type: "positive",
               message: "Модуль добавлен",
             });
           })
-        .catch((err) => {
-          console.log("Ошибка", err);
-          $q.notify({
-            type: "negative",
-            message: "Ошибка",
+      .catch((err) => {
+        console.log("Ошибка", err);
+        $q.notify({
+          type: "negative",
+          message: "Ошибка",
           }); 
         })
       })
-      console.log("refetchModules", refetchModules);
-      response("Задача добавена", "Ошибка", mutate, refetchModules, $q);
       e.target.elements.name.value = "";
       e.target.elements.description.value = "";
     };
@@ -157,7 +155,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-
-</style>

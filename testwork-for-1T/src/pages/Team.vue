@@ -91,12 +91,6 @@ export default defineComponent({
     const refetchQueryResponsible = computed(
       () => store.getters.REFETCH_RESPONSIBLES
     );
-    watch(refetchQueryExecutors, () =>
-      console.log("exec", refetchQueryExecutors.value)
-    );
-    watch(refetchQueryResponsible, () =>
-      console.log("responsible", refetchQueryResponsible.value)
-    );
     const $q = useQuasar();
 
     const getFormExecuterValues = function (e) {

@@ -51,7 +51,7 @@ import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { useStore } from "vuex";
-import { response } from "../functions/functions";
+
 export default defineComponent({
   props: {
     id: String,
@@ -68,7 +68,6 @@ export default defineComponent({
     const indexExecutor = ref(0);
     const optionsStatus = ["Назначена", "Выполнена", "Завершена"];
     const EXECUTORS = computed(() => store.getters.EXECUTORS);
-    const refetchModules = store.getters.REFETCH_MODULES;
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
     const statusId = ref("");
@@ -114,8 +113,8 @@ export default defineComponent({
       }
     });
     const updateTask = function (e) {
-      const apolloClient = new ApolloClient(getClientOptions());
-      provideApolloClient(apolloClient);
+        const apolloClient = new ApolloClient(getClientOptions());
+        provideApolloClient(apolloClient);
       const { mutate } = useMutation(updateUser, () => ({
         variables: {
           input: {
@@ -151,8 +150,6 @@ export default defineComponent({
           const response_2 = mutate()
           response_2
           .then(function (result){
-            console.log(result);
-
             $q.notify({
               type: "positive",
               message: "Модули обновлены",

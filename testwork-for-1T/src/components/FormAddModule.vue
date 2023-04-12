@@ -69,11 +69,9 @@
 import { useMutation } from "@vue/apollo-composable";
 import {
   defineComponent,
-  reactive,
   ref,
   computed,
   watch,
-  onMounted,
 } from "vue";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
@@ -95,9 +93,6 @@ export default defineComponent({
     store.dispatch("GET_RESPONSIBLES");
     const RESPONSIBLES = computed(() => store.getters.RESPONSIBLES);
     const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
-
-    const refetchModules = store.getters.REFETCH_MODULES;
-
     watch(model, () => {
       indexResponsible.value = options.value.indexOf(model.value);
     });
@@ -140,15 +135,11 @@ export default defineComponent({
               }
             }))
             const response_2 = mutate()
-            response_2
-              .then(function (result){
-                console.log(result);
-              })
-          $q.notify({
-            type: "positive",
-            message: "Модуль добавлен",
-          });
-        })
+            $q.notify({
+              type: "positive",
+              message: "Модуль добавлен",
+            });
+          })
         .catch((err) => {
           console.log("Ошибка", err);
           $q.notify({
@@ -166,8 +157,7 @@ export default defineComponent({
     return {
       createNewModule,
       options,
-      model,
-      refetchModules,
+      model
     };
   },
 });

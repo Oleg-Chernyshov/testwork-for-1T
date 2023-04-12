@@ -78,7 +78,6 @@ import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { updateModule, createRule } from "../api/main/mutations";
 import { useStore } from "vuex";
-import { response } from "../functions/functions";
 
 export default defineComponent({
   props: {
@@ -98,21 +97,19 @@ export default defineComponent({
       endTime: props.mod.property3?.time,
     });
     store.dispatch("GET_RESPONSIBLES");
-    console.log(
-      "store",
-      store.dispatch("GET_RESPONSIBLES").then((result) => {
-        console.log(result);
-      })
-    );
     const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
+
     watch(options, () => {
       console.log(options.value);
     });
+
     const responsible = computed(() => store.getters.RESPONSIBLES);
     const refetchModules = computed(() => store.getters.REFETCH_MODULES);
+
     watch(model, () => {
       indexResponsible.value = options.value.indexOf(model.value);
     });
+    
     const UpdateModule = function (e, num) {
       if (num) {
         funSubmit = false;
@@ -150,7 +147,6 @@ export default defineComponent({
       response
         .then(function (result) {
           console.log(result);
-          refetchModulesSetTimeout();
           const { mutate } = useMutation(createRule, ()=>({
             variables:{
                 input: {
@@ -162,12 +158,10 @@ export default defineComponent({
                 }
               }
           }))
-          console.log(1);
           const response_2 = mutate()
           response_2
           .then(function (result){
             console.log(result);
-
             $q.notify({
               type: "positive",
               message: "Модули обновлены",
