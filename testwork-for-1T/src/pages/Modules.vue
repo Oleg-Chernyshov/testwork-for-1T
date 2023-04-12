@@ -15,7 +15,7 @@ import { GetPropertyStatus } from "src/api/main/queryes";
 import { useQuery } from "@vue/apollo-composable";
 import modulesTasks from "../pages/composables/modulesTasks.vue"
 import modulesModules from "../pages/composables/modulesModules.vue"
-import { response } from "../functions/functions";
+
 
 
 export default {
@@ -63,15 +63,6 @@ export default {
       id,
       idModule,
       idUpdateModule,
-      set_id_module(id) {
-        idModule.value = id;
-      },
-      set_id(env, mod, task) {
-        id.value = env.target.id;
-        idUpdateModule.value = env.target.id;
-        currentModuleClickUp.value = mod;
-        currentTaskClickUp.value = task;
-      },
       MODULES
     };
   },
