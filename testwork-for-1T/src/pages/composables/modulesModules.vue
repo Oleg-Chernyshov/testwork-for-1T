@@ -54,6 +54,7 @@
             </td>
             <td>
               <button
+                :disabled="disableRedBtn"
                 @click.self="
                   showForm_updateModule = !showForm_updateModule;
                   set_id($event, mod, task);
@@ -68,6 +69,7 @@
         </tbody>
       </table>
       <q-btn
+        :disabled="disableAddBtn"
         class="q-mt-sm"
         color="primary"
         @click="showForm_addModule = !showForm_addModule"
@@ -90,7 +92,7 @@ import { useStore } from "vuex";
 import { GetPropertyStatus } from "src/api/main/queryes";
 import { useQuery } from "@vue/apollo-composable";
 import FormAddModule from "components/FormAddModule.vue";
-import FormUpdateModule from "src/components/formUpdateModule.vue";
+import FormUpdateModule from "src/components/FormUpdateModule.vue";
 
 
 
@@ -99,6 +101,16 @@ export default {
     FormAddModule,
     FormUpdateModule,
   },
+
+  // $nextTick(), чтобы убедиться, что элементы были отрисованы перед тем, как вы пытаетесь получить к ним доступ
+
+  mounted() {
+    if (sessionStorage.role === 'Владелец') {
+      this.disableAddBtn = true;
+      this.disableRedBtn = true;
+    }
+},
+
 
   setup() {
     const id = ref(0);
@@ -114,11 +126,12 @@ export default {
     const module_index = computed(() => store.getters.MODULE_INDEX);
     const current_module = reactive({});
     const propertyStatus = reactive({});
+    const disableAddBtn = ref(false)
+    const disableRedBtn = ref(false)
 
     const get_module = function (module_index) {
       current_module.values = MODULES.value[module_index.value];
     };
-
 
     //Получение свойства Status для определения статуса задачи по id
     const { onResult } = useQuery(GetPropertyStatus);
@@ -130,6 +143,7 @@ export default {
       () => store.getters.MODULE_INDEX,
       () => get_module(module_index)
     );
+
     return {
       current_module,
       propertyStatus,
@@ -141,6 +155,8 @@ export default {
       showForm_updateModule,
       showForm_addModule,
       MODULES,
+      disableAddBtn,
+      disableRedBtn,
       set_id(env, mod, task) {
         id.value = env.target.id;
         idUpdateModule.value = env.target.id;
