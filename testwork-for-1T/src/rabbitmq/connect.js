@@ -34,9 +34,11 @@ const stompConnect = (store) => {
       store.dispatch("GET_MODULES");
       const refetch_modules = store.getters.REFETCH_MODULES
       refetch_modules()
-      const refetch_all_tasks = store.getters.GET_ALL_TASKS
-      refetch_all_tasks()
+
       store.dispatch("GET_ALL_TASKS");
+      const refetch_all_tasks = store.getters.REFETCH_ALL_TASKS
+      refetch_all_tasks()
+
       message.ack();
     };
 
