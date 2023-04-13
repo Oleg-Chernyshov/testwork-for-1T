@@ -138,12 +138,13 @@ export default defineComponent({
         .then(function (result) {
           const { onResult } = useQuery(permissionTreeSubjects, {
               modelId: props.id,
-              groupId: "1305438642755218144"
+              groupId: "8434793229479617275"
             })
           onResult((queryResult)=> {
             for(let subject of queryResult.data.permissionTreeSubjects.data){
               if(subject.level == 7){
                 console.log(subject);
+                console.log();
                 const { mutate } = useMutation(permissionRuleDelete, ()=>({
                    variables:{
                     "id": subject.permission_rule_id
