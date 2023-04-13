@@ -67,7 +67,6 @@ export default defineComponent({
     const indexExecutor = ref(0);
     const indexModule = ref(0);
     const optionsStatus = ["Назначена", "Выполнена", "Завершена"];
-
     store.dispatch("GET_EXECUTORS");
     const executors = computed(() => store.getters.EXECUTORS);
     const MODULES = computed(() => store.getters.MODULES);
@@ -111,36 +110,35 @@ export default defineComponent({
           },
         },
       }));
-      const response = mutate()
-      response
-      .then(function (result){
-        const { mutate } = useMutation(createRule, ()=>({
-            variables:{
-                input: {
-                  model_type: "object",
-                  model_id: result.data.create_type2.recordId,
-                  owner_type: "subject",
-                  owner_id: executors.value[indexExecutor.value].id,
-                  level: 7
-                }
-              }
-        }))
-        const response_2 = mutate()
+      const response = mutate();
+      response.then(function (result) {
+        const { mutate } = useMutation(createRule, () => ({
+          variables: {
+            input: {
+              model_type: "object",
+              model_id: result.data.create_type2.recordId,
+              owner_type: "subject",
+              owner_id: executors.value[indexExecutor.value].id,
+              level: 7,
+            },
+          },
+        }));
+        const response_2 = mutate();
         response_2
-          .then(function (result){
+          .then(function (result) {
             $q.notify({
               type: "positive",
               message: "Модуль добавлен",
             });
           })
-      .catch((err) => {
-        console.log("Ошибка", err);
-        $q.notify({
-          type: "negative",
-          message: "Ошибка",
-          }); 
-        })
-      })
+          .catch((err) => {
+            console.log("Ошибка", err);
+            $q.notify({
+              type: "negative",
+              message: "Ошибка",
+            });
+          });
+      });
       e.target.elements.name.value = "";
       e.target.elements.description.value = "";
     };

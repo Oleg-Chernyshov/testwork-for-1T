@@ -53,6 +53,7 @@ import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { useStore } from "vuex";
+import { response } from "../functions/functions";
 
 export default defineComponent({
   props: {
@@ -115,8 +116,8 @@ export default defineComponent({
       }
     });
     const updateTask = function (e) {
-        const apolloClient = new ApolloClient(getClientOptions());
-        provideApolloClient(apolloClient);
+      const apolloClient = new ApolloClient(getClientOptions());
+      provideApolloClient(apolloClient);
       const { mutate } = useMutation(updateUser, () => ({
         variables: {
           input: {
@@ -201,6 +202,4 @@ export default defineComponent({
 });
 </script>
 
-<style>
-
-</style>
+<style></style>

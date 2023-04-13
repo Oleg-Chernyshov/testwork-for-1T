@@ -81,7 +81,6 @@ export default defineComponent({
     store.dispatch("GET_ALL_TASKS");
     const currentTaskClickUp = ref();
     const allTasks = computed(() => store.getters.ALL_TASKS);
-    const refetchTasks = computed(() => store.getters.REFETCH_ALL_TASKS);
 
     const updateTask = function (task) {
       const apolloClient = new ApolloClient(getClientOptions());
@@ -102,7 +101,7 @@ export default defineComponent({
           id: task.id,
         },
       }));
-      response("Выполнена", "Ошибка", mutate, refetchTasks.value, $q);
+      mutate();
     };
 
     return {

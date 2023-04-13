@@ -102,7 +102,6 @@ import { useQuery } from "@vue/apollo-composable";
 import { GetAllPages, GetAllTypes } from "src/api/main/queryes";
 import { useStore } from "vuex";
 import { GetGroupById } from "src/api/main/queryes";
-
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
@@ -124,11 +123,10 @@ export default defineComponent({
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
 
-
-    onMounted(()=>{
-      stompApi.queueCreate().then((result) => {})
-      stompApi.stompConnect(store)
-    })
+    onMounted(() => {
+      stompApi.queueCreate().then((result) => {});
+      stompApi.stompConnect(store);
+    });
     //Получение всех страниц
     const { onResult } = useQuery(GetAllPages);
     onResult((queryResult) => {
@@ -145,7 +143,7 @@ export default defineComponent({
 
     {
       let email = sessionStorage.getItem("email");
-      const { onResult, refetch } = useQuery(GetGroupById, {
+      const { onResult } = useQuery(GetGroupById, {
         id: "3662509860808044515",
       });
       onResult((queryResult) => {
@@ -162,7 +160,7 @@ export default defineComponent({
           const apolloClient = new ApolloClient(getClientOptions());
           provideApolloClient(apolloClient);
 
-          const { onResult, refetch } = useQuery(GetGroupById, {
+          const { onResult } = useQuery(GetGroupById, {
             id: "4428325871296613250",
           });
 
