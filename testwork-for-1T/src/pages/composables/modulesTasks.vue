@@ -60,6 +60,12 @@
               Редактировать
             </button>
             <button class="btn" @click="deleteTask(task.id)">Удалить</button>
+            <button
+              class="btn"
+              @click="showForm_filesForm = !showForm_filesForm"
+            >
+              Файлы
+            </button>
           </td>
         </tr>
       </tbody>
@@ -83,6 +89,10 @@
     <q-dialog v-model="showForm_updateTask">
       <FormUpdateTask :task="currentTaskClickUp" :id="id" />
     </q-dialog>
+
+    <q-dialog v-model="showForm_filesForm">
+      <FormFiles />
+    </q-dialog>
   </div>
 </template>
 
@@ -91,6 +101,7 @@ import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import FormAddTask from "components/FormAddTask.vue";
 import FormUpdateTask from "components/FormUpdateTask.vue";
+import FormFiles from "components/Files.vue";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
@@ -103,6 +114,7 @@ export default {
   components: {
     FormAddTask,
     FormUpdateTask,
+    FormFiles,
   },
 
   setup() {
@@ -112,6 +124,7 @@ export default {
     const store = useStore();
     const showForm_addTask = ref(false);
     const showForm_updateTask = ref(false);
+    const showForm_filesForm = ref(false);
     const currentModuleClickUp = ref();
     const currentTaskClickUp = ref();
     store.dispatch("GET_MODULES");
@@ -133,6 +146,7 @@ export default {
       showForm_addTask,
       showForm_updateTask,
       module_index,
+      showForm_filesForm,
       deleteTask,
       id,
       idModule,

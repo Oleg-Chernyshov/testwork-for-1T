@@ -51,7 +51,6 @@ import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { useStore } from "vuex";
-import { response } from "../functions/functions";
 
 export default defineComponent({
   props: {
@@ -88,6 +87,11 @@ export default defineComponent({
         }
       },
     });
+
+    model.value =
+      props.task.property6.fullname.first_name +
+      " " +
+      props.task.property6.fullname.last_name;
     statusId.value = props.task.property5;
     if (props.task.property5 == "1700970386717883161") {
       modelStatus.value = "Назначена";
@@ -96,10 +100,7 @@ export default defineComponent({
     } else {
       modelStatus.value = "Завершена";
     }
-    model.value =
-      props.task.property6.fullname.first_name +
-      " " +
-      props.task.property6.fullname.last_name;
+
     watch(model, () => {
       indexExecutor.value = options.value.indexOf(model.value);
     });

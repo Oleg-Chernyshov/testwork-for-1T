@@ -61,7 +61,6 @@
 
 <script>
 import { useStore } from "vuex";
-import FormUpdateTask from "../components/FormUpdateTask.vue";
 import { useMutation } from "@vue/apollo-composable";
 import { defineComponent, ref, computed, watch } from "vue";
 import { getClientOptions } from "src/apollo/index";
@@ -72,15 +71,13 @@ import { useQuasar } from "quasar";
 import { response } from "../functions/functions";
 
 export default defineComponent({
-  components: {
-    FormUpdateTask,
-  },
   setup() {
     const store = useStore();
     const $q = useQuasar();
     store.dispatch("GET_ALL_TASKS");
     const currentTaskClickUp = ref();
     const allTasks = computed(() => store.getters.ALL_TASKS);
+    const model = ref(null);
 
     const updateTask = function (task) {
       const apolloClient = new ApolloClient(getClientOptions());
