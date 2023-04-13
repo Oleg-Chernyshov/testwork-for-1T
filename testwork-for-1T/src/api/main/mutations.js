@@ -121,6 +121,13 @@ export const DeleteTask = gql`mutation delete_type2($id: String!) {
   }
 }`
 
+export const DeleteModule = gql`mutation delete_type1($id: String!) {
+  delete_type1 (id: $id) {
+    status
+    recordId
+  }
+}`
+
 export const createQueue = gql`
   mutation {
     notificationSubscribe {
