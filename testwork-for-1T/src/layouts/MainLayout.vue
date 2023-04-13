@@ -2,14 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title> Quasar App </q-toolbar-title>
       </q-toolbar>
@@ -18,15 +11,8 @@
     <q-drawer class="q-pt-xl" v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
         <q-list bordered class="rounded-borders">
-          <q-expansion-item
-            v-if="role === 'Владелец'"
-            to="/Team"
-            expand-separator
-            icon=""
-            label="КОМАНДА"
-            caption=""
-            default-opened
-          >
+          <q-expansion-item v-if="role === 'Владелец'" to="/Team" expand-separator icon="" label="КОМАНДА" caption=""
+            default-opened>
             <q-tabs align="left">
               <q-route-tab to="/Executors" label="Исполнители" />
             </q-tabs>
@@ -35,50 +21,24 @@
               <q-route-tab to="/Responsible" label="Ответственные" />
             </q-tabs>
           </q-expansion-item>
-          <q-expansion-item
-            v-if="role === 'Владелец'"
-            to="/Deleted"
-            expand-separator
-            icon=""
-            label="ИСКЛЮЧЕННЫЕ"
-            caption=""
-            default-opened
-          >
+          <q-expansion-item v-if="role === 'Владелец'" to="/Deleted" expand-separator icon="" label="ИСКЛЮЧЕННЫЕ"
+            caption="" default-opened>
             <q-tabs align="left">
-              <q-route-tab to="/Deleted" label="Исключенные" />
+              <q-route-tab to="/Excluded" label="Исключенные" />
             </q-tabs>
           </q-expansion-item>
-          <q-expansion-item
-            v-if="role == 'Ответсвенный' || role == 'Владелец'"
-            to="/Modules"
-            expand-separator
-            icon=""
-            label="МОДУЛИ"
-            caption=""
-            default-opened
-            @click="get_module_index(-1)"
-          >
-            <q-tabs
-              indicator-color="transparent"
-              v-for="(mod, index) in MODULES"
-              :key="mod.id"
-              align="left"
-              @click="get_module_index(index)"
-            >
+          <q-expansion-item v-if="role == 'Ответсвенный' || role == 'Владелец'" to="/Modules" expand-separator icon=""
+            label="МОДУЛИ" caption="" default-opened @click="get_module_index(-1)">
+            <q-tabs indicator-color="transparent" v-for="(mod, index) in MODULES" :key="mod.id" align="left"
+              @click="get_module_index(index)">
               <q-route-tab to="/Modules">
                 <div>{{ mod.name }}</div>
               </q-route-tab>
             </q-tabs>
           </q-expansion-item>
 
-          <q-expansion-item
-            v-if="role == 'Исполнитель' || role == 'Владелец'"
-            to="/AllTasks"
-            expand-separator
-            icon=""
-            label="ЗАДАЧИ"
-            caption=""
-          >
+          <q-expansion-item v-if="role == 'Исполнитель' || role == 'Владелец'" to="/AllTasks" expand-separator icon=""
+            label="ЗАДАЧИ" caption="">
           </q-expansion-item>
         </q-list>
       </q-list>
@@ -125,8 +85,8 @@ export default defineComponent({
     const MODULES = computed(() => store.getters.MODULES);
 
 
-    onMounted(()=>{
-      stompApi.queueCreate().then((result) => {})
+    onMounted(() => {
+      stompApi.queueCreate().then((result) => { })
       stompApi.stompConnect(store)
     })
     //Получение всех страниц
@@ -204,6 +164,7 @@ export default defineComponent({
   width: 100% !important;
   text-align: left !important;
 }
+
 .link {
   color: white;
   text-decoration: none;
