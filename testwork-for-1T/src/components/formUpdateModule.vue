@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper">
-    
     <section class="get-in-touch">
       <h3 class="title">Редактирование модуля</h3>
       <form
@@ -71,13 +70,14 @@
 </template>
 
 <script>
-import { useMutation } from "@vue/apollo-composable";
+import { useMutation, useQuery } from "@vue/apollo-composable";
 import { defineComponent, ref, computed, watch } from "vue";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
-import { updateModule, createRule } from "../api/main/mutations";
+import { updateModule, createRule, permissionRuleDelete } from "../api/main/mutations";
+import { permissionTreeSubjects } from "src/api/main/queryes";
 import { useStore } from "vuex";
 
 export default defineComponent({
@@ -97,6 +97,11 @@ export default defineComponent({
       endData: props.mod.property3?.date,
       endTime: props.mod.property3?.time,
     });
+    model.value =
+      props.mod.property7.fullname.first_name +
+      " " +
+      props.mod.property7.fullname.last_name;
+
     store.dispatch("GET_RESPONSIBLES");
     const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
 
@@ -105,23 +110,12 @@ export default defineComponent({
     });
 
     const responsible = computed(() => store.getters.RESPONSIBLES);
-    const refetchModules = computed(() => store.getters.REFETCH_MODULES);
 
     watch(model, () => {
       indexResponsible.value = options.value.indexOf(model.value);
     });
-    
-    const UpdateModule = function (e, num) {
-      if (num) {
-        funSubmit = false;
-        e.target.elements.name.value = props.mod.name;
-        e.target.elements.startData.value = props.mod.property2?.date;
-        e.target.elements.startTime.value = props.mod.property2?.time;
-        e.target.elements.endData.value = props.mod.property3?.date;
-        e.target.elements.endTime.value = props.mod.property3?.time;
-        return funSubmit;
-      }
 
+    const UpdateModule = function (e) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(updateModule, () => ({
@@ -148,26 +142,48 @@ export default defineComponent({
       response
         .then(function (result) {
           console.log(result);
-          const { mutate } = useMutation(createRule, ()=>({
-            variables:{
-                input: {
-                  model_type: "object",
-                  model_id: props.idUpdateModule,
-                  owner_type: "subject",
-                  owner_id: responsible.value[indexResponsible.value].id,
-                  level: 7
-                }
+          const { onResult } = useQuery(permissionTreeSubjects, {
+              modelId: props.idUpdateModule,
+              groupId: "1305438642755218144"
+            })
+          onResult((queryResult)=> {
+            for(let subject of queryResult.data.permissionTreeSubjects.data){
+              if(subject.level == 7){
+                console.log(subject);
+                const { mutate } = useMutation(permissionRuleDelete, ()=>({
+                   variables:{
+                    "id": subject.permission_rule_id
+                   }
+                }))
+                const response_3 = mutate()
+                response_3
+                  .then(function(result){
+                    console.log(result);
+                  })
               }
-          }))
-          const response_2 = mutate()
-          response_2
-          .then(function (result){
-            console.log(result);
-            $q.notify({
-              type: "positive",
-              message: "Модули обновлены",
-            });
+            }
+            const { mutate } = useMutation(createRule, ()=>({
+            variables:{
+              input: {
+                model_type: "object",
+                model_id: props.idUpdateModule,
+                owner_type: "subject",
+                owner_id: responsible.value[indexResponsible.value].id,
+                level: 7
+              }
+            }
+            }))
+            const response_2 = mutate()
+            response_2
+            .then(function (result){
+              console.log(result);
+              $q.notify({
+                type: "positive",
+                message: "Модули обновлены",
+              });
+            })
           })
+          
         })
         .catch((err) => {
           console.log("Ошибка", err);
@@ -181,7 +197,6 @@ export default defineComponent({
       UpdateModule,
       options,
       model,
-      refetchModules,
       form,
     };
   },

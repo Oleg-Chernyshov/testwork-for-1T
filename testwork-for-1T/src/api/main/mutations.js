@@ -93,6 +93,8 @@ mutation ($input:  update_type1_input! $id: String!) {
 }
 `
 
+
+
 export const createRule = gql`
 mutation permissionRuleCreate($input: PermissionRuleCreateInput!) {
   permissionRuleCreate(input: $input) {
@@ -121,6 +123,22 @@ export const DeleteTask = gql`mutation delete_type2($id: String!) {
   }
 }`
 
+export const DeleteModule = gql`mutation delete_type1($id: String!) {
+  delete_type1 (id: $id) {
+    status
+    recordId
+  }
+}`
+
+export const DeleteSubject = gql`
+mutation ($id: String!) {
+  delete_subject (id: $id) {
+    status
+    recordId
+  }
+}
+`
+
 export const createQueue = gql`
   mutation {
     notificationSubscribe {
@@ -128,3 +146,12 @@ export const createQueue = gql`
     }
   }
 `;
+
+export const permissionRuleDelete = gql`
+mutation permissionRuleDelete($id: String!) {
+  permissionRuleDelete(id: $id) {
+    recordId
+    status
+  }
+}
+`
