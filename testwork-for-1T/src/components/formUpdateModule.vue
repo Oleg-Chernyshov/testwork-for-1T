@@ -96,6 +96,11 @@ export default defineComponent({
       endData: props.mod.property3?.date,
       endTime: props.mod.property3?.time,
     });
+    model.value =
+      props.mod.property7.fullname.first_name +
+      " " +
+      props.mod.property7.fullname.last_name;
+
     store.dispatch("GET_RESPONSIBLES");
     const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
 
@@ -109,17 +114,7 @@ export default defineComponent({
       indexResponsible.value = options.value.indexOf(model.value);
     });
 
-    const UpdateModule = function (e, num) {
-      if (num) {
-        funSubmit = false;
-        e.target.elements.name.value = props.mod.name;
-        e.target.elements.startData.value = props.mod.property2?.date;
-        e.target.elements.startTime.value = props.mod.property2?.time;
-        e.target.elements.endData.value = props.mod.property3?.date;
-        e.target.elements.endTime.value = props.mod.property3?.time;
-        return funSubmit;
-      }
-
+    const UpdateModule = function (e) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(updateModule, () => ({
