@@ -143,7 +143,7 @@ export default defineComponent({
 
     {
       let email = sessionStorage.getItem("email");
-      const { onResult, refetch } = useQuery(GetGroupById, {
+      const { onResult } = useQuery(GetGroupById, {
         id: "3662509860808044515",
       });
       onResult((queryResult) => {
@@ -160,7 +160,7 @@ export default defineComponent({
           const apolloClient = new ApolloClient(getClientOptions());
           provideApolloClient(apolloClient);
 
-          const { onResult, refetch } = useQuery(GetGroupById, {
+          const { onResult } = useQuery(GetGroupById, {
             id: "4428325871296613250",
           });
 

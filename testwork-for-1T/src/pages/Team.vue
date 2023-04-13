@@ -85,12 +85,6 @@ export default defineComponent({
     const store = useStore();
     store.dispatch("GET_RESPONSIBLES");
     store.dispatch("GET_EXECUTORS");
-    const refetchQueryExecutors = computed(
-      () => store.getters.REFETCH_EXECUTORS
-    );
-    const refetchQueryResponsible = computed(
-      () => store.getters.REFETCH_RESPONSIBLES
-    );
     const $q = useQuasar();
 
     const getFormExecuterValues = function (e) {
@@ -106,13 +100,7 @@ export default defineComponent({
           },
         },
       }));
-      response(
-        "Исполнитель добавлен",
-        "Ошибка",
-        mutate,
-        refetchQueryExecutors.value,
-        $q
-      );
+      response("Исполнитель добавлен", "Ошибка", mutate, $q);
       input1_1.value = "";
       input1_2.value = "";
       input1_3.value = "";
@@ -132,13 +120,7 @@ export default defineComponent({
         },
       }));
 
-      response(
-        "Ответственный добавлен",
-        "Ошибка",
-        mutate,
-        refetchQueryResponsible.value,
-        $q
-      );
+      response("Ответственный добавлен", "Ошибка", mutate, $q);
       input2_1.value = "";
       input2_2.value = "";
       input2_3.value = "";

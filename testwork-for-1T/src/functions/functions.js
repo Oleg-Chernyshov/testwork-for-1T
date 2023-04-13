@@ -1,4 +1,14 @@
-export const response = async function (ms1, ms2, mutation, refetch, q) {
+export const response = async function (
+  ms1,
+  ms2,
+  mutation = () => {
+    console.log('empty refetch')
+  },
+  q,
+  refetch = () => {
+    console.log('empty refetch')
+  },
+) {
   try {
     await mutation()
     q.notify({

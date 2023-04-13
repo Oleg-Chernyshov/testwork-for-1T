@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper">
-    
     <section class="get-in-touch">
       <h3 class="title">Редактирование модуля</h3>
       <form
@@ -105,12 +104,11 @@ export default defineComponent({
     });
 
     const responsible = computed(() => store.getters.RESPONSIBLES);
-    const refetchModules = computed(() => store.getters.REFETCH_MODULES);
 
     watch(model, () => {
       indexResponsible.value = options.value.indexOf(model.value);
     });
-    
+
     const UpdateModule = function (e, num) {
       if (num) {
         funSubmit = false;
@@ -148,26 +146,26 @@ export default defineComponent({
       response
         .then(function (result) {
           console.log(result);
-          const { mutate } = useMutation(createRule, ()=>({
-            variables:{
-                input: {
-                  model_type: "object",
-                  model_id: props.idUpdateModule,
-                  owner_type: "subject",
-                  owner_id: responsible.value[indexResponsible.value].id,
-                  level: 7
-                }
-              }
-          }))
-          const response_2 = mutate()
-          response_2
-          .then(function (result){
+          const { mutate } = useMutation(createRule, () => ({
+            variables: {
+              input: {
+                model_type: "object",
+                model_id: props.idUpdateModule,
+                owner_type: "subject",
+                owner_id: responsible.value[indexResponsible.value].id,
+                level: 7,
+              },
+            },
+          }));
+
+          const response_2 = mutate();
+          response_2.then(function (result) {
             console.log(result);
             $q.notify({
               type: "positive",
               message: "Модули обновлены",
             });
-          })
+          });
         })
         .catch((err) => {
           console.log("Ошибка", err);
@@ -181,7 +179,6 @@ export default defineComponent({
       UpdateModule,
       options,
       model,
-      refetchModules,
       form,
     };
   },

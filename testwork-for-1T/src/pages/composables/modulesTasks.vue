@@ -118,8 +118,6 @@ export default {
     const MODULES = computed(() => store.getters.MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
     const $q = useQuasar();
-    const refetchModules = computed(() => store.getters.REFETCH_MODULES);
-
     const deleteTask = function (id) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
@@ -128,7 +126,7 @@ export default {
           id: id,
         },
       }));
-      response("Задача удалена", "Ошибка", mutate, refetchModules.value, $q);
+      response("Задача удалена", "Ошибка", mutate, $q);
     };
 
     return {

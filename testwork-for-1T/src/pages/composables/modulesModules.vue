@@ -132,7 +132,6 @@ export default {
     const disableAddBtn = ref(false);
     const disableRedBtn = ref(false);
     const $q = useQuasar();
-    const refetchModules = computed(() => store.getters.REFETCH_MODULES);
     const deleteModule = async function (mod) {
       try {
         const apolloClient = new ApolloClient(getClientOptions());
@@ -150,7 +149,7 @@ export default {
             id: mod.id,
           },
         }));
-        response("Модуль удален", "Ошибка", mutate, refetchModules.value, $q);
+        mutate();
       } catch (err) {
         console.log("Ошибка", err);
       }
