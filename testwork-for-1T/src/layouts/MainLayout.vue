@@ -168,9 +168,6 @@ export default defineComponent({
 
           onResult((queryResult) => {
             for (let subject of executors.value) {
-              console.log(subject);
-              console.log(email);
-              console.log(subject.email.email == email);
               if (subject.email.email == email) {
                 sessionStorage.setItem("role", "Исполнитель");
                 role.value = "Исполнитель";
