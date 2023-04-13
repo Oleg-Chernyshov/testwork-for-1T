@@ -128,3 +128,12 @@ export const createQueue = gql`
     }
   }
 `;
+
+export const permissionRuleDelete = gql`
+mutation permissionRuleDelete($id: String!) {
+  permissionRuleDelete(id: $id) {
+    recordId
+    status
+  }
+}
+`
