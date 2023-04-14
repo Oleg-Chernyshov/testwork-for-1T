@@ -73,33 +73,23 @@ export default defineComponent({
     const leftDrawerOpen = ref(false);
     const role = ref("");
     const store = useStore();
+
     const get_module_index = function (index) {
       store.commit("setModuleIndex", index);
     };
+
     store.dispatch("GET_RESPONSIBLES");
     store.dispatch("GET_EXECUTORS");
+    store.dispatch("GET_MODULES");
+
     const responsible = computed(() => store.getters.RESPONSIBLES);
     const executors = computed(() => store.getters.EXECUTORS);
-    store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
 
     onMounted(() => {
       stompApi.queueCreate().then((result) => { });
       stompApi.stompConnect(store);
     });
-    //Получение всех страниц
-    const { onResult } = useQuery(GetAllPages);
-    onResult((queryResult) => {
-      console.log("Pages", queryResult.data.pages.data);
-    });
-
-    //Получение всех типов
-    {
-      const { onResult } = useQuery(GetAllTypes);
-      onResult((queryResult) => {
-        //console.log(queryResult.data);
-      });
-    }
 
     {
       let email = sessionStorage.getItem("email");

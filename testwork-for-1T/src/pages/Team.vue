@@ -63,7 +63,7 @@
 
 <script>
 import { useMutation } from "@vue/apollo-composable";
-import { defineComponent, ref, computed, watch } from "vue";
+import { defineComponent, ref} from "vue";
 import { inviteUser } from "src/api/main/mutations";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
@@ -83,10 +83,11 @@ export default defineComponent({
     const input2_2 = ref("");
     const input2_3 = ref("");
     const store = useStore();
-    store.dispatch("GET_RESPONSIBLES");
-    store.dispatch("GET_EXECUTORS");
     const $q = useQuasar();
 
+    store.dispatch("GET_RESPONSIBLES");
+    store.dispatch("GET_EXECUTORS");
+    
     const getFormExecuterValues = function (e) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);

@@ -59,6 +59,7 @@ export default defineComponent({
   },
 
   setup(props) {
+
     const $q = useQuasar();
     const store = useStore();
     const model = ref(null);
@@ -67,12 +68,12 @@ export default defineComponent({
     const indexExecutor = ref(0);
     const indexModule = ref(0);
     const optionsStatus = ["Назначена", "Выполнена", "Завершена"];
+    const statusId = ref("");
+
     store.dispatch("GET_EXECUTORS");
     const executors = computed(() => store.getters.EXECUTORS);
     const MODULES = computed(() => store.getters.MODULES);
     const options = computed(() => store.getters.OPTIONS_EXECUTORS);
-
-    const statusId = ref("");
 
     watch(model, () => {
       indexExecutor.value = options.value.indexOf(model.value);

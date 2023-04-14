@@ -64,7 +64,7 @@
             >
               Редактировать
             </button>
-            <button class="btn" @click="deleteModule(mod)">Удалить</button>
+            <button :disabled="disableRedBtn" class="btn" @click="deleteModule(mod)">Удалить</button>
           </td>
         </tr>
       </tbody>
@@ -72,7 +72,7 @@
     <q-btn
       :disabled="disableAddBtn"
       class="q-mt-sm"
-      color="primary"
+      color="green"
       @click="showForm_addModule = !showForm_addModule"
       >Добавить модуль</q-btn
     >

@@ -9,7 +9,7 @@
             <th>Описание</th>
             <th>Статус</th>
             <th>Исполнитель</th>
-            <!-- <th>Действия</th> -->
+            <th>Действия</th>
           </tr>
         </thead>
         <tbody>
@@ -49,7 +49,6 @@
               <button class="q-mr-sm btn" @click.self="updateTask(task)">
                 Выполнена
               </button>
-              <!-- <button class="btn" @click="deleteTask(task.id)">Удалить</button> -->
             </td>
           </tr>
         </tbody>
@@ -78,8 +77,9 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const $q = useQuasar();
-    store.dispatch("GET_ALL_TASKS");
     const currentTaskClickUp = ref();
+
+    store.dispatch("GET_ALL_TASKS");  
     const allTasks = computed(() => store.getters.ALL_TASKS);
 
     const updateTask = function (task) {

@@ -6,7 +6,7 @@ export const GET_MODULES = ({ commit }) => {
     try {
       
       const { onResult, refetch } = useQuery(GetAllModules)
-      onResult((queryResult) => {console.log(1);
+      onResult((queryResult) => {
         let options = []
         let modules = queryResult.data['paginate_type1'].data
         for (let module of modules) {
@@ -86,7 +86,7 @@ export const GET_ALL_TASKS = ({ commit }) => {
   const fetching = async () => {
     try {
       const { onResult, refetch } = useQuery(GetAllTasks)
-      onResult((queryResult) => {console.log(2);
+      onResult((queryResult) => {;
         commit('setAllTasks', {
           allTasks: queryResult.data.paginate_type2.data,
           refetch: refetch,

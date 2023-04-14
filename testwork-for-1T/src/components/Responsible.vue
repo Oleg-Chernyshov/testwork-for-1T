@@ -34,11 +34,11 @@ import { useQuasar } from "quasar";
 export default defineComponent({
   setup() {
     const store = useStore();
+    const $q = useQuasar();
 
     store.dispatch("GET_RESPONSIBLES");
     const responsible = computed(() => store.getters.RESPONSIBLES);
-    const $q = useQuasar();
-
+    
     const deleteSubject = function (id) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);

@@ -32,10 +32,6 @@
             class="q-ml-sm"
           />
         </div>
-        <p class="q-pt-md">
-          Еще нет аккаунта?
-          <router-link to="/register">Зарегистрируйте его сейчас</router-link>
-        </p>
       </q-form>
     </div>
   </q-page>
@@ -60,7 +56,9 @@ export default defineComponent({
     const password = ref("");
     const error = ref("");
     const store = useStore();
+
     const { mutate: UserSignInMutation } = useMutation(UserSignIn);
+
     return {
       async EnterSubmit() {
         await UserSignInMutation({
@@ -86,8 +84,6 @@ export default defineComponent({
               )
               router.push("/app");
             })
-
-            
           })
           .catch((e) => {
             error.value = "Неверный логин или пароль";
