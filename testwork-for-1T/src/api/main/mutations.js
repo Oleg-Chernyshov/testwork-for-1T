@@ -140,16 +140,22 @@ export const createQueue = gql`
   }
 `
 
-export default {
-  mutation: gql`
-    mutation filesUpload($files: [Upload]!) {
-      filesUpload(files: $files) {
-        status
-        ids
-      }
+export const UPLOAD_FILES = gql`
+  mutation filesUpload($files: [Upload]!) {
+    filesUpload(files: $files) {
+      status
+      ids
     }
-  `,
-  variables: {
-    files: null,
-  },
-}
+  }
+`
+
+// export const SINGLE_UPLOAD = gql`
+//   mutation($file: Upload!) {
+//     singleUpload(file: $file) {
+//       filename
+//       mimetype
+//       encoding
+//       url
+//     }
+//   }
+// `

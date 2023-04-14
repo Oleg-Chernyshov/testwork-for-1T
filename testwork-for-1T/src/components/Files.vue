@@ -44,6 +44,8 @@ import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
 import { addNewModule, createRule } from "src/api/main/mutations";
 import { useStore } from "vuex";
+import { UPLOAD_FILES } from "../api/main/mutations";
+import { cloneDeep } from "lodash";
 
 export default defineComponent({
   components: {},
@@ -52,9 +54,32 @@ export default defineComponent({
     const submitBtn = ref(null);
     let toggleloadBtn = ref(true);
     const sourcesImg = ref([]);
-    const files = ref([]);
+    const files = ref();
+    const upload = async function (uploadedFiles) {
+      console.log(uploadedFiles[0]);
 
-    const uploadHandler = () => {};
+      // const mutation = cloneDeep(UPLOAD_FILES);
+      const { mutate } = useMutation(UPLOAD_FILES, () => ({
+        variables: {
+          input: {
+            files: uploadedFiles[0],
+          },
+        },
+      }));
+      const { data } = await mutate();
+      console.log("data", data);
+
+      //   const mutation = _.cloneDeep(UPLOAD_FILES);
+      //   mutation.variables.files = Array.isArray(uploadedFiles)
+      //     ? uploadedFiles.map(({ file }) => file)
+      //     : uploadedFiles.file;
+      //   const { data } = await this.$apollo.mutate(mutation);
+      //   return data.filesUpload.ids;
+    };
+
+    const uploadHandler = () => {
+      upload(files.value);
+    };
     const triggerInput = () => {
       submitBtn.value.click();
     };
@@ -64,7 +89,6 @@ export default defineComponent({
         return;
       }
 
-      console.log(files.value);
       const { name } = event.target.dataset;
       files.value = files.value.filter((file) => file.name !== name);
       console.log(name);
@@ -257,7 +281,7 @@ input[type="file"] {
 .preview-info {
   position: absolute;
   right: 0;
-  bottom: -30px;
+  bottom: -50px;
   left: 0;
   height: 24px;
   font-size: 0.8rem;

@@ -11,8 +11,10 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "@vue/apollo-composable": "^4.0.0-beta.4",
+    "apollo-upload-client": "^17.0.0",
     "core-js": "^3.6.5",
     "js-cookie": "^3.0.1",
+    "lodash": "^4.17.21",
     "net": "^1.0.2",
     "quasar": "^2.6.0",
     "stompjs": "^2.3.3",

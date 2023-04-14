@@ -73,6 +73,7 @@ export default defineComponent({
     const statusId = ref("");
     const optionsModules = computed(() => store.getters.OPTIONS_MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
+
     const form = ref({
       name: props.task.name,
       description: props.task.property4,
