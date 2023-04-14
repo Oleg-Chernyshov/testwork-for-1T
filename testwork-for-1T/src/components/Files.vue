@@ -57,8 +57,6 @@ export default defineComponent({
     const files = ref();
     const upload = async function (uploadedFiles) {
       console.log(uploadedFiles[0]);
-
-      // const mutation = cloneDeep(UPLOAD_FILES);
       const { mutate } = useMutation(UPLOAD_FILES, () => ({
         variables: {
           input: {

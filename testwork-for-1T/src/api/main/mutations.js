@@ -132,6 +132,15 @@ export const DeleteModule = gql`
   }
 `
 
+export const DeleteSubject = gql`
+  mutation($id: String!) {
+    delete_subject(id: $id) {
+      status
+      recordId
+    }
+  }
+`
+
 export const createQueue = gql`
   mutation {
     notificationSubscribe {
@@ -149,13 +158,11 @@ export const UPLOAD_FILES = gql`
   }
 `
 
-// export const SINGLE_UPLOAD = gql`
-//   mutation($file: Upload!) {
-//     singleUpload(file: $file) {
-//       filename
-//       mimetype
-//       encoding
-//       url
-//     }
-//   }
-// `
+export const permissionRuleDelete = gql`
+  mutation permissionRuleDelete($id: String!) {
+    permissionRuleDelete(id: $id) {
+      recordId
+      status
+    }
+  }
+`

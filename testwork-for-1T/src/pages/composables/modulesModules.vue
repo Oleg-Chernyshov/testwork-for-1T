@@ -106,8 +106,6 @@ export default {
     FormUpdateModule,
   },
 
-  // $nextTick(), чтобы убедиться, что элементы были отрисованы перед тем, как вы пытаетесь получить к ним доступ
-
   mounted() {
     if (sessionStorage.role !== "Владелец") {
       this.disableAddBtn = true;

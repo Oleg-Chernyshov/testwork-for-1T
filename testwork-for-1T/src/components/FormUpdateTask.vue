@@ -46,7 +46,9 @@
 import { useMutation } from "@vue/apollo-composable";
 import { defineComponent, ref, computed, watch } from "vue";
 import { getClientOptions } from "src/apollo/index";
-import { updateUser, createRule } from "../api/main/mutations";
+import { useQuery } from "@vue/apollo-composable";
+import { updateUser, createRule, permissionRuleDelete } from "../api/main/mutations";
+import { permissionTreeSubjects } from "src/api/main/queryes";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
@@ -137,26 +139,48 @@ export default defineComponent({
       const response = mutate();
       response
         .then(function (result) {
-          console.log(result);
-          const { mutate } = useMutation(createRule, () => ({
-            variables: {
+          const { onResult } = useQuery(permissionTreeSubjects, {
+              modelId: props.id,
+              groupId: "8434793229479617275"
+            })
+          onResult((queryResult)=> {
+            for(let subject of queryResult.data.permissionTreeSubjects.data){
+              if(subject.level == 7){
+                console.log(subject);
+                console.log();
+                const { mutate } = useMutation(permissionRuleDelete, ()=>({
+                   variables:{
+                    "id": subject.permission_rule_id
+                   }
+                }))
+                const response_3 = mutate()
+                response_3
+                  .then(function(result){
+                    console.log(result);
+                  })
+              }
+            }
+            const { mutate } = useMutation(createRule, ()=>({
+            variables:{
               input: {
                 model_type: "object",
                 model_id: props.id,
                 owner_type: "subject",
                 owner_id: EXECUTORS.value[indexExecutor.value].id,
-                level: 7,
-              },
-            },
-          }));
-
-          const response_2 = mutate();
-          response_2.then(function (result) {
-            $q.notify({
-              type: "positive",
-              message: "Модули обновлены",
-            });
-          });
+                level: 7
+                }
+              }
+            }))
+            const response_2 = mutate()
+            response_2
+            .then(function (result){
+              console.log(result);
+              $q.notify({
+                type: "positive",
+                message: "Модули обновлены",
+              });
+            })
+          })
         })
         .catch((err) => {
           console.log("Ошибка", err);
