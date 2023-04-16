@@ -63,7 +63,7 @@
       </q-tr>
     </template >
     
-    <template v-slot:top-right="props">
+    <template v-slot:top-left="props">
       <q-btn
         :disabled="disableAddBtn"
         class="q-mt-sm"
