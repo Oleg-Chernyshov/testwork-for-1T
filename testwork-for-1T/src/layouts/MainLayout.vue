@@ -81,6 +81,7 @@ export default defineComponent({
     store.dispatch("GET_RESPONSIBLES");
     store.dispatch("GET_EXECUTORS");
     store.dispatch("GET_MODULES");
+    store.dispatch("GET_ALL_TASKS");
 
     const responsible = computed(() => store.getters.RESPONSIBLES);
     const executors = computed(() => store.getters.EXECUTORS);

@@ -84,9 +84,6 @@ export default defineComponent({
     const input2_3 = ref("");
     const store = useStore();
     const $q = useQuasar();
-
-    store.dispatch("GET_RESPONSIBLES");
-    store.dispatch("GET_EXECUTORS");
     
     const getFormExecuterValues = function (e) {
       const apolloClient = new ApolloClient(getClientOptions());

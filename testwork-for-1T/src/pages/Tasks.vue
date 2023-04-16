@@ -79,7 +79,6 @@ export default defineComponent({
     const $q = useQuasar();
     const currentTaskClickUp = ref();
 
-    store.dispatch("GET_ALL_TASKS");  
     const allTasks = computed(() => store.getters.ALL_TASKS);
 
     const updateTask = function (task) {

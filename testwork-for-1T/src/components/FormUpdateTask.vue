@@ -62,19 +62,20 @@ export default defineComponent({
   setup(props) {
     const $q = useQuasar();
     const store = useStore();
-    store.dispatch("GET_EXECUTORS");
+
     const options = computed(() => store.getters.OPTIONS_EXECUTORS);
+    const EXECUTORS = computed(() => store.getters.EXECUTORS);
+    const MODULES = computed(() => store.getters.MODULES);
+    const optionsModules = computed(() => store.getters.OPTIONS_MODULES);
+    const module_index = computed(() => store.getters.MODULE_INDEX);
+
     const model = ref(null);
     const modelStatus = ref(null);
     const modelModule = ref(null);
     const indexExecutor = ref(0);
     const optionsStatus = ["Назначена", "Выполнена", "Завершена"];
-    const EXECUTORS = computed(() => store.getters.EXECUTORS);
-    store.dispatch("GET_MODULES");
-    const MODULES = computed(() => store.getters.MODULES);
     const statusId = ref("");
-    const optionsModules = computed(() => store.getters.OPTIONS_MODULES);
-    const module_index = computed(() => store.getters.MODULE_INDEX);
+    
     const form = ref({
       name: props.task.name,
       description: props.task.property4,
@@ -89,6 +90,7 @@ export default defineComponent({
         }
       },
     });
+
     statusId.value = props.task.property5;
     if (props.task.property5 == "1700970386717883161") {
       modelStatus.value = "Назначена";
@@ -97,6 +99,7 @@ export default defineComponent({
     } else {
       modelStatus.value = "Завершена";
     }
+    
     model.value =
       props.task.property6.fullname.first_name +
       " " +

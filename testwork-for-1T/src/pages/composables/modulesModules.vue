@@ -122,7 +122,6 @@ export default {
     const showForm_updateModule = ref(false);
     const currentModuleClickUp = ref();
     const currentTaskClickUp = ref();
-    store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
     const current_module = reactive({});

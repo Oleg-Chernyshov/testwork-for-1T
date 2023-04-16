@@ -33,7 +33,6 @@ export default {
     const current_module = reactive({});
     const propertyStatus = reactive({});
 
-    store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
     

@@ -36,7 +36,6 @@ export default defineComponent({
     const store = useStore();
     const $q = useQuasar();
 
-    store.dispatch("GET_EXECUTORS");
     const executors = computed(() => store.getters.EXECUTORS);
 
     const deleteSubject = function (id) {

@@ -20,7 +20,6 @@ const queueCreate = async () => {
 };
 
 const stompConnect = (store) => {
-  console.log(store);
   const queue = Cookies.get("queue");
 
   const onConnect = async () => {
@@ -30,11 +29,6 @@ const stompConnect = (store) => {
       const messageObj = JSON.parse(message.body);
 
       console.log("Receive message:", messageObj);
-
-        store.dispatch("GET_MODULES");
-        store.dispatch("GET_ALL_TASKS");
-        store.dispatch("GET_EXECUTORS");
-        store.dispatch("GET_RESPONSIBLES")
 
         const refetch_modules = store.getters.REFETCH_MODULES
         refetch_modules()

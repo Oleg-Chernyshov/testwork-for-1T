@@ -36,7 +36,6 @@ export default defineComponent({
     const store = useStore();
     const $q = useQuasar();
 
-    store.dispatch("GET_RESPONSIBLES");
     const responsible = computed(() => store.getters.RESPONSIBLES);
     
     const deleteSubject = function (id) {

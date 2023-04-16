@@ -70,7 +70,6 @@ export default defineComponent({
     const optionsStatus = ["Назначена", "Выполнена", "Завершена"];
     const statusId = ref("");
 
-    store.dispatch("GET_EXECUTORS");
     const executors = computed(() => store.getters.EXECUTORS);
     const MODULES = computed(() => store.getters.MODULES);
     const options = computed(() => store.getters.OPTIONS_EXECUTORS);
