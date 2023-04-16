@@ -77,7 +77,7 @@
     
   </q-table>
 
-  <q-dialog v-model="showForm_addModule">
+    <q-dialog v-model="showForm_addModule">
       <FormAddModule />
     </q-dialog>
     <q-dialog v-model="showForm_updateModule">
@@ -122,7 +122,6 @@ export default {
     const showForm_addModule = ref(false);
     let showForm_updateModule = ref(false);
     const currentModuleClickUp = ref();
-    const currentTaskClickUp = ref();
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
@@ -209,7 +208,6 @@ export default {
         id.value = env.target.id;
         idUpdateModule.value = env.target.id;
         currentModuleClickUp.value = mod;
-        currentTaskClickUp.value = task;
         showForm_updateModule.value = !showForm_updateModule.value
         
       },

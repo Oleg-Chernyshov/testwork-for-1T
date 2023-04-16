@@ -1,27 +1,32 @@
 <template>
-  <div class="q-pa-md">
+  
     <h5>Ответственные</h5>
-    <table class="table">
-      <thead>
-        <th>Почта</th>
-        <th>Имя</th>
-        <th>Фамилия</th>
-        <th>Действия</th>
-      </thead>
-      <tbody>
-        <tr v-for="res in responsible" :key="res.id">
-          <td>{{ res.email.email }}</td>
-          <td>{{ res.fullname.first_name }}</td>
-          <td>{{ res.fullname.last_name }}</td>
-          <button class="btn" @click="deleteSubject(res.id)">Удалить</button>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <q-table 
+      :rows="responsible"
+      :columns="columns"
+      :pagination="pagination"
+      :pagination-labels="{rowsPerPage: 'Строк на странице', rowsPerPageAll: 'Все'}"
+      :rows-per-page-options="[5, 10, 20]"
+    >
+      
+      
+      <template v-slot:body="props">
+        <q-tr :props="props">
+        
+          <q-td>{{ props.row.email.email }}</q-td>
+          <q-td>{{ props.row.fullname.first_name }}</q-td>
+          <q-td>{{ props.row.fullname.last_name }}</q-td>
+          <button class="btn" @click="deleteSubject(props.row.id)">Удалить</button>
+
+        </q-tr>
+    </template>
+      
+    </q-table>
+  
 </template>
 
 <script>
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, reactive } from "vue";
 import { useStore } from "vuex";
 import { DeleteSubject } from "src/api/main/mutations.js";
 import { ApolloClient } from "@apollo/client/core";
@@ -35,6 +40,20 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const $q = useQuasar();
+
+    const pagination = reactive({
+      rowsPerPage: 10,
+      page: 1,
+      sortBy: 'name',
+    })
+
+
+  const columns = [
+  { name: 'Почта', align: 'left', label: 'Почта', field: 'Почта'},
+  { name: 'Имя', align: 'left', label: 'Имя', field: 'Имя'},
+  { name: 'Фамилия', align: 'left', label: 'Фамилия', field: 'Фамилия' },
+  { name: 'Действия', align: 'left', label: 'Действия', field: 'Действия' },
+]
 
     store.dispatch("GET_RESPONSIBLES");
     const responsible = computed(() => store.getters.RESPONSIBLES);
@@ -52,7 +71,9 @@ export default defineComponent({
 
     return {
       responsible,
-      deleteSubject
+      deleteSubject,
+      columns,
+      pagination,
     };
   },
 });

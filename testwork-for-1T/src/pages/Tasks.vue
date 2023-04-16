@@ -2,57 +2,61 @@
   <q-page class="">
     <div class="modules__module">
       <h5>ВСЕ ЗАДАЧИ</h5>
-      <table class="modules__table-module table" v-if="!allTasks.length == 0">
-        <thead>
-          <tr>
-            <th>Задача</th>
-            <th>Описание</th>
-            <th>Статус</th>
-            <th>Исполнитель</th>
-            <th>Действия</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="task in allTasks" :key="task.id">
-            <td>{{ task.name }}</td>
-            <td>
-              {{ task.property4 }}
-            </td>
-            <td
+      <q-table v-if="!allTasks.length == 0"
+      :rows="allTasks"
+      :columns="columns"
+      :pagination="pagination"
+      :pagination-labels="{rowsPerPage: 'Строк на странице', rowsPerPageAll: 'Все'}"
+      :rows-per-page-options="[5, 10, 20]"
+      >
+        <template v-slot:body="props">
+          <q-tr :props="props">
+
+            <q-td>{{ props.row.name }}</q-td>
+
+            <q-td>
+              {{ props.row.property4 }}
+            </q-td>
+
+            <q-td
               :class="
-                task.property5 == 1700970386717883161
+                props.row.property5 == 1700970386717883161
                   ? 'assigned'
-                  : task.property5 == 967659251654331262
+                  : props.row.property5 == 967659251654331262
                   ? 'accomplished'
                   : 'completed'
               "
             >
               {{
                 (function () {
-                  if (task.property5 == "1700970386717883161") {
+                  if (props.row.property5 == "1700970386717883161") {
                     return "Назначена";
-                  } else if (task.property5 == "967659251654331262")
+                  } else if (props.row.property5 == "967659251654331262")
                     return "Выполнена";
-                  else if (task.property5 == "1383309069201480491")
+                  else if (props.row.property5 == "1383309069201480491")
                     return "Завершена";
                 })()
               }}
-            </td>
-            <td>
+            </q-td>
+
+            <q-td>
               {{
-                task.property6?.fullname.first_name +
+                props.row.property6?.fullname.first_name +
                 " " +
-                task.property6?.fullname.last_name
+                props.row.property6?.fullname.last_name
               }}
-            </td>
-            <td>
-              <button class="q-mr-sm btn" @click.self="updateTask(task)">
+            </q-td>
+
+            <q-td>
+              <button class="q-mr-sm btn" @click.self="updateTask(props.row)">
                 Выполнена
               </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </q-td>
+
+          </q-tr>
+        </template>
+        
+      </q-table>
       <div v-else>Список задач пуст</div>
     </div>
   </q-page>
@@ -62,7 +66,7 @@
 import { useStore } from "vuex";
 import FormUpdateTask from "../components/FormUpdateTask.vue";
 import { useMutation } from "@vue/apollo-composable";
-import { defineComponent, ref, computed, watch } from "vue";
+import { defineComponent, ref, computed, watch, reactive } from "vue";
 import { getClientOptions } from "src/apollo/index";
 import { updateUser } from "../api/main/mutations";
 import { provideApolloClient } from "@vue/apollo-composable";
@@ -78,6 +82,21 @@ export default defineComponent({
     const store = useStore();
     const $q = useQuasar();
     const currentTaskClickUp = ref();
+
+    const pagination = reactive({
+      rowsPerPage: 10,
+      page: 1,
+      sortBy: 'name',
+    })
+
+
+  const columns = [
+  { name: 'Задача', align: 'left', label: 'Задача', field: 'Задача' },
+  { name: 'Описание', align: 'left', label: 'Описание', field: 'Описание'  },
+  { name: 'Статус', align: 'left', label: 'Статус', field: 'Статус',  },
+  { name: 'Исполнитель', align: 'left', label: 'Исполнитель', field: 'Исполнитель'},
+  { name: 'Действия', align: 'left', label: 'Действия', field: 'Действия' },
+]
 
     store.dispatch("GET_ALL_TASKS");  
     const allTasks = computed(() => store.getters.ALL_TASKS);
@@ -108,6 +127,8 @@ export default defineComponent({
       allTasks,
       updateTask,
       currentTaskClickUp,
+      columns,
+      pagination,
     };
   },
 });
