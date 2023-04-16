@@ -35,6 +35,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const $q = useQuasar();
+
     store.dispatch("GET_EXECUTORS");
     const executors = computed(() => store.getters.EXECUTORS);
 
@@ -46,7 +47,9 @@ export default defineComponent({
           id: id,
         },
       }));
+
       response("Пользователь удален", "Ошибка", mutate, $q);
+      
     };
 
     return {

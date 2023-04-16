@@ -72,7 +72,7 @@
     </table>
     <q-btn
       class="q-mt-sm"
-      color="primary"
+      color="green"
       @click="
         showForm_addTask = !showForm_addTask;
         set_id_module(module_index);
@@ -127,10 +127,12 @@ export default {
     const showForm_filesForm = ref(false);
     const currentModuleClickUp = ref();
     const currentTaskClickUp = ref();
+    const $q = useQuasar();
+
     store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
-    const $q = useQuasar();
+
     const deleteTask = function (id) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);

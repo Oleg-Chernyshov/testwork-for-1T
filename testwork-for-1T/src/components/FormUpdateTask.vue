@@ -34,7 +34,7 @@
           <q-select v-model="model" :options="options" label="Исполнитель" />
         </div>
         <div class="form-field col-lg-12 justify-between flex">
-          <input name="" class="submit-btn" type="submit" value="Создать" />
+          <input name="" class="submit-btn" type="submit" value="Обновить" />
           <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
       </form>
@@ -146,18 +146,12 @@ export default defineComponent({
           onResult((queryResult)=> {
             for(let subject of queryResult.data.permissionTreeSubjects.data){
               if(subject.level == 7){
-                console.log(subject);
-                console.log();
                 const { mutate } = useMutation(permissionRuleDelete, ()=>({
                    variables:{
                     "id": subject.permission_rule_id
                    }
                 }))
                 const response_3 = mutate()
-                response_3
-                  .then(function(result){
-                    console.log(result);
-                  })
               }
             }
             const { mutate } = useMutation(createRule, ()=>({
@@ -174,7 +168,6 @@ export default defineComponent({
             const response_2 = mutate()
             response_2
             .then(function (result){
-              console.log(result);
               $q.notify({
                 type: "positive",
                 message: "Модули обновлены",

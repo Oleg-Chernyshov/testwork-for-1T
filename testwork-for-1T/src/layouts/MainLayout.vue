@@ -2,7 +2,14 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          @click="toggleLeftDrawer"
+        />
 
         <q-toolbar-title> Quasar App </q-toolbar-title>
       </q-toolbar>
@@ -11,8 +18,15 @@
     <q-drawer class="q-pt-xl" v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
         <q-list bordered class="rounded-borders">
-          <q-expansion-item v-if="role === 'Владелец'" to="/Team" expand-separator icon="" label="КОМАНДА" caption=""
-            default-opened>
+          <q-expansion-item
+            v-if="role === 'Владелец'"
+            to="/Team"
+            expand-separator
+            icon=""
+            :label="`${namesOfPages[0]}`"
+            caption=""
+            default-opened
+          >
             <q-tabs align="left">
               <q-route-tab to="/Executors" label="Исполнители" />
             </q-tabs>
@@ -21,24 +35,50 @@
               <q-route-tab to="/Responsible" label="Ответственные" />
             </q-tabs>
           </q-expansion-item>
-          <q-expansion-item v-if="role === 'Владелец'" to="/Deleted" expand-separator icon="" label="ИСКЛЮЧЕННЫЕ"
-            caption="" default-opened>
+          <q-expansion-item
+            v-if="role === 'Владелец'"
+            to="/Deleted"
+            expand-separator
+            icon=""
+            :label="`${namesOfPages[1]}`"
+            caption=""
+            default-opened
+          >
             <q-tabs align="left">
-              <q-route-tab to="/Excluded" label="Исключенные" />
+              <q-route-tab to="/Excluded" :label="`${namesOfPages[1]}`" />
             </q-tabs>
           </q-expansion-item>
-          <q-expansion-item v-if="role == 'Ответсвенный' || role == 'Владелец'" to="/Modules" expand-separator icon=""
-            label="МОДУЛИ" caption="" default-opened @click="get_module_index(-1)">
-            <q-tabs indicator-color="transparent" v-for="(mod, index) in MODULES" :key="mod.id" align="left"
-              @click="get_module_index(index)">
+          <q-expansion-item
+            v-if="role == 'Ответсвенный' || role == 'Владелец'"
+            to="/Modules"
+            expand-separator
+            icon=""
+            :label="`${namesOfPages[3]}`"
+            caption=""
+            default-opened
+            @click="get_module_index(-1)"
+          >
+            <q-tabs
+              indicator-color="transparent"
+              v-for="(mod, index) in MODULES"
+              :key="mod.id"
+              align="left"
+              @click="get_module_index(index)"
+            >
               <q-route-tab to="/Modules">
                 <div>{{ mod.name }}</div>
               </q-route-tab>
             </q-tabs>
           </q-expansion-item>
 
-          <q-expansion-item v-if="role == 'Исполнитель' || role == 'Владелец'" to="/AllTasks" expand-separator icon=""
-            label="ЗАДАЧИ" caption="">
+          <q-expansion-item
+            v-if="role == 'Исполнитель' || role == 'Владелец'"
+            to="/AllTasks"
+            expand-separator
+            icon=""
+            :label="`${namesOfPages[2]}`"
+            caption=""
+          >
           </q-expansion-item>
         </q-list>
       </q-list>
@@ -59,7 +99,7 @@
 <script>
 import { defineComponent, ref, computed, onMounted } from "vue";
 import { useQuery } from "@vue/apollo-composable";
-import { GetAllPages, GetAllTypes } from "src/api/main/queryes";
+import { GetAllPages } from "src/api/main/queryes";
 import { useStore } from "vuex";
 import { GetGroupById } from "src/api/main/queryes";
 import { getClientOptions } from "src/apollo/index";
@@ -73,31 +113,31 @@ export default defineComponent({
     const leftDrawerOpen = ref(false);
     const role = ref("");
     const store = useStore();
+    const namesOfPages = ref([]);
     const get_module_index = function (index) {
       store.commit("setModuleIndex", index);
     };
+
     store.dispatch("GET_RESPONSIBLES");
     store.dispatch("GET_EXECUTORS");
+    store.dispatch("GET_MODULES");
+
     const responsible = computed(() => store.getters.RESPONSIBLES);
     const executors = computed(() => store.getters.EXECUTORS);
-    store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
 
     onMounted(() => {
-      stompApi.queueCreate().then((result) => { });
+      stompApi.queueCreate().then((result) => {});
       stompApi.stompConnect(store);
     });
-    //Получение всех страниц
-    const { onResult } = useQuery(GetAllPages);
-    onResult((queryResult) => {
-      console.log("Pages", queryResult.data.pages.data);
-    });
 
-    //Получение всех типов
     {
-      const { onResult } = useQuery(GetAllTypes);
-      onResult((queryResult) => {
-        //console.log(queryResult.data);
+      const { onResult } = useQuery(GetAllPages);
+      onResult((result) => {
+        result.data.pages.data.forEach((item) => {
+          namesOfPages.value.push(item.title);
+        });
+        console.log("namesOfPages", namesOfPages.value);
       });
     }
 
@@ -149,6 +189,7 @@ export default defineComponent({
       role,
       leftDrawerOpen,
       tab: "mail",
+      namesOfPages,
       get_module_index,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;

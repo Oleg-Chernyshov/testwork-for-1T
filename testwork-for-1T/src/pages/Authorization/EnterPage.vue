@@ -32,10 +32,6 @@
             class="q-ml-sm"
           />
         </div>
-        <p class="q-pt-md">
-          Еще нет аккаунта?
-          <router-link to="/register">Зарегистрируйте его сейчас</router-link>
-        </p>
       </q-form>
     </div>
   </q-page>
@@ -60,7 +56,9 @@ export default defineComponent({
     const password = ref("");
     const error = ref("");
     const store = useStore();
+
     const { mutate: UserSignInMutation } = useMutation(UserSignIn);
+
     return {
       async EnterSubmit() {
         await UserSignInMutation({
@@ -76,18 +74,15 @@ export default defineComponent({
             const apolloClient = new ApolloClient(getClientOptions());
             provideApolloClient(apolloClient);
 
-            const { onResult } = useQuery(UserQuery, {"id": String(MutationResult.data.userSignIn.recordId)})
+            const { onResult } = useQuery(UserQuery, {
+              id: String(MutationResult.data.userSignIn.recordId),
+            });
             onResult((queryResult) => {
               console.log(queryResult);
               console.log(queryResult.data.user.email);
-              sessionStorage.setItem(
-                "email",
-                queryResult.data.user.email
-              )
+              sessionStorage.setItem("email", queryResult.data.user.email);
               router.push("/app");
-            })
-
-            
+            });
           })
           .catch((e) => {
             error.value = "Неверный логин или пароль";

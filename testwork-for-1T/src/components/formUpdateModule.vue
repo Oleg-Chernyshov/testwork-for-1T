@@ -61,7 +61,7 @@
           <q-select v-model="model" :options="options" label="Ответсвенный" />
         </div>
         <div class="form-field col-lg-12 justify-between flex">
-          <input name="" class="submit-btn" type="submit" value="Создать" />
+          <input name="" class="submit-btn" type="submit" value="Обновить" />
           <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
       </form>
@@ -101,13 +101,10 @@ export default defineComponent({
       props.mod.property7.fullname.first_name +
       " " +
       props.mod.property7.fullname.last_name;
-
+    
     store.dispatch("GET_RESPONSIBLES");
     const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
-
-    watch(options, () => {
-      console.log(options.value);
-    });
+    indexResponsible.value = options.value.indexOf(model.value);
 
     const responsible = computed(() => store.getters.RESPONSIBLES);
 
@@ -141,7 +138,6 @@ export default defineComponent({
       const response = mutate();
       response
         .then(function (result) {
-          console.log(result);
           const { onResult } = useQuery(permissionTreeSubjects, {
               modelId: props.idUpdateModule,
               groupId: "1305438642755218144"
@@ -176,7 +172,6 @@ export default defineComponent({
             const response_2 = mutate()
             response_2
             .then(function (result){
-              console.log(result);
               $q.notify({
                 type: "positive",
                 message: "Модули обновлены",

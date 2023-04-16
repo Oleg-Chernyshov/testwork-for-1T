@@ -67,12 +67,12 @@ export default defineComponent({
     const indexExecutor = ref(0);
     const indexModule = ref(0);
     const optionsStatus = ["Назначена", "Выполнена", "Завершена"];
+    const statusId = ref("");
+
     store.dispatch("GET_EXECUTORS");
     const executors = computed(() => store.getters.EXECUTORS);
     const MODULES = computed(() => store.getters.MODULES);
     const options = computed(() => store.getters.OPTIONS_EXECUTORS);
-
-    const statusId = ref("");
 
     watch(model, () => {
       indexExecutor.value = options.value.indexOf(model.value);
@@ -102,7 +102,7 @@ export default defineComponent({
             property4: e.target.elements.description.value,
             property5: statusId.value,
             property6: {
-              "2598174384277431501": executors.value[indexExecutor.value].id,
+              "3922421966920449006": executors.value[indexExecutor.value].id,
             },
             property8: {
               "2673961667589284866": MODULES.value[props.idModule].id,
