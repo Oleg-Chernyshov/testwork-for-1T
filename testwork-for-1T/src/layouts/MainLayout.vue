@@ -78,16 +78,17 @@ export default defineComponent({
       store.commit("setModuleIndex", index);
     };
 
-    store.dispatch("GET_RESPONSIBLES");
-    store.dispatch("GET_EXECUTORS");
-    store.dispatch("GET_MODULES");
-    store.dispatch("GET_ALL_TASKS");
-
     const responsible = computed(() => store.getters.RESPONSIBLES);
     const executors = computed(() => store.getters.EXECUTORS);
     const MODULES = computed(() => store.getters.MODULES);
 
     onMounted(() => {
+      
+      store.dispatch("GET_RESPONSIBLES");
+      store.dispatch("GET_EXECUTORS");
+      store.dispatch("GET_MODULES");
+      store.dispatch("GET_ALL_TASKS");
+
       stompApi.queueCreate().then((result) => { });
       stompApi.stompConnect(store);
     });

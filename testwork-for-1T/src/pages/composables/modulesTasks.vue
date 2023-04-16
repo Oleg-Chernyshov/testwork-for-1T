@@ -116,7 +116,6 @@ export default {
     const currentTaskClickUp = ref();
     const $q = useQuasar();
 
-    store.dispatch("GET_MODULES");
     const MODULES = computed(() => store.getters.MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
 

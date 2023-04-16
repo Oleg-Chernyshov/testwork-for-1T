@@ -39,7 +39,6 @@ const stompConnect = (store) => {
         const refetch_responsibles = store.getters.REFETCH_RESPONSIBLES
         refetch_responsibles()
       
-
       message.ack();
     };
 

@@ -99,11 +99,12 @@ export default defineComponent({
     } else {
       modelStatus.value = "Завершена";
     }
-    
+
     model.value =
       props.task.property6.fullname.first_name +
       " " +
       props.task.property6.fullname.last_name;
+    indexExecutor.value = options.value.indexOf(model.value);
     watch(model, () => {
       indexExecutor.value = options.value.indexOf(model.value);
     });
@@ -152,27 +153,30 @@ export default defineComponent({
                    }
                 }))
                 const response_3 = mutate()
-              }
-            }
-            const { mutate } = useMutation(createRule, ()=>({
-            variables:{
-              input: {
-                model_type: "object",
-                model_id: props.id,
-                owner_type: "subject",
-                owner_id: EXECUTORS.value[indexExecutor.value].id,
-                level: 7
-                }
-              }
-            }))
-            const response_2 = mutate()
-            response_2
-            .then(function (result){
-              $q.notify({
-                type: "positive",
-                message: "Модули обновлены",
-              });
-            })
+                response_3
+                .then(function(result){
+                  const { mutate } = useMutation(createRule, ()=>({
+                  variables:{
+                    input: {
+                      model_type: "object",
+                      model_id: props.id,
+                      owner_type: "subject",
+                      owner_id: EXECUTORS.value[indexExecutor.value].id,
+                      level: 7
+                    }
+                  }
+                }))
+                const response_2 = mutate()
+                response_2
+                .then(function (result){
+                  $q.notify({
+                    type: "positive",
+                    message: "Модули обновлены",
+                  });
+                })
+              })
+             }
+            } 
           })
         })
         .catch((err) => {
