@@ -1,7 +1,7 @@
 <template>
   
     <h5>Исполнители</h5>
-    <q-table 
+    <q-table class="q-mx-lg"
       :rows="executors"
       :columns="columns"
       :pagination="pagination"
@@ -48,25 +48,11 @@ export default defineComponent({
 
 
   const columns = [
-  { name: 'Почта', align: 'left', label: 'Почта', field: 'Почта'},
-  { name: 'Имя', align: 'left', label: 'Имя', field: 'Имя'},
-  { name: 'Фамилия', align: 'left', label: 'Фамилия', field: 'Фамилия' },
-  { name: 'Действия', align: 'left', label: 'Действия', field: 'Действия' },
-]
-
-    const pagination = reactive({
-      rowsPerPage: 10,
-      page: 1,
-      sortBy: 'name',
-    })
-
-
-  const columns = [
-  { name: 'Почта', align: 'left', label: 'Почта', field: 'Почта'},
-  { name: 'Имя', align: 'left', label: 'Имя', field: 'Имя'},
-  { name: 'Фамилия', align: 'left', label: 'Фамилия', field: 'Фамилия' },
-  { name: 'Действия', align: 'left', label: 'Действия', field: 'Действия' },
-]
+    { name: 'Почта', align: 'left', label: 'Почта', field: 'Почта'},
+    { name: 'Имя', align: 'left', label: 'Имя', field: 'Имя'},
+    { name: 'Фамилия', align: 'left', label: 'Фамилия', field: 'Фамилия' },
+    { name: 'Действия', align: 'left', label: 'Действия', field: 'Действия' },
+  ]
 
     const executors = computed(() => store.getters.EXECUTORS);
 

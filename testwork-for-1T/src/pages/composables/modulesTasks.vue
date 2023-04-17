@@ -1,5 +1,5 @@
 <template>
-  
+  <div>
     <h5>{{ MODULES[module_index].name }}</h5>
     
     <q-table
@@ -64,10 +64,11 @@
             >
               Файлы
             </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </q-td>
+        </q-tr>
+      </template>
+
+    </q-table>
     <q-btn
       class="q-mt-sm"
       color="green"
@@ -76,11 +77,7 @@
         set_id_module(module_index);
       "
       >Добавить задачу</q-btn
-    >
-      </template>
-
-    </q-table>
-    
+    > 
     <div v-if="MODULES[module_index].property8.length == 0">
       Список задач пуст
     </div>
@@ -128,7 +125,6 @@ export default {
     const showForm_addTask = ref(false);
     const showForm_updateTask = ref(false);
     const showForm_filesForm = ref(false);
-    const currentModuleClickUp = ref();
     const currentTaskClickUp = ref();
     const $q = useQuasar();
 
@@ -139,13 +135,13 @@ export default {
     })
 
 
-  const columns = [
-  { name: 'Задача', align: 'left', label: 'Задача', field: 'Задача'},
-  { name: 'Описание', align: 'left', label: 'Описание', field: 'Описание'},
-  { name: 'Статус', align: 'left', label: 'Статус', field: 'Статус' },
-  { name: 'Исполнитель', align: 'left', label: 'Исполнитель', field: 'Исполнитель' },
-  { name: 'Действия', align: 'left', label: 'Действия', field: 'Действия' },
-]
+    const columns = [
+      { name: 'Задача', align: 'left', label: 'Задача', field: 'Задача'},
+      { name: 'Описание', align: 'left', label: 'Описание', field: 'Описание'},
+      { name: 'Статус', align: 'left', label: 'Статус', field: 'Статус' },
+      { name: 'Исполнитель', align: 'left', label: 'Исполнитель', field: 'Исполнитель' },
+      { name: 'Действия', align: 'left', label: 'Действия', field: 'Действия' },
+    ]
 
     const MODULES = computed(() => store.getters.MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
@@ -182,11 +178,20 @@ export default {
         idUpdateModule.value = env.target.id;
         currentTaskClickUp.value = task;
         showForm_updateTask.value = !showForm_updateTask.value;
-        console.log(task);
       },
     };
   },
 };
 </script>
 
-<style></style>
+<style>
+.assigned {
+  background-color: rgb(199, 21, 160) !important;
+}
+.accomplished {
+  background-color: rgb(235, 220, 20) !important;
+}
+.completed {
+  background-color: rgb(100, 207, 67) !important;
+}
+</style>

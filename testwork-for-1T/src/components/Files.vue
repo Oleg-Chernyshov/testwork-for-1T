@@ -37,15 +37,8 @@
 
 <script>
 import { useMutation } from "@vue/apollo-composable";
-import { defineComponent, ref, computed, watch } from "vue";
-import { getClientOptions } from "src/apollo/index";
-import { provideApolloClient } from "@vue/apollo-composable";
-import { ApolloClient } from "@apollo/client/core";
-import { useQuasar } from "quasar";
-import { addNewModule, createRule } from "src/api/main/mutations";
-import { useStore } from "vuex";
+import { defineComponent, ref} from "vue";
 import { UPLOAD_FILES } from "../api/main/mutations";
-import { cloneDeep } from "lodash";
 
 export default defineComponent({
   components: {},

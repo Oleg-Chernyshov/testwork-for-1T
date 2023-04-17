@@ -1,10 +1,7 @@
 <template>
-  <div class="modules q-pa-md">
-    
-    <modulesModules v-if="showTableModules()" />
-   
+  <div class="modules q-pa-md">  
+    <modulesModules v-if="showTableModules()" /> 
     <modulesTasks v-else />
-
   </div>
 </template>
 
@@ -15,8 +12,6 @@ import { GetPropertyStatus } from "src/api/main/queryes";
 import { useQuery } from "@vue/apollo-composable";
 import modulesTasks from "../pages/composables/modulesTasks.vue"
 import modulesModules from "../pages/composables/modulesModules.vue"
-
-
 
 export default {
   components: {

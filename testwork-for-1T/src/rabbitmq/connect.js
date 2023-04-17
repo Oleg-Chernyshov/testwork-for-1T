@@ -27,16 +27,14 @@ const stompConnect = (store) => {
 
       console.log('Receive message:', messageObj)
 
-      console.log("Receive message:", messageObj);
-
-        const refetch_modules = store.getters.REFETCH_MODULES
-        refetch_modules()
-        const refetch_all_tasks = store.getters.REFETCH_ALL_TASKS
-        refetch_all_tasks()
-        const refetch_executors = store.getters.REFETCH_EXECUTORS
-        refetch_executors()
-        const refetch_responsibles = store.getters.REFETCH_RESPONSIBLES
-        refetch_responsibles()
+      const refetch_modules = store.getters.REFETCH_MODULES
+      refetch_modules()
+      const refetch_all_tasks = store.getters.REFETCH_ALL_TASKS
+      refetch_all_tasks()
+      const refetch_executors = store.getters.REFETCH_EXECUTORS
+      refetch_executors()
+      const refetch_responsibles = store.getters.REFETCH_RESPONSIBLES
+      refetch_responsibles()
       
       message.ack();
     };

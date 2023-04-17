@@ -1,7 +1,7 @@
 <template>
   
     <h5>Ответственные</h5>
-    <q-table 
+    <q-table class="q-mx-lg"
       :rows="responsible"
       :columns="columns"
       :pagination="pagination"

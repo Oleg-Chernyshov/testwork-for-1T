@@ -88,12 +88,12 @@
 
 
 <script>
-import { computed, reactive, watch, ref } from "vue";
+import { computed, reactive, watch, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import { GetPropertyStatus } from "src/api/main/queryes";
 import { useQuery } from "@vue/apollo-composable";
 import FormAddModule from "components/FormAddModule.vue";
-import FormUpdateModule from "src/components/formUpdateModule.vue";
+import FormUpdateModule from "src/components/FormUpdateModule.vue";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
@@ -107,7 +107,7 @@ export default {
     FormUpdateModule,
   },
 
-  mounted() {
+  OnMounted() {
     if (sessionStorage.role !== "Владелец") {
       this.disableAddBtn = true;
       this.disableRedBtn = true;
@@ -115,14 +115,16 @@ export default {
   },
 
   setup() {
+
     const id = ref(0);
     const idUpdateModule = ref(0);
     const idModule = ref(0);
     const store = useStore();
+
     const showForm_addModule = ref(false);
     let showForm_updateModule = ref(false);
+
     const currentModuleClickUp = ref();
-    const currentTaskClickUp = ref();
     const MODULES = computed(() => store.getters.MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
     const current_module = reactive({});
@@ -135,19 +137,27 @@ export default {
     })
 
 
-  const columns = [
-  { name: 'Модуль', align: 'left', label: 'Модуль', field: 'Модуль', sortable: true },
-  { name: 'Ответственный', align: 'left', label: 'Ответственный', field: 'Ответственный', sortable: true },
-  { name: 'Дата начала', align: 'left', label: 'Дата начала', field: 'Дата начала' },
-  { name: 'Назначенные задачи', align: 'left', label: 'Назначенные задачи', field: 'Назначенные задачи' },
-  { name: 'Назначенные задачи', align: 'left', label: 'Назначенные задачи', field: 'Назначенные задачи' },
-  { name: 'Выполненные задачи', align: 'left', label: 'Выполненные задачи', field: 'Выполненные задачи', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-  { name: 'Действия', label: 'Действия', align: 'left', field: 'Действия', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
-]
+    const columns = [
+      { name: 'Модуль', align: 'left', label: 'Модуль', field: 'Модуль', sortable: true },
+      { name: 'Ответственный', align: 'left', label: 'Ответственный', field: 'Ответственный', sortable: true },
+      { name: 'Дата начала', align: 'left', label: 'Дата начала', field: 'Дата начала' },
+      { name: 'Дата окончания', align: 'left', label: 'Дата окончания', field: 'Дата окончания' },
+      { name: 'Назначенные задачи', align: 'left', label: 'Назначенные задачи', field: 'Назначенные задачи', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
+      { name: 'Выполненные задачи', align: 'left', label: 'Выполненные задачи', field: 'Выполненные задачи', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
+      { name: 'Завершненные задачи', label: 'Завершенные задачи', align: 'left', field: 'Завершенные задачи', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
+      { name: 'Действия', label: 'Действия', align: 'left', field: 'Действия'}
+    ]
 
 
     const disableAddBtn = ref(false);
     const disableRedBtn = ref(false);
+
+    onMounted(()=>{
+      if (sessionStorage.role !== "Владелец") {
+        disableAddBtn.value = true;
+        disableRedBtn.value = true;
+      }
+    })
     const $q = useQuasar();
     const deleteModule = async function (mod) {
       try {

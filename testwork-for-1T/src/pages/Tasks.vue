@@ -2,7 +2,7 @@
   <q-page class="">
     <div class="modules__module">
       <h5>ВСЕ ЗАДАЧИ</h5>
-      <q-table v-if="!allTasks.length == 0"
+      <q-table v-if="!allTasks.length == 0" class="q-mx-lg"
       :rows="allTasks"
       :columns="columns"
       :pagination="pagination"
@@ -70,13 +70,10 @@ import { getClientOptions } from "src/apollo/index";
 import { updateUser } from "../api/main/mutations";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
-import { useQuasar } from "quasar";
-import { response } from "../functions/functions";
 
 export default defineComponent({
   setup() {
     const store = useStore();
-    const $q = useQuasar();
     const currentTaskClickUp = ref();
 
     const pagination = reactive({
@@ -86,16 +83,15 @@ export default defineComponent({
     })
 
 
-  const columns = [
-  { name: 'Задача', align: 'left', label: 'Задача', field: 'Задача' },
-  { name: 'Описание', align: 'left', label: 'Описание', field: 'Описание'  },
-  { name: 'Статус', align: 'left', label: 'Статус', field: 'Статус',  },
-  { name: 'Исполнитель', align: 'left', label: 'Исполнитель', field: 'Исполнитель'},
-  { name: 'Действия', align: 'left', label: 'Действия', field: 'Действия' },
-]
+    const columns = [
+      { name: 'Задача', align: 'left', label: 'Задача', field: 'Задача' },
+      { name: 'Описание', align: 'left', label: 'Описание', field: 'Описание'  },
+      { name: 'Статус', align: 'left', label: 'Статус', field: 'Статус',  },
+      { name: 'Исполнитель', align: 'left', label: 'Исполнитель', field: 'Исполнитель'},
+      { name: 'Действия', align: 'left', label: 'Действия', field: 'Действия' },
+    ] 
 
     const allTasks = computed(() => store.getters.ALL_TASKS);
-    const model = ref(null);
 
     const updateTask = function (task) {
       const apolloClient = new ApolloClient(getClientOptions());
@@ -116,7 +112,6 @@ export default defineComponent({
           id: task.id,
         },
       }));
-      mutate();
     };
 
     return {

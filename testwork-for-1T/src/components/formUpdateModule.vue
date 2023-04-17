@@ -45,7 +45,7 @@
             type="text"
             v-model="form.endData"
           />
-          <label class="label" for="endData">Дата окончания</label>
+          <label class="label" type="date" for="endData">Дата окончания</label>
         </div>
         <div class="form-field col-lg-6">
           <input
@@ -147,24 +147,23 @@ export default defineComponent({
           onResult((queryResult)=> {
             for(let subject of queryResult.data.permissionTreeSubjects.data){
               if(subject.level == 7){
-                console.log(subject);
                 const { mutate } = useMutation(permissionRuleDelete, ()=>({
                    variables:{
                     "id": subject.permission_rule_id
                    }
                 }))
                 const response_2 = mutate()
-                response_2
-                  .then(function(result){
-                  const { mutate } = useMutation(createRule, ()=>({
-                    variables:{
-                      input: {
-                        model_type: "object",
-                        model_id: props.idUpdateModule,
-                        owner_type: "subject",
-                        owner_id: responsible.value[indexResponsible.value].id,
-                        level: 7
-                      }       
+              }
+            }
+            const { mutate } = useMutation(createRule, ()=>({
+                variables:{
+                  input: {
+                    model_type: "object",
+                    model_id: props.idUpdateModule,
+                    owner_type: "subject",
+                    owner_id: responsible.value[indexResponsible.value].id,
+                    level: 7
+                  }       
                     }
                   }))
                   const response_3 = mutate()
@@ -174,11 +173,7 @@ export default defineComponent({
                     type: "positive",
                     message: "Модули обновлены",
                   });
-                  })
                 })
-              }
-            }
-            
           })
           
         })
