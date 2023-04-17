@@ -105,12 +105,16 @@ export default defineComponent({
       props.mod.property7.fullname.last_name;
     
     const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
-    indexResponsible.value = options.value.indexOf(model.value);
+    const flag = options.value.indexOf(model.value);
 
+    indexResponsible.value = options.value.indexOf(model.value);
     const responsible = computed(() => store.getters.RESPONSIBLES);
 
     watch(model, () => {
+      console.log('watch');
       indexResponsible.value = options.value.indexOf(model.value);
+      console.log(indexResponsible.value);
+      console.log(flag);
     });
 
     const UpdateModule = function (e) {
@@ -136,8 +140,12 @@ export default defineComponent({
           id: props.idUpdateModule,
         },
       }));
-
       const response = mutate();
+      console.log(indexResponsible.value);
+      console.log(flag);
+      if(flag !== indexResponsible.value){
+        console.log(indexResponsible.value);
+        console.log(flag); 
       response
         .then(function (result) {
           const { onResult } = useQuery(permissionTreeSubjects, {
@@ -169,6 +177,8 @@ export default defineComponent({
                   const response_3 = mutate()
                   response_3
                   .then(function (result){
+                    console.log(indexResponsible.value);
+                    console.log(result);
                     $q.notify({
                     type: "positive",
                     message: "Модули обновлены",
@@ -184,6 +194,7 @@ export default defineComponent({
             message: "Ошибка",
           });
         });
+      }
     };
     return {
       UpdateModule,
