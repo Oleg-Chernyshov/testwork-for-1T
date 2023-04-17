@@ -35,6 +35,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const $q = useQuasar();
+    const $q = useQuasar();
 
     const responsible = computed(() => store.getters.RESPONSIBLES);
     

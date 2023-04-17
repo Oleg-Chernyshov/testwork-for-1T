@@ -74,14 +74,13 @@ export default defineComponent({
             const apolloClient = new ApolloClient(getClientOptions());
             provideApolloClient(apolloClient);
 
-            const { onResult } = useQuery(UserQuery, {"id": String(MutationResult.data.userSignIn.recordId)})
+            const { onResult } = useQuery(UserQuery, {
+              id: String(MutationResult.data.userSignIn.recordId),
+            });
             onResult((queryResult) => {
               console.log(queryResult);
               console.log(queryResult.data.user.email);
-              sessionStorage.setItem(
-                "email",
-                queryResult.data.user.email
-              )
+              sessionStorage.setItem("email", queryResult.data.user.email);
               router.push("/app");
             })
           })

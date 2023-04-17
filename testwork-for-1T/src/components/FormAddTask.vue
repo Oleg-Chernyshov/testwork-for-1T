@@ -102,7 +102,7 @@ export default defineComponent({
             property4: e.target.elements.description.value,
             property5: statusId.value,
             property6: {
-              "2598174384277431501": executors.value[indexExecutor.value].id,
+              "3922421966920449006": executors.value[indexExecutor.value].id,
             },
             property8: {
               "2673961667589284866": MODULES.value[props.idModule].id,
