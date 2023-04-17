@@ -1,5 +1,6 @@
 <template>
-  <h5 class="flex flex-center">Список исключенных пуст</h5>
+  <h5 class="flex flex-center">В разработке
+  </h5>
   <table class="q-pa-md table">
     <thead>
       <th>Почта</th>
@@ -9,3 +10,12 @@
     </thead>
   </table>
 </template>
+<script>
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  setup() {
+    
+  },
+})
+</script>

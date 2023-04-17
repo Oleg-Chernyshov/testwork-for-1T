@@ -1,10 +1,7 @@
 <template>
-  <div class="modules q-pa-md">
-    
-    <modulesModules v-if="showTableModules()" />
-   
+  <div class="modules q-pa-md">  
+    <modulesModules v-if="showTableModules()" /> 
     <modulesTasks v-else />
-
   </div>
 </template>
 
@@ -15,8 +12,6 @@ import { GetPropertyStatus } from "src/api/main/queryes";
 import { useQuery } from "@vue/apollo-composable";
 import modulesTasks from "../pages/composables/modulesTasks.vue"
 import modulesModules from "../pages/composables/modulesModules.vue"
-
-
 
 export default {
   components: {
@@ -30,15 +25,17 @@ export default {
     const idModule = ref(0);
     const store = useStore();
     const currentModuleClickUp = ref();
-    store.dispatch("GET_MODULES");
-    const MODULES = computed(() => store.getters.MODULES);
-    const module_index = computed(() => store.getters.MODULE_INDEX);
     const current_module = reactive({});
     const propertyStatus = reactive({});
+
+    const MODULES = computed(() => store.getters.MODULES);
+    const module_index = computed(() => store.getters.MODULE_INDEX);
+    
 
     const showTableModules = () => {
       return module_index.value <= -1;
     };
+    
     const get_module = function (module_index) {
       current_module.values = MODULES.value[module_index.value];
     };

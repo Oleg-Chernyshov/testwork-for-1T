@@ -208,3 +208,60 @@ query permissionTreeSubjects(
 		}
 	}
 }`
+
+export const rootPages = gql`
+  query pages {
+    rootPages {
+      data {
+        id
+        parent_id
+        page_type
+        title
+        content
+        icon
+        level
+        is_public
+        is_block
+        position
+        config
+        created_at
+        updated_at
+        object {
+          id
+          type_id
+        }
+        children {
+          data {
+            id
+            parent_id
+            page_type
+            title
+            content
+            icon
+            level
+            is_public
+            is_block
+            position
+            config
+            created_at
+            updated_at
+            object {
+              id
+              type_id
+            }
+          }
+        }
+      }
+      paginatorInfo {
+        perPage
+        count
+        total
+        currentPage
+        from
+        to
+        lastPage
+        hasMorePages
+      }
+    }
+  }
+`;
