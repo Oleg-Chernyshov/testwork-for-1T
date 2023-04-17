@@ -1,75 +1,75 @@
 <template>
-  <!-- Я убрал v-else -->
-  <div class="modules__module">
+  <div>
     <h5>{{ MODULES[module_index].name }}</h5>
-    <table
-      class="modules__table-module table"
+
+    <q-table
       v-if="!MODULES[module_index].property8.length == 0"
+      :rows="MODULES[module_index].property8"
+      :columns="columns"
+      :pagination="pagination"
+      :pagination-labels="{
+        rowsPerPage: 'Строк на странице',
+        rowsPerPageAll: 'Все',
+      }"
+      :rows-per-page-options="[5, 10, 20]"
     >
-      <thead>
-        <tr>
-          <th>Задача</th>
-          <th>Описание</th>
-          <th>Статус</th>
-          <th>Исполнитель</th>
-          <th>Действия</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="task in MODULES[module_index]?.property8" :key="task.id">
-          <td>{{ task.name }}</td>
-          <td>
-            {{ task.property4 }}
-          </td>
-          <td
+      <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td>{{ props.row.name }}</q-td>
+          <q-td>
+            {{ props.row.property4 }}
+          </q-td>
+
+          <q-td
             :class="
-              task.property5 == 1700970386717883161
+              props.row.property5 == 1700970386717883161
                 ? 'assigned'
-                : task.property5 == 967659251654331262
+                : props.row.property5 == 967659251654331262
                 ? 'accomplished'
                 : 'completed'
             "
           >
             {{
               (function () {
-                if (task.property5 == "1700970386717883161") {
+                if (props.row.property5 == "1700970386717883161") {
                   return "Назначена";
-                } else if (task.property5 == "967659251654331262")
+                } else if (props.row.property5 == "967659251654331262")
                   return "Выполнена";
-                else if (task.property5 == "1383309069201480491")
+                else if (props.row.property5 == "1383309069201480491")
                   return "Завершена";
               })()
             }}
-          </td>
-          <td>
+          </q-td>
+
+          <q-td>
             {{
-              task.property6?.fullname.first_name +
+              props.row.property6?.fullname.first_name +
               " " +
-              task.property6?.fullname.last_name
+              props.row.property6?.fullname.last_name
             }}
-          </td>
-          <td>
+          </q-td>
+
+          <q-td>
             <button
               class="q-mr-sm btn"
-              @click.self="
-                showForm_updateTask = !showForm_updateTask;
-                set_id($event, mod, task);
-              "
-              :id="task.id"
+              @click.self="set_id($event, props.row)"
+              :id="props.row.id"
             >
               Редактировать
             </button>
-            <button class="btn" @click="deleteTask(task.id)">Удалить</button>
+            <button class="btn" @click="deleteTask(props.row.id)">
+              Удалить
+            </button>
             <button
               class="btn"
               @click="showForm_filesForm = !showForm_filesForm"
             >
               Файлы
             </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </q-td>
+        </q-tr>
+      </template>
+    </q-table>
     <q-btn
       class="q-mt-sm"
       color="green"
@@ -82,6 +82,7 @@
     <div v-if="MODULES[module_index].property8.length == 0">
       Список задач пуст
     </div>
+
     <q-dialog v-model="showForm_addTask">
       <FormAddTask :idModule="idModule" />
     </q-dialog>
@@ -97,7 +98,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
 import FormAddTask from "components/FormAddTask.vue";
 import FormUpdateTask from "components/FormUpdateTask.vue";
@@ -125,11 +126,28 @@ export default {
     const showForm_addTask = ref(false);
     const showForm_updateTask = ref(false);
     const showForm_filesForm = ref(false);
-    const currentModuleClickUp = ref();
     const currentTaskClickUp = ref();
     const $q = useQuasar();
 
-    store.dispatch("GET_MODULES");
+    const pagination = reactive({
+      rowsPerPage: 10,
+      page: 1,
+      sortBy: "name",
+    });
+
+    const columns = [
+      { name: "Задача", align: "left", label: "Задача", field: "Задача" },
+      { name: "Описание", align: "left", label: "Описание", field: "Описание" },
+      { name: "Статус", align: "left", label: "Статус", field: "Статус" },
+      {
+        name: "Исполнитель",
+        align: "left",
+        label: "Исполнитель",
+        field: "Исполнитель",
+      },
+      { name: "Действия", align: "left", label: "Действия", field: "Действия" },
+    ];
+
     const MODULES = computed(() => store.getters.MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
 
@@ -155,18 +173,31 @@ export default {
       idUpdateModule,
       currentTaskClickUp,
       MODULES,
+      columns,
+      pagination,
       set_id_module(id) {
         idModule.value = id;
+        console.log(id, "sdofjso");
       },
-      set_id(env, mod, task) {
+      set_id(env, task) {
         id.value = env.target.id;
         idUpdateModule.value = env.target.id;
-        currentModuleClickUp.value = mod;
         currentTaskClickUp.value = task;
+        showForm_updateTask.value = !showForm_updateTask.value;
       },
     };
   },
 };
 </script>
 
-<style></style>
+<style>
+.assigned {
+  background-color: rgb(199, 21, 160) !important;
+}
+.accomplished {
+  background-color: rgb(235, 220, 20) !important;
+}
+.completed {
+  background-color: rgb(100, 207, 67) !important;
+}
+</style>

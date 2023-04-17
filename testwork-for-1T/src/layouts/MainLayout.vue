@@ -56,7 +56,9 @@
             to="/Modules"
             expand-separator
             icon=""
-            :label="`${namesOfPages2['Наши модули']}`"
+            :label="
+              role === 'Владелец' ? `${namesOfPages[3]}` : `${namesOfPages[2]}`
+            "
             caption=""
             default-opened
             @click="get_module_index(-1)"
@@ -79,7 +81,9 @@
             to="/AllTasks"
             expand-separator
             icon=""
-            :label="`${namesOfPages2['Мои задачи']}`"
+            :label="
+              role === 'Владелец' ? `${namesOfPages[2]}` : `${namesOfPages[0]}`
+            "
             caption=""
           >
           </q-expansion-item>
@@ -122,15 +126,13 @@ export default defineComponent({
       store.commit("setModuleIndex", index);
     };
 
-    store.dispatch("GET_RESPONSIBLES");
-    store.dispatch("GET_EXECUTORS");
-    store.dispatch("GET_MODULES");
-
-    const responsible = computed(() => store.getters.RESPONSIBLES);
-    const executors = computed(() => store.getters.EXECUTORS);
     const MODULES = computed(() => store.getters.MODULES);
 
     onMounted(() => {
+      store.dispatch("GET_RESPONSIBLES");
+      store.dispatch("GET_EXECUTORS");
+      store.dispatch("GET_MODULES");
+      store.dispatch("GET_ALL_TASKS");
       stompApi.queueCreate().then((result) => {});
       stompApi.stompConnect(store);
     });
@@ -155,11 +157,15 @@ export default defineComponent({
       });
       onResult((queryResult) => {
         let flag = 1;
-        for (let subject of responsible.value) {
+        console.log(queryResult);
+        console.log(queryResult.data.get_group.subject);
+        for (let subject of queryResult.data.get_group.subject) {
+          console.log(subject.email.email);
           if (subject.email.email == email) {
             sessionStorage.setItem("role", "Ответсвенный");
             role.value = "Ответсвенный";
             flag = 0;
+            console.log(1);
             break;
           }
         }
@@ -172,7 +178,7 @@ export default defineComponent({
           });
 
           onResult((queryResult) => {
-            for (let subject of executors.value) {
+            for (let subject of queryResult.data.get_group.subject) {
               if (subject.email.email == email) {
                 sessionStorage.setItem("role", "Исполнитель");
                 role.value = "Исполнитель";
@@ -181,6 +187,7 @@ export default defineComponent({
               }
             }
             if (flag) {
+              console.log(1);
               sessionStorage.setItem("role", "Владелец");
               role.value = "Владелец";
             }

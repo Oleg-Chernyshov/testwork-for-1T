@@ -88,10 +88,8 @@ export default defineComponent({
     const store = useStore();
     const model = ref(null);
     const indexResponsible = ref(0);
-    
-    store.dispatch("GET_RESPONSIBLES");
-    const RESPONSIBLES = computed(() => store.getters.RESPONSIBLES);
 
+    const RESPONSIBLES = computed(() => store.getters.RESPONSIBLES);
     const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
     
     watch(model, () => {

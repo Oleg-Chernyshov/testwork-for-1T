@@ -69,7 +69,6 @@ import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
-import { useStore } from "vuex";
 import { response } from "../functions/functions";
 
 export default defineComponent({
@@ -82,11 +81,7 @@ export default defineComponent({
     const input2_1 = ref("");
     const input2_2 = ref("");
     const input2_3 = ref("");
-    const store = useStore();
     const $q = useQuasar();
-
-    store.dispatch("GET_RESPONSIBLES");
-    store.dispatch("GET_EXECUTORS");
     
     const getFormExecuterValues = function (e) {
       const apolloClient = new ApolloClient(getClientOptions());

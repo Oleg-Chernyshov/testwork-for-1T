@@ -45,7 +45,7 @@
             type="text"
             v-model="form.endData"
           />
-          <label class="label" for="endData">Дата окончания</label>
+          <label class="label" type="date" for="endData">Дата окончания</label>
         </div>
         <div class="form-field col-lg-6">
           <input
@@ -90,6 +90,7 @@ export default defineComponent({
     const store = useStore();
     const model = ref(null);
     const indexResponsible = ref(0);
+
     const form = ref({
       name: props.mod.name,
       startData: props.mod.property2?.date,
@@ -97,12 +98,12 @@ export default defineComponent({
       endData: props.mod.property3?.date,
       endTime: props.mod.property3?.time,
     });
+    
     model.value =
       props.mod.property7.fullname.first_name +
       " " +
       props.mod.property7.fullname.last_name;
     
-    store.dispatch("GET_RESPONSIBLES");
     const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
     indexResponsible.value = options.value.indexOf(model.value);
 
@@ -135,6 +136,7 @@ export default defineComponent({
           id: props.idUpdateModule,
         },
       }));
+
       const response = mutate();
       response
         .then(function (result) {
@@ -145,38 +147,33 @@ export default defineComponent({
           onResult((queryResult)=> {
             for(let subject of queryResult.data.permissionTreeSubjects.data){
               if(subject.level == 7){
-                console.log(subject);
                 const { mutate } = useMutation(permissionRuleDelete, ()=>({
                    variables:{
                     "id": subject.permission_rule_id
                    }
                 }))
-                const response_3 = mutate()
-                response_3
-                  .then(function(result){
-                    console.log(result);
-                  })
+                const response_2 = mutate()
               }
             }
             const { mutate } = useMutation(createRule, ()=>({
-            variables:{
-              input: {
-                model_type: "object",
-                model_id: props.idUpdateModule,
-                owner_type: "subject",
-                owner_id: responsible.value[indexResponsible.value].id,
-                level: 7
-              }
-            }
-            }))
-            const response_2 = mutate()
-            response_2
-            .then(function (result){
-              $q.notify({
-                type: "positive",
-                message: "Модули обновлены",
-              });
-            })
+                variables:{
+                  input: {
+                    model_type: "object",
+                    model_id: props.idUpdateModule,
+                    owner_type: "subject",
+                    owner_id: responsible.value[indexResponsible.value].id,
+                    level: 7
+                  }       
+                    }
+                  }))
+                  const response_3 = mutate()
+                  response_3
+                  .then(function (result){
+                    $q.notify({
+                    type: "positive",
+                    message: "Модули обновлены",
+                  });
+                })
           })
           
         })

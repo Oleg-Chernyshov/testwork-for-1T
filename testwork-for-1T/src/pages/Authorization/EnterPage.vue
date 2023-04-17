@@ -82,7 +82,7 @@ export default defineComponent({
               console.log(queryResult.data.user.email);
               sessionStorage.setItem("email", queryResult.data.user.email);
               router.push("/app");
-            });
+            })
           })
           .catch((e) => {
             error.value = "Неверный логин или пароль";
