@@ -23,7 +23,7 @@
             to="/Team"
             expand-separator
             icon=""
-            :label="`${namesOfPages[0]}`"
+            :label="`${namesOfPages2['Команда']}`"
             caption=""
             default-opened
           >
@@ -45,7 +45,10 @@
             default-opened
           >
             <q-tabs align="left">
-              <q-route-tab to="/Excluded" :label="`${namesOfPages[1]}`" />
+              <q-route-tab
+                to="/Excluded"
+                :label="`${namesOfPages2['Исключенные']}`"
+              />
             </q-tabs>
           </q-expansion-item>
           <q-expansion-item
@@ -53,7 +56,7 @@
             to="/Modules"
             expand-separator
             icon=""
-            :label="`${namesOfPages[3]}`"
+            :label="`${namesOfPages2['Наши модули']}`"
             caption=""
             default-opened
             @click="get_module_index(-1)"
@@ -76,7 +79,7 @@
             to="/AllTasks"
             expand-separator
             icon=""
-            :label="`${namesOfPages[2]}`"
+            :label="`${namesOfPages2['Мои задачи']}`"
             caption=""
           >
           </q-expansion-item>
@@ -114,6 +117,7 @@ export default defineComponent({
     const role = ref("");
     const store = useStore();
     const namesOfPages = ref([]);
+    const namesOfPages2 = ref({});
     const get_module_index = function (index) {
       store.commit("setModuleIndex", index);
     };
@@ -136,8 +140,11 @@ export default defineComponent({
       onResult((result) => {
         result.data.pages.data.forEach((item) => {
           namesOfPages.value.push(item.title);
+          namesOfPages2.value[item.title] = item.title;
         });
+        console.log("namesOfPages2", namesOfPages2.value);
         console.log("namesOfPages", namesOfPages.value);
+        console.log("result.data.pages.data", result.data.pages.data);
       });
     }
 
@@ -188,6 +195,7 @@ export default defineComponent({
     return {
       role,
       leftDrawerOpen,
+      namesOfPages2,
       tab: "mail",
       namesOfPages,
       get_module_index,
