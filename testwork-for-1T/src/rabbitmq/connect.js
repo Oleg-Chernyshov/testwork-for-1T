@@ -2,11 +2,14 @@ import { provideApolloClient, useMutation } from '@vue/apollo-composable'
 import { ApolloClient } from '@apollo/client/core'
 import { createQueue } from 'src/api/main/mutations'
 import Cookies from 'js-cookie'
-import Client from 'src/rabbitmq/client'
 import { getClientOptions } from 'src/apollo/index'
+import Stomp from 'stompjs'
 
 const apolloClient = new ApolloClient(getClientOptions())
 provideApolloClient(apolloClient)
+
+const socket = new WebSocket('wss://stud.druid.1t.ru/ws')
+let client = Stomp.over(socket)
 
 const { mutate: creatingQueue } = useMutation(createQueue)
 
@@ -40,7 +43,7 @@ const stompConnect = (store) => {
       message.ack()
     }
 
-    Client.subscribe(`/amq/queue/${queue}`, onMessage, { ack: 'client' })
+    client.subscribe(`/amq/queue/${queue}`, onMessage, { ack: 'client' })
   }
 
   const onError = (msg) => {
@@ -51,7 +54,7 @@ const stompConnect = (store) => {
     console.log('Close', msg)
   }
 
-  Client.connect('readonly', '@3P^Lgdab)sv', onConnect, onError, '/', onClose)
+  client.connect('readonly', '@3P^Lgdab)sv', onConnect, onError, '/', onClose)
 }
 
 const stompApi = { queueCreate, stompConnect }
