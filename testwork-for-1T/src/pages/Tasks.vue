@@ -33,11 +33,11 @@
             >
               {{
                 (function () {
-                  if (props.row.property5 == "1700970386717883161") {
+                  if (props.row.property5 == "4900427590773954314") {
                     return "Назначена";
-                  } else if (props.row.property5 == "967659251654331262")
+                  } else if (props.row.property5 == "2492600062570616217")
                     return "Выполнена";
-                  else if (props.row.property5 == "1383309069201480491")
+                  else if (props.row.property5 == "3524495676216750814")
                     return "Завершена";
                 })()
               }}

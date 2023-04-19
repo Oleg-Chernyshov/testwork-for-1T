@@ -132,10 +132,10 @@ export default defineComponent({
             property4: e.target.elements.description.value,
             property5: statusId.value,
             property6: {
-              "2598174384277431501": EXECUTORS.value[indexExecutor.value].id,
+              "3922421966920449006": EXECUTORS.value[indexExecutor.value].id,
             },
             property8: {
-              "2673961667589284866": MODULES.value[module_index.value].id,
+              "1998660948760442394": MODULES.value[module_index.value].id,
             },
           },
           id: props.id,
@@ -146,7 +146,7 @@ export default defineComponent({
         .then(function (result) {
           const { onResult } = useQuery(permissionTreeSubjects, {
             modelId: props.id,
-            groupId: "8434793229479617275",
+            groupId: "1983313338588359465",
           });
           onResult((queryResult) => {
             for (let subject of queryResult.data.permissionTreeSubjects.data) {

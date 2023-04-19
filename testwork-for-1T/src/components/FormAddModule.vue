@@ -67,12 +67,7 @@
 
 <script>
 import { useMutation } from "@vue/apollo-composable";
-import {
-  defineComponent,
-  ref,
-  computed,
-  watch,
-} from "vue";
+import { defineComponent, ref, computed, watch } from "vue";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
@@ -91,7 +86,7 @@ export default defineComponent({
 
     const RESPONSIBLES = computed(() => store.getters.RESPONSIBLES);
     const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
-    
+
     watch(model, () => {
       indexResponsible.value = options.value.indexOf(model.value);
     });
@@ -112,7 +107,7 @@ export default defineComponent({
               time: e.target.elements.endTime.value,
             },
             property7: {
-              "2598174384277431501":
+              "3922421966920449006":
                 RESPONSIBLES.value[indexResponsible.value].id,
             },
           },
@@ -122,23 +117,23 @@ export default defineComponent({
       response
         .then(function (result) {
           console.log(result);
-          const { mutate } = useMutation(createRule, ()=>({
-            variables:{
-                input: {
-                  model_type: "object",
-                  model_id: result.data.create_type1.recordId,
-                  owner_type: "subject",
-                  owner_id: RESPONSIBLES.value[indexResponsible.value].id,
-                  level: 7
-                }
-              }
-            }))
-            const response_2 = mutate()
-            $q.notify({
-              type: "positive",
-              message: "Модуль добавлен",
-            });
-          })
+          const { mutate } = useMutation(createRule, () => ({
+            variables: {
+              input: {
+                model_type: "object",
+                model_id: result.data.create_type1.recordId,
+                owner_type: "subject",
+                owner_id: RESPONSIBLES.value[indexResponsible.value].id,
+                level: 7,
+              },
+            },
+          }));
+          const response_2 = mutate();
+          $q.notify({
+            type: "positive",
+            message: "Модуль добавлен",
+          });
+        })
         .catch((err) => {
           console.log("Ошибка", err);
           $q.notify({
@@ -156,12 +151,10 @@ export default defineComponent({
     return {
       createNewModule,
       options,
-      model
+      model,
     };
   },
 });
 </script>
 
-<style>
-
-</style>
+<style></style>

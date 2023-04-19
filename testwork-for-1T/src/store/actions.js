@@ -16,6 +16,7 @@ export const GET_MODULES = ({ commit }) => {
           refetch: refetch,
           optionsModules: options,
         })
+        console.log('modules', modules)
       })
     } catch (e) {
       console.log('Ошибка:', e)

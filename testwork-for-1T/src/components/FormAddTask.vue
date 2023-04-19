@@ -83,11 +83,11 @@ export default defineComponent({
 
     watch(modelStatus, () => {
       if (modelStatus.value == "Назначена") {
-        statusId.value = "1700970386717883161";
+        statusId.value = "4900427590773954314";
       } else if (modelStatus.value == "Выполнена") {
-        statusId.value = "967659251654331262";
+        statusId.value = "2492600062570616217";
       } else {
-        statusId.value = "1383309069201480491";
+        statusId.value = "3524495676216750814";
       }
     });
 
@@ -101,10 +101,10 @@ export default defineComponent({
             property4: e.target.elements.description.value,
             property5: statusId.value,
             property6: {
-              "2598174384277431501": executors.value[indexExecutor.value].id,
+              "3922421966920449006": executors.value[indexExecutor.value].id,
             },
             property8: {
-              "2673961667589284866": MODULES.value[props.idModule].id,
+              "1998660948760442394": MODULES.value[props.idModule].id,
             },
           },
         },

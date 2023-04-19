@@ -76,7 +76,11 @@ import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
 import { useQuasar } from "quasar";
-import { updateModule, createRule, permissionRuleDelete } from "../api/main/mutations";
+import {
+  updateModule,
+  createRule,
+  permissionRuleDelete,
+} from "../api/main/mutations";
 import { permissionTreeSubjects } from "src/api/main/queryes";
 import { useStore } from "vuex";
 
@@ -98,12 +102,12 @@ export default defineComponent({
       endData: props.mod.property3?.date,
       endTime: props.mod.property3?.time,
     });
-    
+
     model.value =
       props.mod.property7.fullname.first_name +
       " " +
       props.mod.property7.fullname.last_name;
-    
+
     const options = computed(() => store.getters.OPTIONS_RESPONSIBLES);
     const flag = options.value.indexOf(model.value);
 
@@ -111,7 +115,7 @@ export default defineComponent({
     const responsible = computed(() => store.getters.RESPONSIBLES);
 
     watch(model, () => {
-      console.log('watch');
+      console.log("watch");
       indexResponsible.value = options.value.indexOf(model.value);
       console.log(indexResponsible.value);
       console.log(flag);
@@ -133,7 +137,7 @@ export default defineComponent({
               time: e.target.elements.endTime.value,
             },
             property7: {
-              "2598174384277431501":
+              "3922421966920449006":
                 responsible.value[indexResponsible.value].id,
             },
           },
@@ -143,57 +147,56 @@ export default defineComponent({
       const response = mutate();
       console.log(indexResponsible.value);
       console.log(flag);
-      if(flag !== indexResponsible.value){
+      if (flag !== indexResponsible.value) {
         console.log(indexResponsible.value);
-        console.log(flag); 
-      response
-        .then(function (result) {
-          const { onResult } = useQuery(permissionTreeSubjects, {
+        console.log(flag);
+        response
+          .then(function (result) {
+            const { onResult } = useQuery(permissionTreeSubjects, {
               modelId: props.idUpdateModule,
-              groupId: "1305438642755218144"
-            })
-          onResult((queryResult)=> {
-            for(let subject of queryResult.data.permissionTreeSubjects.data){
-              if(subject.level == 7){
-                const { mutate } = useMutation(permissionRuleDelete, ()=>({
-                   variables:{
-                    "id": subject.permission_rule_id
-                   }
-                }))
-                const response_2 = mutate()
+              groupId: "5538548253621329902",
+            });
+            onResult((queryResult) => {
+              for (let subject of queryResult.data.permissionTreeSubjects
+                .data) {
+                if (subject.level == 7) {
+                  const { mutate } = useMutation(permissionRuleDelete, () => ({
+                    variables: {
+                      id: subject.permission_rule_id,
+                    },
+                  }));
+                  const response_2 = mutate();
+                }
               }
-            }
-            const { mutate } = useMutation(createRule, ()=>({
-                variables:{
+              const { mutate } = useMutation(createRule, () => ({
+                variables: {
                   input: {
                     model_type: "object",
                     model_id: props.idUpdateModule,
                     owner_type: "subject",
                     owner_id: responsible.value[indexResponsible.value].id,
-                    level: 7
-                  }       
-                    }
-                  }))
-                  const response_3 = mutate()
-                  response_3
-                  .then(function (result){
-                    console.log(indexResponsible.value);
-                    console.log(result);
-                    $q.notify({
-                    type: "positive",
-                    message: "Модули обновлены",
-                  });
-                })
+                    level: 7,
+                  },
+                },
+              }));
+              const response_3 = mutate();
+              response_3.then(function (result) {
+                console.log(indexResponsible.value);
+                console.log(result);
+                $q.notify({
+                  type: "positive",
+                  message: "Модули обновлены",
+                });
+              });
+            });
           })
-          
-        })
-        .catch((err) => {
-          console.log("Ошибка", err);
-          $q.notify({
-            type: "negative",
-            message: "Ошибка",
+          .catch((err) => {
+            console.log("Ошибка", err);
+            $q.notify({
+              type: "negative",
+              message: "Ошибка",
+            });
           });
-        });
       }
     };
     return {

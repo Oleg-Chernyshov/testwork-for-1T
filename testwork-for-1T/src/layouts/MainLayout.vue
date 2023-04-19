@@ -51,30 +51,27 @@
               <q-route-tab to="/Executors" label="Исполнители" />
             </q-tabs>
 
-            <q-tabs align="left"> </q-tabs>
+            <q-tabs align="left">
+              <q-route-tab to="/Responsible" label="Ответственные" />
+            </q-tabs>
           </q-expansion-item>
           <q-expansion-item
             to="/Deleted"
             expand-separator
             icon=""
-            :label="`${namesOfPages[1]}`"
+            label="Исключенные"
             caption=""
             default-opened
           >
             <q-tabs align="left">
-              <q-route-tab
-                to="/Excluded"
-                :label="`${namesOfPages2['Исключенные']}`"
-              />
+              <q-route-tab to="/Excluded" :label="`Исключенные`" />
             </q-tabs>
           </q-expansion-item>
           <q-expansion-item
             to="/Modules"
             expand-separator
             icon=""
-            :label="
-              role === 'Владелец' ? `${namesOfPages[3]}` : `${namesOfPages[2]}`
-            "
+            :label="`Модули`"
             caption=""
             default-opened
             @click="get_module_index(-1)"
@@ -96,9 +93,7 @@
             to="/AllTasks"
             expand-separator
             icon=""
-            :label="
-              role === 'Владелец' ? `${namesOfPages[2]}` : `${namesOfPages[0]}`
-            "
+            :label="`Задачи`"
             caption=""
           >
           </q-expansion-item>
@@ -142,11 +137,21 @@ export default defineComponent({
       store.commit("setModuleIndex", index);
     };
     const MODULES = computed(() => store.getters.MODULES);
-
+    console.log(MODULES.value);
     const router = useRouter();
+
     const clickOnTreeElem = (el) => {
       console.log(el);
-      router.push("/Team");
+      let rout = "";
+      el.label == "Команда"
+        ? (rout = "/Team")
+        : el.label == "Модули"
+        ? (rout = "/Modules")
+        : el.label == "Мои задачи"
+        ? (rout = "/AllTasks")
+        : "";
+      console.log(rout);
+      router.push(rout);
     };
 
     onMounted(() => {
@@ -235,10 +240,30 @@ export default defineComponent({
             });
           });
 
+          if (page.title == "Модули") {
+            children = [];
+            console.log("MODULES.value", MODULES.value);
+            MODULES.value.forEach((mod) => {
+              console.log(mod);
+              children.push({
+                label: mod.name,
+                header: "generic",
+              });
+            });
+            children = [
+              {
+                label: "test",
+                header: "generic",
+              },
+            ];
+            console.log("modules1111111111111", children);
+          }
+
           customize.value.push({
             label: page.title,
             header: "generic",
             children: children,
+            child: page.children.data,
           });
         });
         console.log("result.data.pages.data", result.data.rootPages.data);
@@ -246,27 +271,6 @@ export default defineComponent({
       });
     }
 
-    // const customize = [
-    //   {
-    //     label: "Satisfied customers",
-    //     header: "root",
-    //     children: [
-    //       {
-    //         label: "Good food",
-    //         icon: "restaurant_menu",
-    //         header: "generic",
-    //         children: [
-    //           {
-    //             label: "Quality ingredients",
-    //             header: "generic",
-    //             body: "story",
-    //             story: "Lorem ipsum dolor sit amet.",
-    //           },
-    //         ],
-    //       },
-    //     ],
-    //   },
-    // ];
     return {
       role,
       leftDrawerOpen,
