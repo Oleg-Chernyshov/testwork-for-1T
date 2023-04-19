@@ -22,9 +22,9 @@
 
           <q-td
             :class="
-              props.row.property5 == 1700970386717883161
+              props.row.property5 == 4900427590773954314
                 ? 'assigned'
-                : props.row.property5 == 967659251654331262
+                : props.row.property5 == 2492600062570616217
                 ? 'accomplished'
                 : 'completed'
             "

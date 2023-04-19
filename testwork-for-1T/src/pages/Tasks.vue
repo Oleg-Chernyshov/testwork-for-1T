@@ -24,9 +24,9 @@
 
             <q-td
               :class="
-                props.row.property5 == 1700970386717883161
+                props.row.property5 == 4900427590773954314
                   ? 'assigned'
-                  : props.row.property5 == 967659251654331262
+                  : props.row.property5 == 2492600062570616217
                   ? 'accomplished'
                   : 'completed'
               "
@@ -107,12 +107,12 @@ export default defineComponent({
           input: {
             name: task.name,
             property4: task.property4,
-            property5: "967659251654331262",
+            property5: "2492600062570616217",
             property6: {
-              "2598174384277431501": task.property6.id,
+              "3922421966920449006": task.property6.id,
             },
             property8: {
-              "2673961667589284866": task.property8.id,
+              "1998660948760442394": task.property8.id,
             },
           },
           id: task.id,

@@ -28,7 +28,7 @@
               />
               <div
                 @click="clickOnTreeElem(prop.node)"
-                class="text-weight-bold text-primary"
+                class="text-weight-bold text-primary cursor-pointer"
               >
                 {{ prop.node.label }}
               </div>
@@ -192,7 +192,7 @@ export default defineComponent({
         : el.label == "Исключенные"
         ? (rout = "/Excluded")
         : "";
-      if (el.parent) {
+      if (el.parent == "Модуль") {
         store.commit("setModuleIndex", el.index);
         rout = "/ModulesTasks";
       }
@@ -321,7 +321,6 @@ export default defineComponent({
       let children = [];
       let order = 0;
       MODULES.value.forEach((mod) => {
-        console.log(mod);
         children.push({
           label: mod.name,
           header: "generic",

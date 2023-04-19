@@ -1,93 +1,94 @@
 <template>
-  <q-table
-    :rows="MODULES"
-    :columns="columns"
-    :pagination="pagination"
-    :pagination-labels="{
-      rowsPerPage: 'Строк на странице',
-      rowsPerPageAll: 'Все',
-    }"
-    :rows-per-page-options="[5, 10, 20]"
-  >
-    <template v-slot:body="props">
-      <q-tr :props="props">
-        <q-td>{{ props.row.name }}</q-td>
-        <q-td>
-          {{
-            props.row.property7?.fullname.first_name +
-            " " +
-            props.row.property7?.fullname.last_name
-          }}
-        </q-td>
-        <q-td>{{
-          props.row.property2?.date + " " + props.row.property2?.time
-        }}</q-td>
-        <q-td>{{
-          props.row.property3?.date + " " + props.row.property3?.time
-        }}</q-td>
-        <q-td>
-          {{
-            props.row.property8.reduce(function (a, b) {
-              if (b.property5 == "1700970386717883161") {
-                return ++a;
-              } else return a;
-            }, 0)
-          }}
-        </q-td>
-        <q-td>
-          {{
-            props.row.property8.reduce(function (a, b) {
-              if (b.property5 == "967659251654331262") {
-                return ++a;
-              } else return a;
-            }, 0)
-          }}
-        </q-td>
-        <q-td>
-          {{
-            props.row.property8.reduce(function (a, b) {
-              if (b.property5 == "1383309069201480491") {
-                return ++a;
-              } else return a;
-            }, 0)
-          }}
-        </q-td>
-        <q-td>
-          <q-btn
-            :disabled="disableRedBtn"
-            @click.self="set_id($event, props.row, task)"
-            class="q-mr-sm btn"
-            :id="props.row.id"
-          >
-            Редактировать
-          </q-btn>
-          <q-btn
-            :disabled="disableRedBtn"
-            class="btn"
-            @click="deleteModule(props.row)"
-            >Удалить</q-btn
-          >
-        </q-td>
-      </q-tr>
-    </template>
+  <div>
+    <q-table
+      :rows="MODULES"
+      :columns="columns"
+      :pagination="pagination"
+      :pagination-labels="{
+        rowsPerPage: 'Строк на странице',
+        rowsPerPageAll: 'Все',
+      }"
+      :rows-per-page-options="[5, 10, 20]"
+    >
+      <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td>{{ props.row.name }}</q-td>
+          <q-td>
+            {{
+              props.row.property7?.fullname.first_name +
+              " " +
+              props.row.property7?.fullname.last_name
+            }}
+          </q-td>
+          <q-td>{{
+            props.row.property2?.date + " " + props.row.property2?.time
+          }}</q-td>
+          <q-td>{{
+            props.row.property3?.date + " " + props.row.property3?.time
+          }}</q-td>
+          <q-td>
+            {{
+              props.row.property8.reduce(function (a, b) {
+                if (b.property5 == "1700970386717883161") {
+                  return ++a;
+                } else return a;
+              }, 0)
+            }}
+          </q-td>
+          <q-td>
+            {{
+              props.row.property8.reduce(function (a, b) {
+                if (b.property5 == "967659251654331262") {
+                  return ++a;
+                } else return a;
+              }, 0)
+            }}
+          </q-td>
+          <q-td>
+            {{
+              props.row.property8.reduce(function (a, b) {
+                if (b.property5 == "1383309069201480491") {
+                  return ++a;
+                } else return a;
+              }, 0)
+            }}
+          </q-td>
+          <q-td>
+            <q-btn
+              :disabled="disableRedBtn"
+              @click.self="set_id($event, props.row, task)"
+              class="q-mr-sm btn"
+              :id="props.row.id"
+            >
+              Редактировать
+            </q-btn>
+            <q-btn
+              :disabled="disableRedBtn"
+              class="btn"
+              @click="deleteModule(props.row)"
+              >Удалить</q-btn
+            >
+          </q-td>
+        </q-tr>
+      </template>
 
-    <template v-slot:top-left="props">
-      <q-btn
-        :disabled="disableAddBtn"
-        class="q-mt-sm"
-        color="green"
-        @click="showForm_addModule = !showForm_addModule"
-        >Добавить модуль</q-btn
-      >
-    </template>
-  </q-table>
-
-  <q-dialog v-model="showForm_addModule">
-    <FormAddModule />
-  </q-dialog>
-  <q-dialog v-model="showForm_updateModule">
-    <FormUpdateModule :mod="currentModuleClickUp" :idUpdateModule="id" />
-  </q-dialog>
+      <template v-slot:top-left="props">
+        <q-btn
+          :disabled="disableAddBtn"
+          class="q-mt-sm"
+          color="green"
+          @click="showForm_addModule = !showForm_addModule"
+          >Добавить модуль</q-btn
+        >
+      </template>
+    </q-table>
+    <q-dialog v-model="showForm_addModule">
+      <FormAddModule />
+    </q-dialog>
+    <q-dialog v-model="showForm_updateModule">
+      <FormUpdateModule :mod="currentModuleClickUp" :idUpdateModule="id" />
+    </q-dialog>
+  </div>
 </template>
 
 <script>

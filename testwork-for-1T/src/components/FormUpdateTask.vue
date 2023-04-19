@@ -85,9 +85,9 @@ export default defineComponent({
       description: props.task.property4,
       modelStatus: () => {
         let statusId = props.task.property5;
-        if (statusId == "1700970386717883161") {
+        if (statusId == "4900427590773954314") {
           modelStatus.value = "Назначена";
-        } else if (statusId == "967659251654331262") {
+        } else if (statusId == "2492600062570616217") {
           modelStatus.value = "Выполнена";
         } else {
           modelStatus.value = "Завершена";
@@ -96,9 +96,9 @@ export default defineComponent({
     });
 
     statusId.value = props.task.property5;
-    if (props.task.property5 == "1700970386717883161") {
+    if (props.task.property5 == "4900427590773954314") {
       modelStatus.value = "Назначена";
-    } else if (props.task.property5 == "967659251654331262") {
+    } else if (props.task.property5 == "2492600062570616217") {
       modelStatus.value = "Выполнена";
     } else {
       modelStatus.value = "Завершена";
@@ -115,11 +115,11 @@ export default defineComponent({
 
     watch(modelStatus, () => {
       if (modelStatus.value == "Назначена") {
-        statusId.value = "1700970386717883161";
+        statusId.value = "4900427590773954314";
       } else if (modelStatus.value == "Выполнена") {
-        statusId.value = "967659251654331262";
+        statusId.value = "2492600062570616217";
       } else {
-        statusId.value = "1383309069201480491";
+        statusId.value = "3524495676216750814";
       }
     });
     const updateTask = function (e) {

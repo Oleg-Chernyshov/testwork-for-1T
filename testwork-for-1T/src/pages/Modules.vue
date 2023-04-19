@@ -1,7 +1,6 @@
 <template>
   <div class="modules q-pa-md">
-    <modulesModules v-if="showTableModules()" />
-    <modulesTasks v-else />
+    <modulesModules />
   </div>
 </template>
 
@@ -31,10 +30,6 @@ export default {
     const MODULES = computed(() => store.getters.MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
 
-    const showTableModules = () => {
-      return module_index.value <= -1;
-    };
-
     const get_module = function (module_index) {
       current_module.values = MODULES.value[module_index.value];
     };
@@ -53,7 +48,6 @@ export default {
     );
     return {
       current_module,
-      showTableModules,
       propertyStatus,
       currentModuleClickUp,
       id,
