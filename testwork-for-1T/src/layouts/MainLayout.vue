@@ -16,10 +16,30 @@
     </q-header>
 
     <q-drawer class="q-pt-xl" v-model="leftDrawerOpen" show-if-above bordered>
+      <div class="q-pa-md q-gutter-sm">
+        <q-tree :nodes="customize" node-key="label" default-expand-all>
+          <template v-slot:default-header="prop">
+            <div class="row items-center">
+              <q-icon
+                :name="prop.node.icon || 'share'"
+                color="orange"
+                size="28px"
+                class="q-mr-sm"
+              />
+              <div
+                @click="clickOnTreeElem(prop.node)"
+                class="text-weight-bold text-primary"
+              >
+                {{ prop.node.label }}
+              </div>
+            </div>
+          </template>
+        </q-tree>
+      </div>
+
       <q-list>
         <q-list bordered class="rounded-borders">
           <q-expansion-item
-            v-if="role === 'Владелец'"
             to="/Team"
             expand-separator
             icon=""
@@ -31,12 +51,9 @@
               <q-route-tab to="/Executors" label="Исполнители" />
             </q-tabs>
 
-            <q-tabs align="left">
-              <q-route-tab to="/Responsible" label="Ответственные" />
-            </q-tabs>
+            <q-tabs align="left"> </q-tabs>
           </q-expansion-item>
           <q-expansion-item
-            v-if="role === 'Владелец'"
             to="/Deleted"
             expand-separator
             icon=""
@@ -52,7 +69,6 @@
             </q-tabs>
           </q-expansion-item>
           <q-expansion-item
-            v-if="role == 'Ответсвенный' || role == 'Владелец'"
             to="/Modules"
             expand-separator
             icon=""
@@ -77,7 +93,6 @@
           </q-expansion-item>
 
           <q-expansion-item
-            v-if="role == 'Исполнитель' || role == 'Владелец'"
             to="/AllTasks"
             expand-separator
             icon=""
@@ -108,7 +123,7 @@ import { defineComponent, ref, computed, onMounted } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { GetAllPages } from "src/api/main/queryes";
 import { useStore } from "vuex";
-import { GetGroupById } from "src/api/main/queryes";
+import { GetGroupById, rootPages } from "src/api/main/queryes";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
@@ -125,8 +140,10 @@ export default defineComponent({
     const get_module_index = function (index) {
       store.commit("setModuleIndex", index);
     };
-
     const MODULES = computed(() => store.getters.MODULES);
+    const clickOnTreeElem = (el) => {
+      console.log(el);
+    };
 
     onMounted(() => {
       store.dispatch("GET_RESPONSIBLES");
@@ -144,9 +161,9 @@ export default defineComponent({
           namesOfPages.value.push(item.title);
           namesOfPages2.value[item.title] = item.title;
         });
-        console.log("namesOfPages2", namesOfPages2.value);
-        console.log("namesOfPages", namesOfPages.value);
-        console.log("result.data.pages.data", result.data.pages.data);
+        // console.log("namesOfPages2", namesOfPages2.value);
+        // console.log("namesOfPages", namesOfPages.value);
+        // console.log("result.data.pages.data", result.data.pages.data);
       });
     }
 
@@ -157,10 +174,10 @@ export default defineComponent({
       });
       onResult((queryResult) => {
         let flag = 1;
-        console.log(queryResult);
-        console.log(queryResult.data.get_group.subject);
+        // console.log(queryResult);
+        // console.log(queryResult.data.get_group.subject);
         for (let subject of queryResult.data.get_group.subject) {
-          console.log(subject.email.email);
+          // console.log(subject.email.email);
           if (subject.email.email == email) {
             sessionStorage.setItem("role", "Ответсвенный");
             role.value = "Ответсвенный";
@@ -198,7 +215,54 @@ export default defineComponent({
 
     {
     }
+    const customize = ref([]);
 
+    {
+      const { onResult } = useQuery(rootPages);
+      onResult((result) => {
+        result.data.rootPages.data.forEach((page) => {
+          let children = [];
+          let childrenPage = page.children.data;
+
+          childrenPage.forEach((child) => {
+            children.push({
+              label: child.title,
+              header: "root",
+            });
+          });
+
+          customize.value.push({
+            label: page.title,
+            header: "generic",
+            children: children,
+          });
+        });
+        console.log("result.data.pages.data", result.data.rootPages.data);
+        console.log(customize.value);
+      });
+    }
+
+    // const customize = [
+    //   {
+    //     label: "Satisfied customers",
+    //     header: "root",
+    //     children: [
+    //       {
+    //         label: "Good food",
+    //         icon: "restaurant_menu",
+    //         header: "generic",
+    //         children: [
+    //           {
+    //             label: "Quality ingredients",
+    //             header: "generic",
+    //             body: "story",
+    //             story: "Lorem ipsum dolor sit amet.",
+    //           },
+    //         ],
+    //       },
+    //     ],
+    //   },
+    // ];
     return {
       role,
       leftDrawerOpen,
@@ -210,6 +274,8 @@ export default defineComponent({
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
       MODULES,
+      customize,
+      clickOnTreeElem,
     };
   },
 });

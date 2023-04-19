@@ -17,7 +17,7 @@ const queueCreate = async () => {
 }
 
 const stompConnect = (store) => {
-  const queue = Cookies.get("queue");
+  const queue = Cookies.get('queue')
 
   const onConnect = async () => {
     console.log('connected')
@@ -29,17 +29,16 @@ const stompConnect = (store) => {
       setTimeout(() => {
         const refetch_modules = store.getters.REFETCH_MODULES
         refetch_modules()
-      const refetch_all_tasks = store.getters.REFETCH_ALL_TASKS
-      refetch_all_tasks()
-      const refetch_executors = store.getters.REFETCH_EXECUTORS
-      refetch_executors()
-      const refetch_responsibles = store.getters.REFETCH_RESPONSIBLES
-      refetch_responsibles()
-      }, 500);
-      
-      
-      message.ack();
-    };
+        const refetch_all_tasks = store.getters.REFETCH_ALL_TASKS
+        refetch_all_tasks()
+        const refetch_executors = store.getters.REFETCH_EXECUTORS
+        refetch_executors()
+        const refetch_responsibles = store.getters.REFETCH_RESPONSIBLES
+        refetch_responsibles()
+      }, 500)
+
+      message.ack()
+    }
 
     Client.subscribe(`/amq/queue/${queue}`, onMessage, { ack: 'client' })
   }

@@ -2,16 +2,20 @@
   <q-page class="">
     <div class="modules__module">
       <h5>ВСЕ ЗАДАЧИ</h5>
-      <q-table v-if="!allTasks.length == 0" class="q-mx-lg"
-      :rows="allTasks"
-      :columns="columns"
-      :pagination="pagination"
-      :pagination-labels="{rowsPerPage: 'Строк на странице', rowsPerPageAll: 'Все'}"
-      :rows-per-page-options="[5, 10, 20]"
+      <q-table
+        v-if="!allTasks.length == 0"
+        class="q-mx-lg"
+        :rows="allTasks"
+        :columns="columns"
+        :pagination="pagination"
+        :pagination-labels="{
+          rowsPerPage: 'Строк на странице',
+          rowsPerPageAll: 'Все',
+        }"
+        :rows-per-page-options="[5, 10, 20]"
       >
         <template v-slot:body="props">
           <q-tr :props="props">
-
             <q-td>{{ props.row.name }}</q-td>
 
             <q-td>
@@ -52,10 +56,8 @@
                 Выполнена
               </button>
             </q-td>
-
           </q-tr>
         </template>
-        
       </q-table>
       <div v-else>Список задач пуст</div>
     </div>
@@ -79,18 +81,22 @@ export default defineComponent({
     const pagination = reactive({
       rowsPerPage: 10,
       page: 1,
-      sortBy: 'name',
-    })
-
+      sortBy: "name",
+    });
 
     const columns = [
-      { name: 'Задача', align: 'left', label: 'Задача', field: 'Задача' },
-      { name: 'Описание', align: 'left', label: 'Описание', field: 'Описание'  },
-      { name: 'Статус', align: 'left', label: 'Статус', field: 'Статус',  },
-      { name: 'Исполнитель', align: 'left', label: 'Исполнитель', field: 'Исполнитель'},
-      { name: 'Действия', align: 'left', label: 'Действия', field: 'Действия' },
-    ] 
-
+      { name: "Задача", align: "left", label: "Задача", field: "Задача" },
+      { name: "Описание", align: "left", label: "Описание", field: "Описание" },
+      { name: "Статус", align: "left", label: "Статус", field: "Статус" },
+      {
+        name: "Исполнитель",
+        align: "left",
+        label: "Исполнитель",
+        field: "Исполнитель",
+      },
+      { name: "Действия", align: "left", label: "Действия", field: "Действия" },
+    ];
+    console.log(process.env.VUE_APP_API_URL);
     const allTasks = computed(() => store.getters.ALL_TASKS);
 
     const updateTask = function (task) {
@@ -112,6 +118,7 @@ export default defineComponent({
           id: task.id,
         },
       }));
+      mutate();
     };
 
     return {
