@@ -37,9 +37,12 @@
         </q-tree>
       </div>
 
-      <q-list>
+      <!-- <q-list>
+               
         <q-list bordered class="rounded-borders">
+                   
           <q-expansion-item
+            v-if="role === 'Владелец'"
             to="/Team"
             expand-separator
             icon=""
@@ -47,35 +50,55 @@
             caption=""
             default-opened
           >
+                       
             <q-tabs align="left">
-              <q-route-tab to="/Executors" label="Исполнители" />
+                           
+              <q-route-tab to="/Executors" label="Исполнители" />            
             </q-tabs>
 
+                       
             <q-tabs align="left">
-              <q-route-tab to="/Responsible" label="Ответственные" />
+                           
+              <q-route-tab to="/Responsible" label="Ответственные" />          
+               
             </q-tabs>
+                     
           </q-expansion-item>
+                   
           <q-expansion-item
+            v-if="role === 'Владелец'"
             to="/Deleted"
             expand-separator
             icon=""
-            label="Исключенные"
+            :label="`${namesOfPages[1]}`"
             caption=""
             default-opened
           >
+                       
             <q-tabs align="left">
-              <q-route-tab to="/Excluded" :label="`Исключенные`" />
+                           
+              <q-route-tab
+                to="/Excluded"
+                :label="`${namesOfPages2['Исключенные']}`"
+              />
+                         
             </q-tabs>
+                     
           </q-expansion-item>
+                   
           <q-expansion-item
+            v-if="role == 'Ответсвенный' || role == 'Владелец'"
             to="/Modules"
             expand-separator
             icon=""
-            :label="`Модули`"
+            :label="
+              role === 'Владелец' ? `${namesOfPages[3]}` : `${namesOfPages[2]}`
+            "
             caption=""
             default-opened
             @click="get_module_index(-1)"
           >
+                       
             <q-tabs
               indicator-color="transparent"
               v-for="(mod, index) in MODULES"
@@ -83,22 +106,34 @@
               align="left"
               @click="get_module_index(index)"
             >
+                           
               <q-route-tab to="/Modules">
+                               
                 <div>{{ mod.name }}</div>
+                             
               </q-route-tab>
+                         
             </q-tabs>
+                     
           </q-expansion-item>
 
+                   
           <q-expansion-item
+            v-if="role == 'Исполнитель' || role == 'Владелец'"
             to="/AllTasks"
             expand-separator
             icon=""
-            :label="`Задачи`"
+            :label="
+              role === 'Владелец' ? `${namesOfPages[2]}` : `${namesOfPages[0]}`
+            "
             caption=""
           >
+                     
           </q-expansion-item>
+                 
         </q-list>
-      </q-list>
+             
+      </q-list> -->
     </q-drawer>
 
     <q-page-container>
@@ -114,7 +149,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, onMounted } from "vue";
+import { defineComponent, ref, computed, onMounted, watch } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { GetAllPages } from "src/api/main/queryes";
 import { useStore } from "vuex";
@@ -133,7 +168,7 @@ export default defineComponent({
     const store = useStore();
     const namesOfPages = ref([]);
     const namesOfPages2 = ref({});
-    const get_module_index = function (index) {
+    const set_module_index = function (index) {
       store.commit("setModuleIndex", index);
     };
     const MODULES = computed(() => store.getters.MODULES);
@@ -143,13 +178,24 @@ export default defineComponent({
     const clickOnTreeElem = (el) => {
       console.log(el);
       let rout = "";
+
       el.label == "Команда"
         ? (rout = "/Team")
         : el.label == "Модули"
         ? (rout = "/Modules")
         : el.label == "Мои задачи"
         ? (rout = "/AllTasks")
+        : el.label == "Исполнители"
+        ? (rout = "/Executors")
+        : el.label == "Ответственные"
+        ? (rout = "/Responsible")
+        : el.label == "Исключенные"
+        ? (rout = "/Excluded")
         : "";
+      if (el.parent) {
+        store.commit("setModuleIndex", el.index);
+        rout = "/ModulesTasks";
+      }
       console.log(rout);
       router.push(rout);
     };
@@ -250,13 +296,12 @@ export default defineComponent({
                 header: "generic",
               });
             });
-            children = [
-              {
-                label: "test",
-                header: "generic",
-              },
-            ];
-            console.log("modules1111111111111", children);
+            // children = [
+            //   {
+            //     label: "test",
+            //     header: "generic",
+            //   },
+            // ];
           }
 
           customize.value.push({
@@ -271,13 +316,30 @@ export default defineComponent({
       });
     }
 
+    watch(MODULES, () => {
+      console.log("customize", customize.value);
+      let children = [];
+      let order = 0;
+      MODULES.value.forEach((mod) => {
+        console.log(mod);
+        children.push({
+          label: mod.name,
+          header: "generic",
+          parent: "Модуль",
+          index: order,
+        });
+        order++;
+      });
+      customize.value[1].children = children;
+    });
+
     return {
       role,
       leftDrawerOpen,
       namesOfPages2,
       tab: "mail",
       namesOfPages,
-      get_module_index,
+      set_module_index,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },

@@ -109,7 +109,7 @@ import { ApolloClient } from "@apollo/client/core";
 import { DeleteTask } from "src/api/main/mutations.js";
 import { useMutation } from "@vue/apollo-composable";
 import { useQuasar } from "quasar";
-import { response } from "../../functions/functions";
+import { response } from "../functions/functions";
 
 export default {
   components: {
