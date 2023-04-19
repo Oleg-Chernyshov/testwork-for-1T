@@ -4,7 +4,6 @@ import { GetGroupById, GetAllTasks, GetAllModules } from 'src/api/main/queryes'
 export const GET_MODULES = ({ commit }) => {
   const fetching = async () => {
     try {
-      
       const { onResult, refetch } = useQuery(GetAllModules)
       onResult((queryResult) => {
         let options = []
@@ -30,7 +29,7 @@ export const GET_RESPONSIBLES = ({ commit }) => {
     try {
       let responsibles = []
       const { onResult, refetch } = useQuery(GetGroupById, {
-        id: '3662509860808044515',
+        id: '5538548253621329902',
       })
       onResult((queryResult) => {
         let options = []
@@ -58,7 +57,7 @@ export const GET_EXECUTORS = ({ commit }) => {
     try {
       let executors = []
       const { onResult, refetch } = useQuery(GetGroupById, {
-        id: '4428325871296613250',
+        id: '1983313338588359465',
       })
       onResult((queryResult) => {
         let options = []
@@ -82,11 +81,10 @@ export const GET_EXECUTORS = ({ commit }) => {
 }
 
 export const GET_ALL_TASKS = ({ commit }) => {
-  
   const fetching = async () => {
     try {
       const { onResult, refetch } = useQuery(GetAllTasks)
-      onResult((queryResult) => {;
+      onResult((queryResult) => {
         commit('setAllTasks', {
           allTasks: queryResult.data.paginate_type2.data,
           refetch: refetch,

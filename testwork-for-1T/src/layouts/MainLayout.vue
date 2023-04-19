@@ -127,6 +127,7 @@ import { GetGroupById, rootPages } from "src/api/main/queryes";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
 import { ApolloClient } from "@apollo/client/core";
+import { useRouter, useRoute } from "vue-router";
 
 import stompApi from "src/rabbitmq/connect";
 export default defineComponent({
@@ -141,8 +142,11 @@ export default defineComponent({
       store.commit("setModuleIndex", index);
     };
     const MODULES = computed(() => store.getters.MODULES);
+
+    const router = useRouter();
     const clickOnTreeElem = (el) => {
       console.log(el);
+      router.push("/Team");
     };
 
     onMounted(() => {

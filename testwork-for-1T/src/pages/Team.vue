@@ -63,7 +63,7 @@
 
 <script>
 import { useMutation } from "@vue/apollo-composable";
-import { defineComponent, ref} from "vue";
+import { defineComponent, ref } from "vue";
 import { inviteUser } from "src/api/main/mutations";
 import { getClientOptions } from "src/apollo/index";
 import { provideApolloClient } from "@vue/apollo-composable";
@@ -82,7 +82,7 @@ export default defineComponent({
     const input2_2 = ref("");
     const input2_3 = ref("");
     const $q = useQuasar();
-    
+
     const getFormExecuterValues = function (e) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
@@ -92,11 +92,11 @@ export default defineComponent({
             name: e.target.elements.name.value,
             surname: e.target.elements.surname.value,
             email: e.target.elements.eMail.value,
-            page_group_id: "8434793229479617275",
+            page_group_id: "4962900878939735205",
           },
         },
       }));
-      response("Исполнитель добавлен", "Ошибка", mutate, $q);
+      response("Исполнитель добавлен!", "Ошибка!", mutate, $q);
       input1_1.value = "";
       input1_2.value = "";
       input1_3.value = "";
@@ -111,7 +111,7 @@ export default defineComponent({
             name: e.target.elements.name.value,
             surname: e.target.elements.surname.value,
             email: e.target.elements.eMail.value,
-            page_group_id: "1305438642755218144",
+            page_group_id: "3730110280307647305",
           },
         },
       }));
