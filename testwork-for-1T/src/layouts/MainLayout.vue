@@ -216,9 +216,6 @@ export default defineComponent({
           namesOfPages.value.push(item.title);
           namesOfPages2.value[item.title] = item.title;
         });
-        // console.log("namesOfPages2", namesOfPages2.value);
-        // console.log("namesOfPages", namesOfPages.value);
-        // console.log("result.data.pages.data", result.data.pages.data);
       });
     }
 
@@ -229,10 +226,7 @@ export default defineComponent({
       });
       onResult((queryResult) => {
         let flag = 1;
-        // console.log(queryResult);
-        // console.log(queryResult.data.get_group.subject);
         for (let subject of queryResult.data.get_group.subject) {
-          // console.log(subject.email.email);
           if (subject.email.email == email) {
             sessionStorage.setItem("role", "Ответсвенный");
             role.value = "Ответсвенный";
@@ -296,12 +290,6 @@ export default defineComponent({
                 header: "generic",
               });
             });
-            // children = [
-            //   {
-            //     label: "test",
-            //     header: "generic",
-            //   },
-            // ];
           }
 
           customize.value.push({

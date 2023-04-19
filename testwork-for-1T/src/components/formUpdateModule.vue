@@ -123,11 +123,6 @@ export default defineComponent({
     const UpdateModule = function (e) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
-      // console.log(e.target.elements.name.value);
-      // console.log(e.target.elements.startData.value);
-      // console.log(e.target.elements.startTime.value);
-      // console.log(e.target.elements.endData.value);
-      // console.log(e.target.elements.endTime.value);
       const { mutate } = useMutation(updateModule, () => ({
         variables: {
           input: {
