@@ -111,10 +111,7 @@ export default defineComponent({
     const responsible = computed(() => store.getters.RESPONSIBLES);
 
     watch(model, () => {
-      console.log('watch');
       indexResponsible.value = options.value.indexOf(model.value);
-      console.log(indexResponsible.value);
-      console.log(flag);
     });
 
     const UpdateModule = function (e) {
@@ -144,8 +141,6 @@ export default defineComponent({
       console.log(indexResponsible.value);
       console.log(flag);
       if(flag !== indexResponsible.value){
-        console.log(indexResponsible.value);
-        console.log(flag); 
       response
         .then(function (result) {
           const { onResult } = useQuery(permissionTreeSubjects, {
@@ -160,7 +155,7 @@ export default defineComponent({
                     "id": subject.permission_rule_id
                    }
                 }))
-                const response_2 = mutate()
+                mutate()
               }
             }
             const { mutate } = useMutation(createRule, ()=>({

@@ -133,7 +133,7 @@ export default defineComponent({
                 }
               }
             }))
-            const response_2 = mutate()
+            mutate()
             $q.notify({
               type: "positive",
               message: "Модуль добавлен",

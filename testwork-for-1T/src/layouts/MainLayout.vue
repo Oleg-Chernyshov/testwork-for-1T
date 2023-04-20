@@ -114,6 +114,7 @@ export default defineComponent({
     const role = ref("");
     const store = useStore();
     const namesOfPages = ref([]);
+
     const get_module_index = function (index) {
       store.commit("setModuleIndex", index);
     };
@@ -125,7 +126,8 @@ export default defineComponent({
       store.dispatch("GET_EXECUTORS");
       store.dispatch("GET_MODULES");
       store.dispatch("GET_ALL_TASKS")
-      stompApi.queueCreate().then((result) => {});
+      
+      stompApi.queueCreate();
       stompApi.stompConnect(store);
     });
 
@@ -135,7 +137,6 @@ export default defineComponent({
         result.data.pages.data.forEach((item) => {
           namesOfPages.value.push(item.title);
         });
-        console.log("namesOfPages", namesOfPages.value);
       });
     }
 
@@ -146,14 +147,11 @@ export default defineComponent({
       });
       onResult((queryResult) => {
         let flag = 1;
-        console.log(queryResult);
-        console.log(queryResult.data.get_group.subject);
         for (let subject of queryResult.data.get_group.subject) {
-          console.log(subject.email.email);
           if (subject.email.email == email) {
             sessionStorage.setItem("role", "Ответсвенный");
             role.value = "Ответсвенный";
-            flag = 0;console.log(1);
+            flag = 0;
             break;
           }
         }
@@ -175,7 +173,6 @@ export default defineComponent({
               }
             }
             if (flag) {
-              console.log(1);
               sessionStorage.setItem("role", "Владелец");
               role.value = "Владелец";
             }

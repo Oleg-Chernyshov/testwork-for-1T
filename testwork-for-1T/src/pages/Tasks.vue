@@ -20,9 +20,9 @@
 
             <q-td
               :class="
-                props.row.property5 == 1700970386717883161
+                props.row.property5 == '1700970386717883161'
                   ? 'assigned'
-                  : props.row.property5 == 967659251654331262
+                  : props.row.property5 == '967659251654331262'
                   ? 'accomplished'
                   : 'completed'
               "
@@ -112,6 +112,7 @@ export default defineComponent({
           id: task.id,
         },
       }));
+      mutate()
     };
 
     return {
