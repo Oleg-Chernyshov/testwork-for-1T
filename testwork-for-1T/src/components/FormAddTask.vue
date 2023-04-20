@@ -61,10 +61,10 @@ export default defineComponent({
   setup(props) {
     const $q = useQuasar();
     const store = useStore();
-    const model = ref(null);
+    const model = ref();
     const modelStatus = ref(null);
     const modelModule = ref(null);
-    const indexExecutor = ref(0);
+    const indexExecutor = ref(-1);
     const indexModule = ref(0);
     const optionsStatus = ["Назначена", "Выполнена", "Завершена"];
     const statusId = ref("");
@@ -83,11 +83,11 @@ export default defineComponent({
 
     watch(modelStatus, () => {
       if (modelStatus.value == "Назначена") {
-        statusId.value = "4900427590773954314";
+        statusId.value = process.env.TASK_STATUS_ASSIGNED;
       } else if (modelStatus.value == "Выполнена") {
-        statusId.value = "2492600062570616217";
+        statusId.value = process.env.TASK_STATUS_ACCOMPLISHED;
       } else {
-        statusId.value = "3524495676216750814";
+        statusId.value = process.env.TASK_STATUS_COMPLETED;
       }
     });
 

@@ -22,18 +22,18 @@
 
           <q-td
             :class="
-              props.row.property5 == 1700970386717883161
+              props.row.property5 == TASK_STATUS_ASSIGNED
                 ? 'assigned'
-                : props.row.property5 == 967659251654331262
+                : props.row.property5 == TASK_STATUS_ACCOMPLISHED
                 ? 'accomplished'
                 : 'completed'
             "
           >
             {{
               (function () {
-                if (props.row.property5 == "4900427590773954314") {
+                if (props.row.property5 == TASK_STATUS_ASSIGNED) {
                   return "Назначена";
-                } else if (props.row.property5 == "2492600062570616217")
+                } else if (props.row.property5 == TASK_STATUS_ACCOMPLISHED)
                   return "Выполнена";
                 else if (props.row.property5 == "3524495676216750814")
                   return "Завершена";
@@ -128,7 +128,8 @@ export default {
     const showForm_filesForm = ref(false);
     const currentTaskClickUp = ref();
     const $q = useQuasar();
-
+    const TASK_STATUS_ASSIGNED = process.env.TASK_STATUS_ASSIGNED;
+    const TASK_STATUS_ACCOMPLISHED = process.env.TASK_STATUS_ACCOMPLISHED;
     const pagination = reactive({
       rowsPerPage: 10,
       page: 1,
@@ -168,6 +169,8 @@ export default {
       module_index,
       showForm_filesForm,
       deleteTask,
+      TASK_STATUS_ASSIGNED,
+      TASK_STATUS_ACCOMPLISHED,
       id,
       idModule,
       idUpdateModule,

@@ -92,7 +92,7 @@ export default defineComponent({
             name: e.target.elements.name.value,
             surname: e.target.elements.surname.value,
             email: e.target.elements.eMail.value,
-            page_group_id: "4962900878939735205",
+            page_group_id: process.env.PAGE_GROUP_ID_EXECUTOR,
           },
         },
       }));
@@ -111,7 +111,7 @@ export default defineComponent({
             name: e.target.elements.name.value,
             surname: e.target.elements.surname.value,
             email: e.target.elements.eMail.value,
-            page_group_id: "3730110280307647305",
+            page_group_id: process.env.PAGE_GROUP_ID_RESPONSIBLES,
           },
         },
       }));

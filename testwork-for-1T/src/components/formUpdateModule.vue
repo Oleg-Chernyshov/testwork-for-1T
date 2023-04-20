@@ -153,7 +153,7 @@ export default defineComponent({
           .then(function (result) {
             const { onResult } = useQuery(permissionTreeSubjects, {
               modelId: props.idUpdateModule,
-              groupId: "5538548253621329902",
+              groupId: process.env.GROUP_ID_RESPONSIBLE,
             });
             onResult((queryResult) => {
               for (let subject of queryResult.data.permissionTreeSubjects

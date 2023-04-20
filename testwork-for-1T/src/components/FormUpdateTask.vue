@@ -72,7 +72,6 @@ export default defineComponent({
     const MODULES = computed(() => store.getters.MODULES);
     const optionsModules = computed(() => store.getters.OPTIONS_MODULES);
     const module_index = computed(() => store.getters.MODULE_INDEX);
-
     const model = ref(null);
     const modelStatus = ref(null);
     const modelModule = ref(null);
@@ -96,9 +95,9 @@ export default defineComponent({
     });
 
     statusId.value = props.task.property5;
-    if (props.task.property5 == "4900427590773954314") {
+    if (props.task.property5 == process.env.TASK_STATUS_ASSIGNED) {
       modelStatus.value = "Назначена";
-    } else if (props.task.property5 == "2492600062570616217") {
+    } else if (props.task.property5 == process.env.TASK_STATUS_ACCOMPLISHED) {
       modelStatus.value = "Выполнена";
     } else {
       modelStatus.value = "Завершена";
@@ -115,11 +114,11 @@ export default defineComponent({
 
     watch(modelStatus, () => {
       if (modelStatus.value == "Назначена") {
-        statusId.value = "4900427590773954314";
+        statusId.value = process.env.TASK_STATUS_ASSIGNED;
       } else if (modelStatus.value == "Выполнена") {
-        statusId.value = "2492600062570616217";
+        statusId.value = process.env.TASK_STATUS_ACCOMPLISHED;
       } else {
-        statusId.value = "3524495676216750814";
+        statusId.value = process.env.TASK_STATUS_COMPLETED;
       }
     });
     const updateTask = function (e) {
@@ -146,7 +145,7 @@ export default defineComponent({
         .then(function (result) {
           const { onResult } = useQuery(permissionTreeSubjects, {
             modelId: props.id,
-            groupId: "1983313338588359465",
+            groupId: process.env.GROUP_ID_EXECUTOR,
           });
           onResult((queryResult) => {
             for (let subject of queryResult.data.permissionTreeSubjects.data) {

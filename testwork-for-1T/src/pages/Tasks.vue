@@ -37,8 +37,7 @@
                     return "Назначена";
                   } else if (props.row.property5 == "2492600062570616217")
                     return "Выполнена";
-                  else if (props.row.property5 == "3524495676216750814")
-                    return "Завершена";
+                  else return "Завершена";
                 })()
               }}
             </q-td>

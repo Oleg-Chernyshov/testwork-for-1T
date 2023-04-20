@@ -14,7 +14,6 @@
         <q-toolbar-title> Quasar App </q-toolbar-title>
       </q-toolbar>
     </q-header>
-
     <q-drawer class="q-pt-xl" v-model="leftDrawerOpen" show-if-above bordered>
       <div class="q-pa-md q-gutter-sm">
         <q-tree :nodes="customize" node-key="label" default-expand-all>
@@ -36,104 +35,6 @@
           </template>
         </q-tree>
       </div>
-
-      <!-- <q-list>
-               
-        <q-list bordered class="rounded-borders">
-                   
-          <q-expansion-item
-            v-if="role === 'Владелец'"
-            to="/Team"
-            expand-separator
-            icon=""
-            :label="`${namesOfPages2['Команда']}`"
-            caption=""
-            default-opened
-          >
-                       
-            <q-tabs align="left">
-                           
-              <q-route-tab to="/Executors" label="Исполнители" />            
-            </q-tabs>
-
-                       
-            <q-tabs align="left">
-                           
-              <q-route-tab to="/Responsible" label="Ответственные" />          
-               
-            </q-tabs>
-                     
-          </q-expansion-item>
-                   
-          <q-expansion-item
-            v-if="role === 'Владелец'"
-            to="/Deleted"
-            expand-separator
-            icon=""
-            :label="`${namesOfPages[1]}`"
-            caption=""
-            default-opened
-          >
-                       
-            <q-tabs align="left">
-                           
-              <q-route-tab
-                to="/Excluded"
-                :label="`${namesOfPages2['Исключенные']}`"
-              />
-                         
-            </q-tabs>
-                     
-          </q-expansion-item>
-                   
-          <q-expansion-item
-            v-if="role == 'Ответсвенный' || role == 'Владелец'"
-            to="/Modules"
-            expand-separator
-            icon=""
-            :label="
-              role === 'Владелец' ? `${namesOfPages[3]}` : `${namesOfPages[2]}`
-            "
-            caption=""
-            default-opened
-            @click="get_module_index(-1)"
-          >
-                       
-            <q-tabs
-              indicator-color="transparent"
-              v-for="(mod, index) in MODULES"
-              :key="mod.id"
-              align="left"
-              @click="get_module_index(index)"
-            >
-                           
-              <q-route-tab to="/Modules">
-                               
-                <div>{{ mod.name }}</div>
-                             
-              </q-route-tab>
-                         
-            </q-tabs>
-                     
-          </q-expansion-item>
-
-                   
-          <q-expansion-item
-            v-if="role == 'Исполнитель' || role == 'Владелец'"
-            to="/AllTasks"
-            expand-separator
-            icon=""
-            :label="
-              role === 'Владелец' ? `${namesOfPages[2]}` : `${namesOfPages[0]}`
-            "
-            caption=""
-          >
-                     
-          </q-expansion-item>
-                 
-        </q-list>
-             
-      </q-list> -->
     </q-drawer>
 
     <q-page-container>
@@ -208,7 +109,6 @@ export default defineComponent({
       stompApi.queueCreate().then((result) => {});
       stompApi.stompConnect(store);
     });
-
     {
       const { onResult } = useQuery(GetAllPages);
       onResult((result) => {
@@ -317,7 +217,14 @@ export default defineComponent({
         });
         order++;
       });
-      customize.value[1].children = children;
+      customize.value.forEach((page, index) => {
+        page.label == "Модули"
+          ? (customize.value[index].children = children)
+          : "";
+      });
+      // if (customize.value[1]) {
+      //   customize.value[1].children = children;
+      // }
     });
 
     return {
