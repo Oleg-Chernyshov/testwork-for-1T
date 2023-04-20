@@ -2,69 +2,20 @@
   <div class="wrapper">
     <section class="get-in-touch">
       <h3 class="title">Редактирование модуля</h3>
-      <form
-        class="contact-form row"
-        insertCurrentData
-        @submit.prevent="UpdateModule($event)"
-      >
-        <div class="form-field col-lg-6">
-          <input
-            name="name"
-            id="name"
-            class="input-text js-input"
-            type="text"
-            v-model="form.name"
-          />
-          <label class="label" for="name">Название</label>
+      <q-form @submit.prevent="UpdateModule($event)">
+        <div class="q-gutter-md">
+          <q-input outlined v-model="form.name" label="Название" />
+          <q-input outlined v-model="form.startData" label="Дата начала" />
+          <q-input outlined v-model="form.startTime" label="Время начала" />
+          <q-input outlined v-model="form.endData" label="Дата окончания" />
+          <q-input outlined v-model="form.endTime" label="Время окончания" />
+          <q-select outlined v-model="model" :options="options" label="Ответсвенный" />
+          <div class="row justify-between">
+            <q-btn type="submit" color="primary" label="Обновить" />
+            <q-btn color="primary" label="Отменить" v-close-popup />
+          </div>
         </div>
-        <div class="form-field col-lg-6">
-          <input
-            name="startData"
-            id="startData"
-            class="input-text js-input"
-            type="text"
-            v-model="form.startData"
-          />
-          <label class="label" for="startData">Дата начала</label>
-        </div>
-        <div class="form-field col-lg-6">
-          <input
-            name="startTime"
-            id="startTime"
-            class="input-text js-input"
-            type="text"
-            v-model="form.startTime"
-          />
-          <label class="label" for="startTime">Время начала</label>
-        </div>
-        <div class="form-field col-lg-6">
-          <input
-            name="endData"
-            id="endData"
-            class="input-text js-input"
-            type="text"
-            v-model="form.endData"
-          />
-          <label class="label" for="endData">Дата окончания</label>
-        </div>
-        <div class="form-field col-lg-6">
-          <input
-            name="endTime"
-            id="endTime"
-            class="input-text js-input"
-            type="text"
-            v-model="form.endTime"
-          />
-          <label class="label" for="endTime">Время окончания</label>
-        </div>
-        <div class="form-field col-lg-6">
-          <q-select v-model="model" :options="options" label="Ответсвенный" />
-        </div>
-        <div class="form-field col-lg-12 justify-between flex">
-          <input name="" class="submit-btn" type="submit" value="Обновить" />
-          <q-btn color="primary" label="Отменить" v-close-popup />
-        </div>
-      </form>
+      </q-form>
     </section>
   </div>
 </template>
@@ -113,19 +64,20 @@ export default defineComponent({
     });
 
     const UpdateModule = function (e) {
+      console.log(e.target[0].value);
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
       const { mutate } = useMutation(updateModule, () => ({
         variables: {
           input: {
-            name: e.target.elements.name.value,
+            name: e.target[0].value,
             property2: {
-              date: e.target.elements.startData.value,
-              time: e.target.elements.startTime.value,
+              date: e.target[1].value,
+              time: e.target[2].value,
             },
             property3: {
-              date: e.target.elements.endData.value,
-              time: e.target.elements.endTime.value,
+              date: e.target[3].value,
+              time: e.target[4].value,
             },
             property7: {
               "2598174384277431501":
@@ -136,8 +88,10 @@ export default defineComponent({
         },
       }));
       const response = mutate();
+      console.log('hello');
       response
         .then(function (result) {
+          
           const { onResult } = useQuery(permissionTreeSubjects, {
               modelId: props.idUpdateModule,
               groupId: "1305438642755218144"
@@ -158,8 +112,9 @@ export default defineComponent({
                   })
               }
             }
+            
             const { mutate } = useMutation(createRule, ()=>({
-            variables:{
+              variables:{
               input: {
                 model_type: "object",
                 model_id: props.idUpdateModule,
@@ -193,6 +148,7 @@ export default defineComponent({
       options,
       model,
       form,
+      
     };
   },
 });
