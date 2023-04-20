@@ -48,7 +48,6 @@ const stompConnect = (store) => {
 
   const onError = (msg) => {
     console.log('Error', msg)
-    setTimeout(() => { window.location.reload() }, 1000)
   }
 
   const onClose = (msg) => {
