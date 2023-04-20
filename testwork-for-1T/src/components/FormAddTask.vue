@@ -3,36 +3,42 @@
     <section class="get-in-touch">
       <h3 class="title">Новая задача</h3>
       <q-form class="contact-form row" @submit.prevent="createNewTask">
-        <div class="form-field col-lg-6">
+        
           <q-input
+            outlined
             v-model="nameValue"
             name="name"
+            label="Имя"
             id="name"
             type="text"
+            class="col-lg-6"
             required
           />
-          <label class="label" for="name">Название</label>
-        </div>
-        <div class="form-field col-lg-6">
+          
+       
           <q-input
+            outlined
             v-model="descriptionValue"
             name="description"
             id="description"
             type="text"
+            label="Описание"
+            class="col-lg-6"
             required
           />
-          <label class="label" for="description">Описание</label>
-        </div>
-        <div class="form-field col-lg-6">
+          
+        
+        
           <q-select
+            outlined
             v-model="modelStatus"
             :options="optionsStatus"
             label="Статус"
+            class="col-lg-6"
           />
-        </div>
-        <div class="form-field col-lg-6">
-          <q-select v-model="model" :options="options" label="Исполнитель" />
-        </div>
+        
+          <q-select v-model="model" :options="options" label="Исполнитель" class="col-lg-6" />
+       
         <div class="form-field col-lg-12 justify-between flex">
           <q-btn type="submit" label="Создать" />
 
