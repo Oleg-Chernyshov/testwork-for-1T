@@ -33,12 +33,21 @@ export const GET_RESPONSIBLES = ({ commit }) => {
         id: '3662509860808044515',
       })
       onResult((queryResult) => {
+        let email = sessionStorage.getItem("email");
+        let role = sessionStorage.getItem("role");
         let options = []
         responsibles = queryResult.data.get_group.subject
         for (let subject of responsibles) {
+          if (subject.email.email == email) {
+            sessionStorage.setItem("role", "Ответсвенный");
+            break;
+          }
           options.push(
             subject.fullname?.first_name + ' ' + subject.fullname?.last_name,
           )
+        }
+        if(role === null){
+          sessionStorage.setItem("role", "Владелец");
         }
         commit('setResponsibles', {
           responsibles: responsibles,
@@ -61,9 +70,14 @@ export const GET_EXECUTORS = ({ commit }) => {
         id: '4428325871296613250',
       })
       onResult((queryResult) => {
+        let email = sessionStorage.getItem("email");
         let options = []
         executors = queryResult.data.get_group.subject
         for (let subject of executors) {
+          if (subject.email.email == email) {
+            sessionStorage.setItem("role", "Исполнитель");
+            break;
+          }
           options.push(
             subject.fullname?.first_name + ' ' + subject.fullname?.last_name,
           )

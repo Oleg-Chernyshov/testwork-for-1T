@@ -179,8 +179,6 @@ export default {
         console.log("Ошибка", err);
       }
     };
-
-    
       
     const get_module = function (module_index) {
       current_module.values = MODULES.value[module_index.value];

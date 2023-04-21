@@ -9,7 +9,6 @@
       :rows-per-page-options="[5, 10, 20]"
     >
       
-      
       <template v-slot:body="props">
         <q-tr :props="props">
         

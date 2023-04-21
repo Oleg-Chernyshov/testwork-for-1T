@@ -97,21 +97,17 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, onMounted } from "vue";
+import { defineComponent, ref, computed, onMounted, watch } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { GetAllPages } from "src/api/main/queryes";
 import { useStore } from "vuex";
-import { GetGroupById } from "src/api/main/queryes";
-import { getClientOptions } from "src/apollo/index";
-import { provideApolloClient } from "@vue/apollo-composable";
-import { ApolloClient } from "@apollo/client/core";
 
 import stompApi from "src/rabbitmq/connect";
 export default defineComponent({
   name: "MainLayout",
   setup() {
     const leftDrawerOpen = ref(false);
-    const role = ref("");
+    const role = computed(() => sessionStorage.getItem("role"));
     const store = useStore();
     const namesOfPages = ref([]);
 
@@ -122,6 +118,7 @@ export default defineComponent({
     const MODULES = computed(() => store.getters.MODULES);
 
     onMounted(() => {
+
       store.dispatch("GET_RESPONSIBLES");
       store.dispatch("GET_EXECUTORS");
       store.dispatch("GET_MODULES");
@@ -138,50 +135,6 @@ export default defineComponent({
           namesOfPages.value.push(item.title);
         });
       });
-    }
-
-    {
-      let email = sessionStorage.getItem("email");
-      const { onResult } = useQuery(GetGroupById, {
-        id: "3662509860808044515",
-      });
-      onResult((queryResult) => {
-        let flag = 1;
-        for (let subject of queryResult.data.get_group.subject) {
-          if (subject.email.email == email) {
-            sessionStorage.setItem("role", "Ответсвенный");
-            role.value = "Ответсвенный";
-            flag = 0;
-            break;
-          }
-        }
-        if (flag) {
-          const apolloClient = new ApolloClient(getClientOptions());
-          provideApolloClient(apolloClient);
-
-          const { onResult } = useQuery(GetGroupById, {
-            id: "4428325871296613250",
-          });
-
-          onResult((queryResult) => {
-            for (let subject of queryResult.data.get_group.subject) {
-              if (subject.email.email == email) {
-                sessionStorage.setItem("role", "Исполнитель");
-                role.value = "Исполнитель";
-                flag = 0;
-                break;
-              }
-            }
-            if (flag) {
-              sessionStorage.setItem("role", "Владелец");
-              role.value = "Владелец";
-            }
-          });
-        }
-      });
-    }
-
-    {
     }
 
     return {
