@@ -2,16 +2,14 @@
   <div class="wrapper">
     <section class="get-in-touch">
       <h3 class="title">Обновить задачу</h3>
-      <q-form @submit.prevent="updateTask($event)">
+      <q-form class="contact-form row flex-center" @submit.prevent="updateTask($event)">
         
-        <div class="q-gutter-md">
-
           <q-input
             outlined
             v-model="form.name"
             name="name"
             id="name"
-            class="input-text js-input"
+            class="col-11 q-mb-sm"
             type="text"
             label="Название"
           />
@@ -21,25 +19,26 @@
             v-model="form.description"
             name="description"
             id="description"
-            class="input-text js-input"
+            class="col-11 q-mb-sm"
             type="text"
             label="Описание"
           />
           
           <q-select
             outlined
+            class="col-11 q-mb-sm"
             v-model="modelStatus"
             :options="optionsStatus"
             label="Статус"
           />
         
-          <q-select outlined v-model="model" :options="options" label="Исполнитель" />
+          <q-select class="col-11 q-mb-sm" outlined v-model="model" :options="options" label="Исполнитель" />
         
         <div class="form-field col-lg-12 justify-between flex">
-          <q-btn type="submit" color="primary" label="Обновить" />
+          <q-btn color="green" type="submit"  label="Обновить" />
           <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
-      </div>
+
       </q-form>
     </section>
   </div>

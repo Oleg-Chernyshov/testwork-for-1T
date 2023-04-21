@@ -2,19 +2,17 @@
   <div class="wrapper">
     <section class="get-in-touch">
       <h3 class="title">Редактирование модуля</h3>
-      <q-form @submit.prevent="UpdateModule($event)">
-        <div class="q-gutter-md">
-          <q-input outlined v-model="form.name" label="Название" />
-          <q-input outlined v-model="form.startData" label="Дата начала" />
-          <q-input outlined v-model="form.startTime" label="Время начала" />
-          <q-input outlined v-model="form.endData" label="Дата окончания" />
-          <q-input outlined v-model="form.endTime" label="Время окончания" />
-          <q-select outlined v-model="model" :options="options" label="Ответсвенный" />
-          <div class="row justify-between">
-            <q-btn type="submit" color="primary" label="Обновить" />
+      <q-form class="contact-form row flex-center" @submit.prevent="UpdateModule($event)">
+          <q-input outlined v-model="form.name" label="Название" class="col-11 q-mb-sm" />
+          <q-input outlined v-model="form.startData" label="Дата начала" class="col-11 q-mb-sm"/>
+          <q-input outlined v-model="form.startTime" label="Время начала" class="col-11 q-mb-sm"/>
+          <q-input outlined v-model="form.endData" label="Дата окончания" class="col-11 q-mb-sm"/>
+          <q-input outlined v-model="form.endTime" label="Время окончания" class="col-11 q-mb-sm"/>
+          <q-select outlined v-model="model" :options="options" label="Ответсвенный" class="col-11 q-mb-sm"/>
+          <div class="form-field col-lg-12 justify-between flex">
+            <q-btn type="submit" color="green" label="Обновить" />
             <q-btn color="primary" label="Отменить" v-close-popup />
           </div>
-        </div>
       </q-form>
     </section>
   </div>

@@ -2,7 +2,7 @@
   <div class="wrapper">
     <section class="get-in-touch">
       <h3 class="title">Новая задача</h3>
-      <q-form class="contact-form row" @submit.prevent="createNewTask">
+      <q-form class="contact-form row flex-center" @submit.prevent="createNewTask">
         
           <q-input
             outlined
@@ -11,7 +11,7 @@
             label="Имя"
             id="name"
             type="text"
-            class="col-lg-6"
+            class="col-11 q-mb-sm"
             required
           />
           
@@ -22,7 +22,7 @@
             id="description"
             type="text"
             label="Описание"
-            class="col-lg-6"
+            class="col-11 q-mb-sm"
             required
           />
             
@@ -31,15 +31,16 @@
             v-model="modelStatus"
             :options="optionsStatus"
             label="Статус"
-            class="col-lg-6"
+            class="col-11 q-mb-sm"
           />
         
-          <q-select v-model="model" :options="options" label="Исполнитель" class="col-lg-6" />
+          <q-select outlined v-model="model" :options="options" label="Исполнитель" class="col-11 q-mb-sm" />
        
         <div class="form-field col-lg-12 justify-between flex">
-          <q-btn type="submit" label="Создать" />
+          <q-btn color="green" type="submit" label="Создать" />
           <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
+
       </q-form>
     </section>
   </div>
@@ -100,6 +101,7 @@ export default defineComponent({
     const createNewTask = function (e) {
       const apolloClient = new ApolloClient(getClientOptions());
       provideApolloClient(apolloClient);
+      console.log(executors.value[indexExecutor.value].id);
       const { mutate } = useMutation(addNewTask, () => ({
         variables: {
           input: {
@@ -107,9 +109,9 @@ export default defineComponent({
             property4: e.target.elements.description.value,
             property5: statusId.value,
             property6: {
-              "3922421966920449006": executors.value[indexExecutor.value].id,
+              "2598174384277431501": executors.value[indexExecutor.value].id,
             },
-            property8: {
+            property8: {    
               "2673961667589284866": MODULES.value[props.idModule].id,
             },
           },

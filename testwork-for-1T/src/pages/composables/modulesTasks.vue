@@ -57,7 +57,7 @@
             >
               Редактировать
             </button>
-            <button class="btn" @click="deleteTask(task.id)">Удалить</button>
+            <button class="btn" @click="deleteTask(props.row.id)">Удалить</button>
             <button
               class="btn"
               @click="showForm_filesForm = !showForm_filesForm"

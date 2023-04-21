@@ -55,6 +55,7 @@ export default defineComponent({
 ]
 
     const responsible = computed(() => store.getters.RESPONSIBLES);
+    console.log(responsible.value);
     
     const deleteSubject = function (id) {
       const apolloClient = new ApolloClient(getClientOptions());
