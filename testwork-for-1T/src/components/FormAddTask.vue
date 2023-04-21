@@ -2,43 +2,49 @@
   <div class="wrapper">
     <section class="get-in-touch">
       <h3 class="title">Новая задача</h3>
-      <form class="contact-form row" @submit.prevent="createNewTask">
-        <div class="form-field col-lg-6">
-          <input
+      <q-form class="contact-form row" @submit.prevent="createNewTask">
+        
+          <q-input
+            outlined
+            v-model="nameValue"
             name="name"
+            label="Имя"
             id="name"
-            class="input-text js-input"
             type="text"
+            class="col-lg-6"
             required
           />
-          <label class="label" for="name">Название</label>
-        </div>
-        <div class="form-field col-lg-6">
-          <input
+          
+       
+          <q-input
+            outlined
+            v-model="descriptionValue"
             name="description"
             id="description"
-            class="input-text js-input"
             type="text"
+            label="Описание"
+            class="col-lg-6"
             required
           />
-          <label class="label" for="description">Описание</label>
-        </div>
-        <div class="form-field col-lg-6">
+          
+        
+        
           <q-select
+            outlined
             v-model="modelStatus"
             :options="optionsStatus"
             label="Статус"
+            class="col-lg-6"
           />
-        </div>
-        <div class="form-field col-lg-6">
-          <q-select v-model="model" :options="options" label="Исполнитель" />
-        </div>
+        
+          <q-select v-model="model" :options="options" label="Исполнитель" class="col-lg-6" />
+       
         <div class="form-field col-lg-12 justify-between flex">
-          <input name="" class="submit-btn" type="submit" value="Создать" />
+          <q-btn type="submit" label="Создать" />
 
           <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
-      </form>
+      </q-form>
     </section>
   </div>
 </template>
@@ -69,6 +75,11 @@ export default defineComponent({
     const indexModule = ref(0);
     const optionsStatus = ["Назначена", "Выполнена", "Завершена"];
     const statusId = ref("");
+
+    const descriptionValue = ref("");
+    const nameValue = ref("");
+    
+
 
     const executors = computed(() => store.getters.EXECUTORS);
     const MODULES = computed(() => store.getters.MODULES);
@@ -107,49 +118,51 @@ export default defineComponent({
             property8: {
               "2673961667589284866": MODULES.value[props.idModule].id,
             },
-          },
-        },
-      }));
-      const response = mutate();
-      response.then(function (result) {
-        const { mutate } = useMutation(createRule, () => ({
-          variables: {
-            input: {
-              model_type: "object",
-              model_id: result.data.create_type2.recordId,
-              owner_type: "subject",
-              owner_id: executors.value[indexExecutor.value].id,
-              level: 7,
             },
-          },
-        }));
-        const response_2 = mutate();
-        response_2
-          .then(function (result) {
+            },
+            }));
+            const response = mutate();
+            response.then(function (result) {
+            const { mutate } = useMutation(createRule, () => ({
+            variables: {
+            input: {
+            model_type: "object",
+            model_id: result.data.create_type2.recordId,
+            owner_type: "subject",
+            owner_id: executors.value[indexExecutor.value].id,
+            level: 7,
+            },
+            },
+            }));
+            const response_2 = mutate();
+            response_2
+            .then(function (result) {
             $q.notify({
-              type: "positive",
-              message: "Модуль добавлен",
+            type: "positive",
+            message: "Модуль добавлен",
             });
-          })
-          .catch((err) => {
+            })
+            .catch((err) => {
             console.log("Ошибка", err);
             $q.notify({
-              type: "negative",
-              message: "Ошибка",
+            type: "negative",
+            message: "Ошибка",
             });
-          });
-      });
-      e.target.elements.name.value = "";
-      e.target.elements.description.value = "";
-    };
-    return {
-      options,
-      modelStatus,
-      model,
-      createNewTask,
-      modelModule,
-      optionsStatus,
-    };
-  },
-});
+            });
+            });
+            e.target.elements.name.value = "";
+            e.target.elements.description.value = "";
+            };
+            return {
+            descriptionValue,
+            nameValue,
+            options,
+            modelStatus,
+            model,
+            createNewTask,
+            modelModule,
+            optionsStatus,
+            };
+            },
+            });
 </script>

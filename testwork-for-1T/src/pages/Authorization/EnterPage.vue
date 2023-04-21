@@ -67,7 +67,7 @@ export default defineComponent({
           .then((MutationResult) => {
             sessionStorage.setItem(
               "token",
-              MutationResult.data.userSignIn.record.access_token
+              MutationResult.data.userSignIn.record.access_token+"?space=13"
             );
             store.dispatch("GET_ID", MutationResult.data.userSignIn.recordId);
 
