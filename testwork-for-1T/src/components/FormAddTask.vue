@@ -15,7 +15,6 @@
             required
           />
           
-       
           <q-input
             outlined
             v-model="descriptionValue"
@@ -26,9 +25,7 @@
             class="col-lg-6"
             required
           />
-          
-        
-        
+            
           <q-select
             outlined
             v-model="modelStatus"
@@ -41,7 +38,6 @@
        
         <div class="form-field col-lg-12 justify-between flex">
           <q-btn type="submit" label="Создать" />
-
           <q-btn color="primary" label="Отменить" v-close-popup />
         </div>
       </q-form>
@@ -79,8 +75,6 @@ export default defineComponent({
     const descriptionValue = ref("");
     const nameValue = ref("");
     
-
-
     const executors = computed(() => store.getters.EXECUTORS);
     const MODULES = computed(() => store.getters.MODULES);
     const options = computed(() => store.getters.OPTIONS_EXECUTORS);
@@ -118,51 +112,51 @@ export default defineComponent({
             property8: {
               "2673961667589284866": MODULES.value[props.idModule].id,
             },
-            },
-            },
-            }));
-            const response = mutate();
-            response.then(function (result) {
-            const { mutate } = useMutation(createRule, () => ({
-            variables: {
-            input: {
+          },
+        },
+      }));
+      const response = mutate();
+      response.then(function (result) {
+        const { mutate } = useMutation(createRule, () => ({
+        variables: {
+          input: {
             model_type: "object",
             model_id: result.data.create_type2.recordId,
             owner_type: "subject",
             owner_id: executors.value[indexExecutor.value].id,
             level: 7,
-            },
-            },
-            }));
-            const response_2 = mutate();
-            response_2
-            .then(function (result) {
-            $q.notify({
-            type: "positive",
-            message: "Модуль добавлен",
+          },
+        },
+      }));
+      const response_2 = mutate();
+      response_2
+      .then(function (result) {
+        $q.notify({
+          type: "positive",
+          message: "Модуль добавлен",
+        });
+      })
+      .catch((err) => {
+        console.log("Ошибка", err);
+          $q.notify({
+              type: "negative",
+              message: "Ошибка",
             });
-            })
-            .catch((err) => {
-            console.log("Ошибка", err);
-            $q.notify({
-            type: "negative",
-            message: "Ошибка",
-            });
-            });
-            });
-            e.target.elements.name.value = "";
-            e.target.elements.description.value = "";
-            };
-            return {
-            descriptionValue,
-            nameValue,
-            options,
-            modelStatus,
-            model,
-            createNewTask,
-            modelModule,
-            optionsStatus,
-            };
-            },
-            });
+          });
+        });
+        e.target.elements.name.value = "";
+        e.target.elements.description.value = "";
+      };
+      return {
+        descriptionValue,
+        nameValue,
+        options,
+        modelStatus,
+        model,
+        createNewTask,
+        modelModule,
+        optionsStatus,
+      };
+    },
+  });
 </script>

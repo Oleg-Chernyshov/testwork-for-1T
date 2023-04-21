@@ -2,40 +2,40 @@
   <div class="wrapper">
     <section class="get-in-touch">
       <h3 class="title">Новый модуль</h3>
-      <form class="contact-form row" @submit.prevent="createNewModule">
+      <form class="contact-form flex flex-center row" @submit.prevent="createNewModule">
         <q-input
           outlined
           v-model="name"
           label="Название"
-          class="col-lg-6"
+          class="col-11 q-mb-sm"
           required
         />
         <q-input
           outlined
           v-model="startData"
           label="Дата начала"
-          class="col-lg-6"
+          class="col-11 q-mb-sm"
           required
         />
         <q-input
           outlined
           v-model="startTime"
           label="Время начала"
-          class="col-lg-6"
+          class="col-11 q-mb-sm"
           required
         />
         <q-input
           outlined
           v-model="endData"
           label="Дата окончания"
-          class="col-lg-6"
+          class="col-11 q-mb-sm"
           required
         />
         <q-input
           outlined
           v-model="endTime"
           label="Время окончания"
-          class="col-lg-6"
+          class="col-11 q-mb-sm"
           required
         />
         <q-select
@@ -43,7 +43,7 @@
           v-model="model"
           :options="options"
           label="Ответсвенный"
-          class="col-lg-6"
+          class="col-11 q-mb-sm"
         />
         <div class="form-field col-lg-12 justify-between flex">
           <q-btn color="primary" label="Создать" type="submit" class="submit-btn" />

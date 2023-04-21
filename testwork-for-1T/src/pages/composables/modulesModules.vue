@@ -71,9 +71,7 @@
         @click="showForm_addModule = !showForm_addModule"
         >Добавить модуль</q-btn
       >
-      
     </template>
-
     
   </q-table>
 

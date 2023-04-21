@@ -16,8 +16,6 @@
             label="Название"
           />
           
-        
-        
           <q-input
             outlined
             v-model="form.description"
@@ -28,15 +26,12 @@
             label="Описание"
           />
           
-        
-        
           <q-select
             outlined
             v-model="modelStatus"
             :options="optionsStatus"
             label="Статус"
           />
-        
         
           <q-select outlined v-model="model" :options="options" label="Исполнитель" />
         
