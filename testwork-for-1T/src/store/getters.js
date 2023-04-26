@@ -1,58 +1,62 @@
 export const MODULES = (state) => {
-	return state.modules
+  return state.modules
+}
+
+export const DOCUMENTS = (state) => {
+  return state.documents
 }
 
 export const MODULE_INDEX = (state) => {
-	return state.module_index
+  return state.module_index
 }
 
 export const ID = (state) => {
-	return state.id
+  return state.id
 }
 
 export const SUBJECTS = (state) => {
-	return state.subjects
+  return state.subjects
 }
 
 export const REFETCH_MODULES = (state) => {
-	return state.refetchModules
+  return state.refetchModules
 }
 export const RESPONSIBLES = (state) => {
-	return state.responsibles
+  return state.responsibles
 }
 
 export const OPTIONS_RESPONSIBLES = (state) => {
-	return state.optionsForResponsibles
+  return state.optionsForResponsibles
 }
 
 export const REFETCH_RESPONSIBLES = (state) => {
-	return state.refetchQueryResponsible
+  return state.refetchQueryResponsible
 }
 
 export const EXECUTORS = (state) => {
-	return state.executors
+  return state.executors
 }
 
 export const OPTIONS_EXECUTORS = (state) => {
-	return state.optionsForExecutors
+  return state.optionsForExecutors
 }
 
 export const REFETCH_EXECUTORS = (state) => {
-	return state.refetchQueryExecutors
+  return state.refetchQueryExecutors
 }
 
 export const REFETCH_ALL_TASKS = (state) => {
-	return state.refetchQueryAllTasks
+  return state.refetchQueryAllTasks
 }
 
 export const OPTIONS_MODULES = (state) => {
-	return state.optionsModules
+  return state.optionsModules
 }
 
 export const USER_ID = (state) => {
-	return state.userId
+  return state.userId
 }
 
 export const ALL_TASKS = (state) => {
-	return state.allTasks
+  return state.allTasks
 }

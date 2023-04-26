@@ -1,10 +1,14 @@
 import { useQuery } from '@vue/apollo-composable'
-import { GetGroupById, GetAllTasks, GetAllModules } from 'src/api/main/queryes'
+import {
+  GetGroupById,
+  GetAllTasks,
+  GetAllModules,
+  allDocuments,
+} from 'src/api/main/queryes'
 
 export const GET_MODULES = ({ commit }) => {
   const fetching = async () => {
     try {
-      
       const { onResult, refetch } = useQuery(GetAllModules)
       onResult((queryResult) => {
         let options = []
@@ -33,21 +37,21 @@ export const GET_RESPONSIBLES = ({ commit }) => {
         id: '3662509860808044515',
       })
       onResult((queryResult) => {
-        let email = sessionStorage.getItem("email");
-        let role = sessionStorage.getItem("role");
+        let email = sessionStorage.getItem('email')
+        let role = sessionStorage.getItem('role')
         let options = []
         responsibles = queryResult.data.get_group.subject
         for (let subject of responsibles) {
           if (subject.email.email == email) {
-            sessionStorage.setItem("role", "Ответсвенный");
-            break;
+            sessionStorage.setItem('role', 'Ответсвенный')
+            break
           }
           options.push(
             subject.fullname?.first_name + ' ' + subject.fullname?.last_name,
           )
         }
-        if(role === null){
-          sessionStorage.setItem("role", "Владелец");
+        if (role === null) {
+          sessionStorage.setItem('role', 'Владелец')
         }
         commit('setResponsibles', {
           responsibles: responsibles,
@@ -70,13 +74,13 @@ export const GET_EXECUTORS = ({ commit }) => {
         id: '4428325871296613250',
       })
       onResult((queryResult) => {
-        let email = sessionStorage.getItem("email");
+        let email = sessionStorage.getItem('email')
         let options = []
         executors = queryResult.data.get_group.subject
         for (let subject of executors) {
           if (subject.email.email == email) {
-            sessionStorage.setItem("role", "Исполнитель");
-            break;
+            sessionStorage.setItem('role', 'Исполнитель')
+            break
           }
           options.push(
             subject.fullname?.first_name + ' ' + subject.fullname?.last_name,
@@ -96,11 +100,10 @@ export const GET_EXECUTORS = ({ commit }) => {
 }
 
 export const GET_ALL_TASKS = ({ commit }) => {
-  
   const fetching = async () => {
     try {
       const { onResult, refetch } = useQuery(GetAllTasks)
-      onResult((queryResult) => {;
+      onResult((queryResult) => {
         commit('setAllTasks', {
           allTasks: queryResult.data.paginate_type2.data,
           refetch: refetch,
@@ -115,4 +118,21 @@ export const GET_ALL_TASKS = ({ commit }) => {
 
 export const GET_ID = ({ commit }, id) => {
   commit('SetId', id)
+}
+
+export const GET_DOCUMENTS = ({ commit }) => {
+  const fetching = async () => {
+    try {
+      const { onResult, refetch } = useQuery(allDocuments)
+      onResult((queryResult) => {
+        commit('setDocuments', {
+          documents: queryResult.data['paginate_type3'].data,
+          refetch: refetch,
+        })
+      })
+    } catch (e) {
+      console.log('Ошибка:', e)
+    }
+  }
+  fetching()
 }

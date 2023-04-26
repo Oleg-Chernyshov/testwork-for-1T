@@ -35,6 +35,7 @@
               <q-route-tab to="/Responsible" label="Ответственные" />
             </q-tabs>
           </q-expansion-item>
+
           <q-expansion-item
             v-if="role === 'Владелец'"
             to="/Deleted"
@@ -48,12 +49,15 @@
               <q-route-tab to="/Excluded" :label="`${namesOfPages[1]}`" />
             </q-tabs>
           </q-expansion-item>
+
           <q-expansion-item
             v-if="role == 'Ответсвенный' || role == 'Владелец'"
             to="/Modules"
             expand-separator
             icon=""
-            :label="role === 'Владелец' ? `${namesOfPages[3]}` : `${namesOfPages[2]}`"
+            :label="
+              role === 'Владелец' ? `${namesOfPages[3]}` : `${namesOfPages[2]}`
+            "
             caption=""
             default-opened
             @click="get_module_index(-1)"
@@ -76,9 +80,35 @@
             to="/AllTasks"
             expand-separator
             icon=""
-            :label="role === 'Владелец' ? `${namesOfPages[2]}` : `${namesOfPages[0]}`"
+            :label="
+              role === 'Владелец' ? `${namesOfPages[2]}` : `${namesOfPages[0]}`
+            "
             caption=""
           >
+          </q-expansion-item>
+
+          <q-expansion-item
+            expand-separator
+            icon=""
+            label="Лендинг"
+            caption=""
+            default-opened
+          >
+            <q-tabs
+              indicator-color="transparent"
+              v-for="(doc, index) in DOCUMENTS"
+              :key="doc.id"
+              align="left"
+            >
+              <q-route-tab
+                :to="{
+                  name: 'Document',
+                  params: { id: `${index}` },
+                }"
+              >
+                <div>{{ doc.name }}</div>
+              </q-route-tab>
+            </q-tabs>
           </q-expansion-item>
         </q-list>
       </q-list>
@@ -116,14 +146,18 @@ export default defineComponent({
     };
 
     const MODULES = computed(() => store.getters.MODULES);
+    const DOCUMENTS = computed(() => store.getters.DOCUMENTS);
+    watch(DOCUMENTS, () => {
+      console.log("DOCUMENTS", DOCUMENTS.value);
+    });
 
     onMounted(() => {
-
       store.dispatch("GET_RESPONSIBLES");
       store.dispatch("GET_EXECUTORS");
       store.dispatch("GET_MODULES");
-      store.dispatch("GET_ALL_TASKS")
-      
+      store.dispatch("GET_ALL_TASKS");
+      store.dispatch("GET_DOCUMENTS");
+
       stompApi.queueCreate();
       stompApi.stompConnect(store);
     });
@@ -147,6 +181,7 @@ export default defineComponent({
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
       MODULES,
+      DOCUMENTS,
     };
   },
 });

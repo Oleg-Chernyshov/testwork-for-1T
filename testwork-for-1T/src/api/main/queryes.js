@@ -268,51 +268,59 @@ export const rootPages = gql`
 `
 
 export const getDocumentById = gql`
-  query($id: String!) {
-    get_type3(id: $id) {
-      id
-      type_id
-      author_id
-      level
-      position
-      created_at
-      updated_at
-      name
-      property10
-      property12 {
-        id
-        fullname {
-          first_name
-          last_name
-        }
-      }
-    }
-  }
+  query($id: String!) {
+    get_type3(id: $id) {
+      id
+      type_id
+      author_id
+      level
+      position
+      created_at
+      updated_at
+      name
+      property10
+      property12 {
+        id
+        fullname {
+          first_name
+          last_name
+        }
+      }
+    }
+  }
 `
 
 export const allDocuments = gql`
-  {
-    paginate_type3(page: 1, perPage: 100) {
-      data {
-        id
-        type_id
-        author_id
-        level
-        position
-        created_at
-        updated_at
-        name
-      }
-      paginatorInfo {
-        perPage
-        currentPage
-        lastPage
-        total
-        count
-        from
-        to
-        hasMorePages
-      }
-    }
-  }
+  {
+    paginate_type3(page: 1, perPage: 100) {
+      data {
+        id
+        type_id
+        author_id
+        level
+        position
+        created_at
+        updated_at
+        name
+        property10
+        property12 {
+          id
+          fullname {
+            first_name
+            last_name
+          }
+        }
+      }
+      paginatorInfo {
+        perPage
+        currentPage
+        lastPage
+        total
+        count
+        from
+        to
+        hasMorePages
+      }
+    }
+  }
 `

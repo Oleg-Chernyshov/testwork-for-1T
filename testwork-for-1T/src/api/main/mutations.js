@@ -166,3 +166,75 @@ export const permissionRuleDelete = gql`
     }
   }
 `
+
+//DOCUMENT
+//Создание документа
+export const createDocument = gql`
+  mutation($input: create_type3_input!) {
+    create_type3(input: $input) {
+      status
+      recordId
+      record {
+        id
+        type_id
+        author_id
+        level
+        position
+        created_at
+        updated_at
+        name
+      }
+    }
+  }
+`
+//Пример input:
+// {
+//   "input": {
+//     "name": "Документ2",
+//     "property10": "content2",
+//     "property12": {
+//       "2598174384277431501": "3687791280958260641"
+//     }
+//   }
+// }
+
+//Обновление документа
+export const updateDocument = gql`
+  mutation($input: update_type3_input!) {
+    update_type3(id: "2184251690572996693", input: $input) {
+      status
+      recordId
+      record {
+        id
+        type_id
+        author_id
+        level
+        position
+        created_at
+        updated_at
+        name
+      }
+    }
+  }
+`
+//Пример input:
+// {
+//   "input": {
+//     "name": "Документ2",
+//     "property10": "content2(up)"
+//   }
+// }
+
+//Удаление документа (почему-то не срабатывает, хотя приходит сообщение, что документ удален)
+export const deleteDocument = gql`
+  mutation($id: String!) {
+    delete_type3(id: $id) {
+      status
+      recordId
+    }
+  }
+`
+//Пример input:
+// {
+//   "id": "3150722121807459175"
+// }

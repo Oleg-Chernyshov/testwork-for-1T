@@ -6,6 +6,7 @@ import * as mutations from './mutations'
 export const state = {
   module_index: -1,
   modules: [],
+  documents: [],
   subjects: [],
   allTasks: [],
   responsibles: [],
@@ -23,19 +24,15 @@ const store = createStore({
   state,
   getters,
   actions,
-  mutations
+  mutations,
 })
 
 if (module.hot) {
-  module.hot.accept([
-    './getters',
-    './actions',
-    './mutations'
-  ], () => {
+  module.hot.accept(['./getters', './actions', './mutations'], () => {
     store.hotUpdate({
       getters: require('./getters'),
       actions: require('./actions'),
-      mutations: require('./mutations')
+      mutations: require('./mutations'),
     })
   })
 }
