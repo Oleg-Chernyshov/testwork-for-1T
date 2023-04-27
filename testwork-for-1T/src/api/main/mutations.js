@@ -191,8 +191,8 @@ export const createDocument = gql`
 // {
 //   "input": {
 //     "name": "Документ2",
-//     "property10": "content2",
-//     "property12": {
+//     "content": "content2",
+//     "Owner": {
 //       "2598174384277431501": "3687791280958260641"
 //     }
 //   }
@@ -200,8 +200,8 @@ export const createDocument = gql`
 
 //Обновление документа
 export const updateDocument = gql`
-  mutation($input: update_document_input!) {
-    update_document(id: "2184251690572996693", input: $input) {
+  mutation($id: String!, $input: update_document_input!) {
+    update_document(id: $id, input: $input) {
       status
       recordId
       record {
@@ -219,9 +219,10 @@ export const updateDocument = gql`
 `
 //Пример input:
 // {
+//   "id": "3150722121807459175",
 //   "input": {
-//     "name": "Документ2",
-//     "property10": "content2(up)"
+//     "name": "Документ1(up)",
+//     "content": "content1(up)"
 //   }
 // }
 
