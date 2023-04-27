@@ -46,7 +46,7 @@
           </q-expansion-item>
 
           <q-expansion-item expand-separator icon="" label="Лендинг" caption="" default-opened>
-            <q-tabs indicator-color="transparent" v-for="(doc, index) in  DOCUMENTS " :key="doc.id" align="left">
+            <q-tabs indicator-color="transparent" v-for="(doc, index) in   DOCUMENTS  " :key="doc.id" align="left">
               <q-route-tab :to="{
                   name: 'Document',
                   params: { id: `${index}` },
@@ -76,7 +76,7 @@
                           <template v-slot:after>
                             <q-btn flat dense color="negative" icon="cancel" @click.stop.prevent="scope.cancel" />
 
-                            <q-btn flat dense color="positive" icon="check_circle" @click.stop.prevent="scope.set"
+                            <q-btn flat dense color="positive" icon="check_circle" @click.stop.prevent="renameDocument"
                               :disable="scope.validate(scope.value) === false || scope.initialValue === scope.value" />
                           </template>
                         </q-input>
@@ -148,6 +148,20 @@ export default defineComponent({
         });
       });
     }
+
+    const renameDocument = () => {
+      const { mutate } = useMutation(updateDocument, () => ({
+        variables: {
+          id: "3150722121807459175",
+          input: {
+            name: scope.value,
+
+          }
+        },
+      }))
+      mutate()
+    };
+
 
     return {
       role,
