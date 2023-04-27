@@ -106,7 +106,9 @@
                   params: { id: `${index}` },
                 }"
               >
-                <div>{{ doc.name }}</div>
+                <div class="item_doc">
+                  <span>{{ doc.name }}</span> <span @click="menuDoc">⋮</span>
+                </div>
               </q-route-tab>
             </q-tabs>
           </q-expansion-item>
@@ -188,6 +190,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.q-tab__content {
+  width: 100%;
+}
+.item_doc {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 .q-tabs__content {
   width: 100% !important;
   text-align: left !important;
