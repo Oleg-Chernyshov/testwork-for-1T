@@ -126,7 +126,7 @@ export const GET_DOCUMENTS = ({ commit }) => {
       const { onResult, refetch } = useQuery(allDocuments)
       onResult((queryResult) => {
         commit('setDocuments', {
-          documents: queryResult.data['paginate_type3'].data,
+          documents: queryResult.data['paginate_document'].data,
           refetch: refetch,
         })
       })
