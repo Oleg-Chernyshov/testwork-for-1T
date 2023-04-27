@@ -238,3 +238,18 @@ export const deleteDocument = gql`
 // {
 //   "id": "3150722121807459175"
 // }
+
+//Загрузка файла
+export const loadFile = gql`
+  mutation filesUpload($files: [Upload]!) {
+    filesUpload(files: $files) {
+      status
+      ids
+    }
+  }
+`
+
+//Пример input:
+// variables: {
+//   files: null,
+// },

@@ -57,19 +57,27 @@
         </q-btn-dropdown>
       </template>
     </q-editor>
+    <q-btn @click="saveHtmlFile">Сохранить</q-btn>
   </div>
 </template>
 
 <script setup>
 import { useRoute, onBeforeRouteUpdate } from "vue-router";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
 import { useQuasar } from "quasar";
+import { loadFile } from "../api/main/mutations";
+import { useMutation } from "@vue/apollo-composable";
 
 const route = useRoute();
 const id = ref(route.params.id);
 const store = useStore();
 const DOCUMENTS = computed(() => store.getters.DOCUMENTS);
+
+watch(route, () => {
+  updateId();
+  console.log(id.value);
+});
 
 const updateId = () => {
   id.value = route.params.id;
@@ -140,6 +148,39 @@ const toolbar = [
 ];
 const edit = ref(null);
 const editor = ref("");
+
+const saveHtmlFile = function () {
+  const blob = new Blob([editor.value], { type: "text/html" });
+
+  const formData = new FormData();
+  formData.append("files", blob);
+  console.log(formData.getAll("files"));
+
+  // const url = window.URL.createObjectURL(blob);
+  // const reader = new FileReader();
+  // reader.readAsText(formData.getAll("files")[0]);
+  // reader.onload = () => {
+  //   const text = reader.result;
+  //   console.log(text);
+  //   // editor.value = editor.value + text;
+  // };
+
+  const { mutate } = useMutation(loadFile, () => ({
+    variables: {
+      input: {
+        files: formData.getAll("files"),
+      },
+    },
+  }));
+  mutate().then((result) => {
+    console.log(result);
+  });
+  // const link = document.createElement("a");
+  // link.href = url;
+  // link.download = "doc1";
+  // link.click();
+};
+
 const token = ref(null);
 const foreColor = ref("#000000");
 const highlight = ref("#ffff00aa");
@@ -150,9 +191,12 @@ const color = (cmd, name) => {
   edit._value.focus();
 };
 
-onBeforeRouteUpdate((to, from, next) => {
-  updateId();
-  next();
+// onBeforeRouteUpdate((to, from, next) => {
+//   next();
+// });
+
+onBeforeUnmount(() => {
+  console.log(2);
 });
 </script>
 

@@ -117,7 +117,7 @@
     <q-page-container>
       <router-view v-slot="{ Component }">
         <transition name="bounce">
-          <keep-alive>
+          <keep-alive exclude="Document">
             <component :is="Component" />
           </keep-alive>
         </transition>
