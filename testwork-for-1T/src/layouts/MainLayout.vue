@@ -2,14 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title> Quasar App </q-toolbar-title>
       </q-toolbar>
@@ -20,21 +13,32 @@
         <q-tree :nodes="customize" node-key="label" default-expand-all>
           <template v-slot:default-header="prop">
             <div class="row items-center">
-              <q-icon
-                :name="prop.node.icon || 'share'"
-                color="orange"
-                size="28px"
-                class="q-mr-sm"
-              />
-              <div
-                @click="clickOnTreeElem(prop.node)"
-                class="text-weight-bold text-primary cursor-pointer"
-              >
+              <q-icon :name="prop.node.icon || 'share'" color="orange" size="28px" class="q-mr-sm" />
+              <div @click="clickOnTreeElem(prop.node)" class="text-weight-bold text-primary cursor-pointer">
                 {{ prop.node.label }}
               </div>
             </div>
           </template>
         </q-tree>
+        <q-btn label="popup">
+          <q-menu class="popup" anchor="center right" self="top left">
+            <q-item class="popup-component" clickable>
+              <q-item-section>Открыть</q-item-section>
+            </q-item>
+            <q-item class="popup-component" clickable>
+              <q-item-section>Дублировать</q-item-section>
+            </q-item>
+            <q-item class="popup-component" clickable>
+              <q-item-section>Удалить</q-item-section>
+            </q-item>
+            <q-item class="popup-component" clickable>
+              <q-item-section>Права доступа</q-item-section>
+            </q-item>
+            <q-item class="popup-component" clickable>
+              <q-item-section>Переименовать</q-item-section>
+            </q-item>
+          </q-menu>
+        </q-btn>
       </div>
 
       <!-- <q-list>
@@ -182,16 +186,16 @@ export default defineComponent({
       el.label == "Команда"
         ? (rout = "/Team")
         : el.label == "Модули"
-        ? (rout = "/Modules")
-        : el.label == "Мои задачи"
-        ? (rout = "/AllTasks")
-        : el.label == "Исполнители"
-        ? (rout = "/Executors")
-        : el.label == "Ответственные"
-        ? (rout = "/Responsible")
-        : el.label == "Исключенные"
-        ? (rout = "/Excluded")
-        : "";
+          ? (rout = "/Modules")
+          : el.label == "Мои задачи"
+            ? (rout = "/AllTasks")
+            : el.label == "Исполнители"
+              ? (rout = "/Executors")
+              : el.label == "Ответственные"
+                ? (rout = "/Responsible")
+                : el.label == "Исключенные"
+                  ? (rout = "/Excluded")
+                  : "";
       if (el.parent == "Модуль") {
         store.commit("setModuleIndex", el.index);
         rout = "/ModulesTasks";
@@ -205,7 +209,7 @@ export default defineComponent({
       store.dispatch("GET_EXECUTORS");
       store.dispatch("GET_MODULES");
       store.dispatch("GET_ALL_TASKS");
-      stompApi.queueCreate().then((result) => {});
+      stompApi.queueCreate().then((result) => { });
       stompApi.stompConnect(store);
     });
 
@@ -347,5 +351,23 @@ export default defineComponent({
 .link {
   color: white;
   text-decoration: none;
+}
+
+.popup {
+  width: 290px;
+  height: 291px;
+  padding: 8px 0px 20px;
+  gap: 16px;
+  border: 1px solid #BBBBBB;
+  box-shadow: 0px 0px 45px rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+}
+
+.popup-component {
+  align-items: center;
+  padding: 10px 29px 10px 20px;
+  gap: 18px;
+
+  height: 40px;
 }
 </style>
