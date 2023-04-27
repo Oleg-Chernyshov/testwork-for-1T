@@ -278,8 +278,8 @@ export const getDocumentById = gql`
       created_at
       updated_at
       name
-      property10
-      property12 {
+      content
+      Owner {
         id
         fullname {
           first_name
@@ -302,8 +302,8 @@ export const allDocuments = gql`
         created_at
         updated_at
         name
-        property10
-        property12 {
+        content
+        Owner {
           id
           fullname {
             first_name
