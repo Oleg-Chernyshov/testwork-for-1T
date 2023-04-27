@@ -62,7 +62,7 @@
 </template>
 
 <script setup>
-import { useRoute, onBeforeRouteUpdate } from "vue-router";
+import { useRoute } from "vue-router";
 import { ref, onMounted, computed, watch, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
 import { useQuasar } from "quasar";
@@ -195,8 +195,12 @@ const color = (cmd, name) => {
 //   next();
 // });
 
+setTimeout(() => {
+  console.log("Документ обновлен через интервал времени");
+}, 5000 * 60);
+
 onBeforeUnmount(() => {
-  console.log(2);
+  console.log("Документ обновлен при переходе на другие страницы");
 });
 </script>
 

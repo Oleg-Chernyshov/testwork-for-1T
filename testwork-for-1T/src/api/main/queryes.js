@@ -269,7 +269,7 @@ export const rootPages = gql`
 
 export const getDocumentById = gql`
   query($id: String!) {
-    get_type3(id: $id) {
+    get_document(id: $id) {
       id
       type_id
       author_id
@@ -292,7 +292,7 @@ export const getDocumentById = gql`
 
 export const allDocuments = gql`
   {
-    paginate_type3(page: 1, perPage: 100) {
+    paginate_document(page: 1, perPage: 100) {
       data {
         id
         type_id

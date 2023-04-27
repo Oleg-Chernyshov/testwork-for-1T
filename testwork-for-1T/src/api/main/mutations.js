@@ -170,8 +170,8 @@ export const permissionRuleDelete = gql`
 //DOCUMENT
 //Создание документа
 export const createDocument = gql`
-  mutation($input: create_type3_input!) {
-    create_type3(input: $input) {
+  mutation($input: create_document_input!) {
+    create_document(input: $input) {
       status
       recordId
       record {
@@ -200,8 +200,8 @@ export const createDocument = gql`
 
 //Обновление документа
 export const updateDocument = gql`
-  mutation($input: update_type3_input!) {
-    update_type3(id: "2184251690572996693", input: $input) {
+  mutation($input: update_document_input!) {
+    update_document(id: "2184251690572996693", input: $input) {
       status
       recordId
       record {
@@ -228,7 +228,7 @@ export const updateDocument = gql`
 //Удаление документа (почему-то не срабатывает, хотя приходит сообщение, что документ удален)
 export const deleteDocument = gql`
   mutation($id: String!) {
-    delete_type3(id: $id) {
+    delete_document(id: $id) {
       status
       recordId
     }
