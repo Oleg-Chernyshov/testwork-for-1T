@@ -154,11 +154,10 @@ const toolbar = [
 const edit = ref(null);
 const editor = ref("");
 
-const upload = async (files, file2) => {
+const upload = async (files) => {
   try {
     console.log("created", files);
-    console.log("loaded", file2);
-    await filesApi.uploadFiles(file2);
+    await filesApi.uploadFiles(files);
   } catch (error) {
     console.log(error);
   }
@@ -166,7 +165,6 @@ const upload = async (files, file2) => {
 
 const saveHtmlFile = async function (event) {
   const blob = new Blob([editor.value], { type: "text/html" });
-
   console.log("blob", blob);
 
   const formData = new FormData();
@@ -175,15 +173,15 @@ const saveHtmlFile = async function (event) {
 
   // const url = window.URL.createObjectURL(blob);
 
-  // const reader = new FileReader();
-  // reader.readAsText(formData.getAll("files")[0]);
-  // reader.onload = () => {
-  //   const text = reader.result;
-  //   console.log("text", text);
-  //   // editor.value = editor.value + text;
-  // };
+  const reader = new FileReader();
+  reader.readAsText(formData.getAll("files")[0]);
+  reader.onload = () => {
+    const text = reader.result;
+    console.log("text", text);
+    editor.value = editor.value + editor.value;
+  };
 
-  upload(file, event?.target?.files[0]);
+  upload(file);
 };
 
 const token = ref(null);
