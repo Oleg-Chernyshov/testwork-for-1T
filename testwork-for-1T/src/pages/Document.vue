@@ -58,6 +58,7 @@
       </template>
     </q-editor>
     <q-btn @click="saveHtmlFile">Сохранить</q-btn>
+    <input type="file" @change="saveHtmlFile($event)" />
   </div>
 </template>
 
@@ -66,8 +67,9 @@ import { useRoute } from "vue-router";
 import { ref, onMounted, computed, watch, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
 import { useQuasar } from "quasar";
-import { loadFile } from "../api/main/mutations";
+import { filesUpload } from "../api/main/mutations";
 import { useMutation } from "@vue/apollo-composable";
+import filesApi from "../sdk/file";
 
 const route = useRoute();
 const id = ref(route.params.id);
@@ -107,6 +109,7 @@ const lightPalette = [
   "#8000ffaa",
   "#ff00ffaa",
 ];
+
 const textPalette = [
   "#ff0000",
   "#ff8000",
@@ -119,6 +122,7 @@ const textPalette = [
   "#8000ff",
   "#ff00ff",
 ];
+
 const toolbar = [
   ["undo", "redo"],
   [
@@ -146,39 +150,40 @@ const toolbar = [
   ["removeFormat", "link", "hr"],
   ["print"],
 ];
+
 const edit = ref(null);
 const editor = ref("");
 
-const saveHtmlFile = function () {
+const upload = async (files, file2) => {
+  try {
+    console.log("created", files);
+    console.log("loaded", file2);
+    await filesApi.uploadFiles(file2);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const saveHtmlFile = async function (event) {
   const blob = new Blob([editor.value], { type: "text/html" });
 
+  console.log("blob", blob);
+
   const formData = new FormData();
-  formData.append("files", blob);
-  console.log(formData.getAll("files"));
+  formData.append("files", blob, "experiment file html");
+  const file = formData.getAll("files")[0];
 
   // const url = window.URL.createObjectURL(blob);
+
   // const reader = new FileReader();
   // reader.readAsText(formData.getAll("files")[0]);
   // reader.onload = () => {
   //   const text = reader.result;
-  //   console.log(text);
+  //   console.log("text", text);
   //   // editor.value = editor.value + text;
   // };
 
-  const { mutate } = useMutation(loadFile, () => ({
-    variables: {
-      input: {
-        files: formData.getAll("files"),
-      },
-    },
-  }));
-  mutate().then((result) => {
-    console.log(result);
-  });
-  // const link = document.createElement("a");
-  // link.href = url;
-  // link.download = "doc1";
-  // link.click();
+  upload(file, event?.target?.files[0]);
 };
 
 const token = ref(null);

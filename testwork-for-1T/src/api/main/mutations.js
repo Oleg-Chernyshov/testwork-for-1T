@@ -241,7 +241,7 @@ export const deleteDocument = gql`
 // }
 
 //Загрузка файла
-export const loadFile = gql`
+export const filesUpload = gql`
   mutation filesUpload($files: [Upload]!) {
     filesUpload(files: $files) {
       status
@@ -249,8 +249,3 @@ export const loadFile = gql`
     }
   }
 `
-
-//Пример input:
-// variables: {
-//   files: null,
-// },

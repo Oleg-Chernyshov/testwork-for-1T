@@ -1,6 +1,7 @@
 import { createHttpLink, InMemoryCache } from '@apollo/client/core'
 import { setContext } from '@apollo/client/link/context'
 import { createUploadLink } from 'apollo-upload-client'
+import { ApolloLink, concat } from '@apollo/client/core'
 
 export /* async */ function getClientOptions(/* {app, router, ...} */ options) {
   const httpLink = createHttpLink({
@@ -25,11 +26,18 @@ export /* async */ function getClientOptions(/* {app, router, ...} */ options) {
     }
   })
 
+  const link = concat(
+    authLink,
+    ApolloLink.split(
+      (operation) => operation.getContext().hasUpload,
+      uploadLink,
+      httpLink,
+    ),
+  )
+
   return Object.assign(
     {
-      // link: authLink.concat(httpLink),
-      link: authLink.concat(uploadLink),
-      // link: ApolloLink.from([authLink, httpLink, uploadLink]),
+      link: link,
       cache: new InMemoryCache(),
     },
     process.env.MODE === 'spa'
