@@ -57,12 +57,12 @@
         </q-btn-dropdown>
       </template>
     </q-editor>
-    <div style="cursor: pointer" @click="saveHtmlFile($event)">Сохранить</div>
+    <div style="cursor: pointer" @click="createHtmlFile($event)">Создать</div>
   </div>
 </template>
 
 <script setup>
-import { useRoute } from "vue-router";
+import { useRoute, onBeforeRouteUpdate } from "vue-router";
 import { ref, onMounted, computed, watch, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
 import { useQuasar } from "quasar";
@@ -185,7 +185,7 @@ const upload = async (files) => {
   }
 };
 
-const saveHtmlFile = async function () {
+const createHtmlFile = async function () {
   const blob = new Blob([editor.value], { type: "text/html" });
 
   const formData = new FormData();
@@ -197,12 +197,17 @@ const saveHtmlFile = async function () {
 
 setTimeout(() => {
   console.log("Документ обновлен через интервал времени");
-  saveHtmlFile();
+  // createHtmlFile();
 }, 5000 * 60);
 
 onBeforeUnmount(() => {
-  saveHtmlFile();
+  // createHtmlFile();
   console.log("Документ обновлен при переходе на другие страницы");
+});
+
+onBeforeRouteUpdate((to, from, next) => {
+  // createHtmlFile();
+  next();
 });
 </script>
 
