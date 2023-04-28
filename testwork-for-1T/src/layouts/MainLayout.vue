@@ -107,7 +107,7 @@
                 }"
               >
                 <div class="item_doc">
-                  <span>{{ doc.name }}</span>
+                  <span>{{ doc.name.slice(0, -5) }}</span>
                   <span clickable @click="menuDoc">⋮</span>
                   <q-menu class="popup" anchor="bottom right" self="top left">
                     <q-item class="popup-component" clickable>
@@ -117,7 +117,9 @@
                       <q-item-section>Дублировать</q-item-section>
                     </q-item>
                     <q-item class="popup-component" clickable>
-                      <q-item-section>Удалить</q-item-section>
+                      <q-item-section @click="deleteDoc(doc.id)"
+                        >Удалить</q-item-section
+                      >
                     </q-item>
                     <q-item class="popup-component" clickable>
                       <q-item-section>Права доступа</q-item-section>
@@ -154,7 +156,7 @@
                               color="positive"
                               icon="check_circle"
                               @click.stop.prevent="
-                                renameDocument(scope.value, doc.id)
+                                renameDocument(scope.value, doc)
                               "
                               :disable="
                                 scope.validate(scope.value) === false ||
@@ -191,8 +193,14 @@ import { defineComponent, ref, computed, onMounted, watch } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { GetAllPages } from "src/api/main/queryes";
 import { useStore } from "vuex";
-import { updateDocument } from "src/api/main/mutations";
+import { deleteDocument, fileUpdate, fileDelete } from "src/api/main/mutations";
+import { ApolloClient } from "@apollo/client/core";
+import { provideApolloClient } from "@vue/apollo-composable";
+import { getClientOptions } from "src/apollo/index";
 import { useMutation } from "@vue/apollo-composable";
+import { response } from "../functions/functions";
+import { useQuasar } from "quasar";
+
 import stompApi from "src/rabbitmq/connect";
 import { getCurrentInstance } from "vue";
 
@@ -206,7 +214,7 @@ export default defineComponent({
     const MODULES = computed(() => store.getters.MODULES);
     const DOCUMENTS = computed(() => store.getters.DOCUMENTS);
     const FILES = computed(() => store.getters.FILES);
-
+    const $q = useQuasar();
     const get_module_index = function (index) {
       store.commit("setModuleIndex", index);
     };
@@ -231,27 +239,38 @@ export default defineComponent({
       stompApi.stompConnect(store);
     });
 
-    {
-      const { onResult } = useQuery(GetAllPages);
-      onResult((result) => {
-        result.data.pages.data.forEach((item) => {
-          namesOfPages.value.push(item.name);
-        });
-      });
-    }
-
-    const renameDocument = (scope, docId) => {
+    const renameDocument = (scope, doc) => {
       console.log(scope);
-      console.log(docId);
-      const { mutate } = useMutation(updateDocument, () => ({
+      console.log(doc);
+      console.log();
+      const { mutate } = useMutation(fileUpdate, () => ({
         variables: {
-          id: docId,
           input: {
+            title: scope,
+            path: doc.path,
+            size: doc.size,
             name: scope,
+            short_link: doc.short_link,
+            extension: doc.extension,
+            disk: doc.disk,
+            hash: doc.hash,
           },
+          id: doc.id,
         },
       }));
       mutate();
+    };
+
+    const deleteDoc = function (id) {
+      const apolloClient = new ApolloClient(getClientOptions());
+      provideApolloClient(apolloClient);
+      const { mutate } = useMutation(fileDelete, () => ({
+        variables: {
+          id: id,
+        },
+      }));
+
+      response("Документ удален", "Ошибка", mutate, $q);
     };
 
     return {
@@ -267,6 +286,7 @@ export default defineComponent({
       MODULES,
       DOCUMENTS,
       FILES,
+      deleteDoc,
     };
   },
 });

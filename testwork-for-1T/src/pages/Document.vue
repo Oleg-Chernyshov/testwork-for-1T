@@ -66,7 +66,6 @@ import { useRoute } from "vue-router";
 import { ref, onMounted, computed, watch, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
 import { useQuasar } from "quasar";
-import { filesUpload } from "../api/main/mutations";
 import { useMutation } from "@vue/apollo-composable";
 import filesApi from "../sdk/file";
 
@@ -177,8 +176,9 @@ const toolbar = [
   ["print"],
 ];
 
-const upload = async (files, file2) => {
+const upload = async (files) => {
   try {
+    console.log(files);
     await filesApi.uploadFiles(files);
   } catch (error) {
     console.log(error);
@@ -197,9 +197,11 @@ const saveHtmlFile = async function () {
 
 setTimeout(() => {
   console.log("Документ обновлен через интервал времени");
+  saveHtmlFile();
 }, 5000 * 60);
 
 onBeforeUnmount(() => {
+  saveHtmlFile();
   console.log("Документ обновлен при переходе на другие страницы");
 });
 </script>
