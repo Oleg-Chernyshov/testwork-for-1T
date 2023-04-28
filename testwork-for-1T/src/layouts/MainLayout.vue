@@ -62,7 +62,7 @@
                       <q-item-section>Дублировать</q-item-section>
                     </q-item>
                     <q-item class="popup-component" clickable>
-                      <q-item-section>Удалить</q-item-section>
+                      <q-item-section @click="deleteDoc(doc.id)">Удалить</q-item-section>
                     </q-item>
                     <q-item class="popup-component" clickable>
                       <q-item-section>Права доступа</q-item-section>
@@ -109,6 +109,13 @@ import { useQuery } from "@vue/apollo-composable";
 import { GetAllPages } from "src/api/main/queryes";
 import { useStore } from "vuex";
 import { updateDocument } from 'src/api/main/mutations'
+import { deleteDocument } from 'src/api/main/mutations'
+import { ApolloClient } from "@apollo/client/core";
+import { provideApolloClient } from "@vue/apollo-composable";
+import { getClientOptions } from "src/apollo/index";
+import { useMutation } from "@vue/apollo-composable";
+import { response } from "../functions/functions";
+import { useQuasar } from "quasar";
 
 import stompApi from "src/rabbitmq/connect";
 export default defineComponent({
@@ -118,6 +125,7 @@ export default defineComponent({
     const role = computed(() => sessionStorage.getItem("role"));
     const store = useStore();
     const namesOfPages = ref([]);
+    const $q = useQuasar();
 
     const get_module_index = function (index) {
       store.commit("setModuleIndex", index);
@@ -162,6 +170,19 @@ export default defineComponent({
       mutate()
     };
 
+    const deleteDoc = function (id) {
+      const apolloClient = new ApolloClient(getClientOptions());
+      provideApolloClient(apolloClient);
+      const { mutate } = useMutation(deleteDocument, () => ({
+        variables: {
+          id: id,
+        },
+      }));
+
+      response("Документ удален", "Ошибка", mutate, $q);
+      
+    };
+
 
     return {
       role,
@@ -174,6 +195,7 @@ export default defineComponent({
       },
       MODULES,
       DOCUMENTS,
+      deleteDoc
     };
   },
 });
