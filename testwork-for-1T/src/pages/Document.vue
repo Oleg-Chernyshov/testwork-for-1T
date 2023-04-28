@@ -57,8 +57,7 @@
         </q-btn-dropdown>
       </template>
     </q-editor>
-    <q-btn @click="saveHtmlFile">Сохранить</q-btn>
-    <input type="file" @change="saveHtmlFile($event)" />
+    <div style="cursor: pointer" @click="saveHtmlFile($event)">Сохранить</div>
   </div>
 </template>
 
@@ -74,10 +73,37 @@ import filesApi from "../sdk/file";
 const route = useRoute();
 const id = ref(route.params.id);
 const store = useStore();
-const DOCUMENTS = computed(() => store.getters.DOCUMENTS);
+const edit = ref(null);
+const editor = ref("");
+const token = ref(null);
+const foreColor = ref("#000000");
+const highlight = ref("#ffff00aa");
+const color = (cmd, name) => {
+  token._value.hide();
+  edit._value.caret.restore();
+  edit._value.runCmd(cmd, name);
+  edit._value.focus();
+};
+const FILES = computed(() => store.getters.FILES);
 
 watch(route, () => {
   updateId();
+
+  fetch(
+    `https://cdn.stud.druid.1t.ru/${FILES.value[id.value].path}/${
+      FILES.value[id.value].id
+    }.html?n=${FILES.value[id.value].name}`
+  )
+    .then((response) => {
+      response.text().then((html) => {
+        editor.value = html;
+        console.log(html);
+      });
+    })
+
+    .catch((err) => console.log("Ошибка", err));
+
+  console.log(FILES.value[id.value]);
   console.log(id.value);
 });
 
@@ -151,52 +177,23 @@ const toolbar = [
   ["print"],
 ];
 
-const edit = ref(null);
-const editor = ref("");
-
-const upload = async (files) => {
+const upload = async (files, file2) => {
   try {
-    console.log("created", files);
     await filesApi.uploadFiles(files);
   } catch (error) {
     console.log(error);
   }
 };
 
-const saveHtmlFile = async function (event) {
+const saveHtmlFile = async function () {
   const blob = new Blob([editor.value], { type: "text/html" });
-  console.log("blob", blob);
 
   const formData = new FormData();
-  formData.append("files", blob, "experiment file html");
-  const file = formData.getAll("files")[0];
-
-  // const url = window.URL.createObjectURL(blob);
-
-  const reader = new FileReader();
-  reader.readAsText(formData.getAll("files")[0]);
-  reader.onload = () => {
-    const text = reader.result;
-    console.log("text", text);
-    editor.value = editor.value + editor.value;
-  };
+  formData.append("files", blob, "new.html");
+  const file = formData.getAll("files");
 
   upload(file);
 };
-
-const token = ref(null);
-const foreColor = ref("#000000");
-const highlight = ref("#ffff00aa");
-const color = (cmd, name) => {
-  token._value.hide();
-  edit._value.caret.restore();
-  edit._value.runCmd(cmd, name);
-  edit._value.focus();
-};
-
-// onBeforeRouteUpdate((to, from, next) => {
-//   next();
-// });
 
 setTimeout(() => {
   console.log("Документ обновлен через интервал времени");

@@ -249,3 +249,50 @@ export const filesUpload = gql`
     }
   }
 `
+
+export const fileUpdate = gql`
+  mutation($id: String!, $input: update_file_input!) {
+    update_file(id: $id, input: $input) {
+      status
+      recordId
+      record {
+        id
+        type_id
+        author_id
+        level
+        position
+        created_at
+        updated_at
+        name
+      }
+    }
+  }
+`
+
+//Пример input/id
+// {
+//   "input": {
+//           "title": "sadfsdv",
+//           "path": "13/23/04/27",
+//           "size": 3317456,
+//           "name": "423423.jpg",
+//           "short_link": "1gPvlRD-ofBETxwZ",
+//           "extension": "jpg",
+//           "disk": "file_storage",
+//           "hash": "2c9f512f611074fa8af4a3e0408b5110"
+//   },
+//   "id": "1413518930578876005"
+// }
+
+export const fileDelete = gql`
+  mutation($id: String!) {
+    delete_file(id: $id) {
+      status
+      recordId
+    }
+  }
+`
+//Пример input/id
+// {
+//   "id": "1413518930578876005"
+// }

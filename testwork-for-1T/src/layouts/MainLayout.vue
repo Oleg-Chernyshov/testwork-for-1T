@@ -96,7 +96,7 @@
           >
             <q-tabs
               indicator-color="transparent"
-              v-for="(doc, index) in DOCUMENTS"
+              v-for="(doc, index) in FILES"
               :key="doc.id"
               align="left"
             >
@@ -205,6 +205,7 @@ export default defineComponent({
     const namesOfPages = ref([]);
     const MODULES = computed(() => store.getters.MODULES);
     const DOCUMENTS = computed(() => store.getters.DOCUMENTS);
+    const FILES = computed(() => store.getters.FILES);
 
     const get_module_index = function (index) {
       store.commit("setModuleIndex", index);
@@ -214,12 +215,17 @@ export default defineComponent({
       console.log("DOCUMENTS", DOCUMENTS.value);
     });
 
+    watch(FILES, () => {
+      console.log("FILES", FILES.value);
+    });
+
     onMounted(() => {
       store.dispatch("GET_RESPONSIBLES");
       store.dispatch("GET_EXECUTORS");
       store.dispatch("GET_MODULES");
       store.dispatch("GET_ALL_TASKS");
       store.dispatch("GET_DOCUMENTS");
+      store.dispatch("GET_FILES");
 
       stompApi.queueCreate();
       stompApi.stompConnect(store);
@@ -229,7 +235,7 @@ export default defineComponent({
       const { onResult } = useQuery(GetAllPages);
       onResult((result) => {
         result.data.pages.data.forEach((item) => {
-          namesOfPages.value.push(item.title);
+          namesOfPages.value.push(item.name);
         });
       });
     }
@@ -260,6 +266,7 @@ export default defineComponent({
       },
       MODULES,
       DOCUMENTS,
+      FILES,
     };
   },
 });

@@ -7,6 +7,8 @@ provideApolloClient(apolloClient)
 const { mutate } = useMutation(filesUpload)
 
 const uploadFiles = async (files) => {
+  console.log(files)
+
   const data = await mutate(
     {
       files,

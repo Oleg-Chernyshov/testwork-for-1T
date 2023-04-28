@@ -43,3 +43,8 @@ export const setDocuments = (state, { documents, refetch }) => {
   // state.refetchModules = refetch
   state.documents = documents
 }
+
+export const setFiles = (state, { files, refetch }) => {
+  // state.refetchModules = refetch
+  state.files = files
+}
