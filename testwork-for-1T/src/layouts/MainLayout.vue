@@ -62,8 +62,26 @@
                       <q-item-section>Дублировать</q-item-section>
                     </q-item>
                     <q-item class="popup-component" clickable>
-                      <q-item-section @click="deleteDoc(doc.id)">Удалить</q-item-section>
+                      <q-item-section @click="showDialog = true">Удалить</q-item-section>
                     </q-item>
+          
+                    <q-dialog v-model="showDialog">
+                      <q-card>
+                        <q-card-section>
+                          <div class="text-h6">Удаление файла</div>
+                        </q-card-section>
+
+                        <q-card-section class="q-pt-none">
+                          Вы уверены, что хотите удалить этот файл? Отменить это действие будет невозможно
+                        </q-card-section>
+
+                        <q-card-actions align="right">
+                          <q-btn label="Да" @click="deleteDoc(doc.id), showDialog = false" />
+                          <q-btn label="Нет" @click="showDialog = false" />
+                        </q-card-actions>
+                      </q-card>
+                    </q-dialog>
+
                     <q-item class="popup-component" clickable>
                       <q-item-section>Права доступа</q-item-section>
                     </q-item>
@@ -122,6 +140,7 @@ export default defineComponent({
   name: "MainLayout",
   setup() {
     const leftDrawerOpen = ref(false);
+    let showDialog = ref(false);
     const role = computed(() => sessionStorage.getItem("role"));
     const store = useStore();
     const namesOfPages = ref([]);
@@ -195,7 +214,8 @@ export default defineComponent({
       },
       MODULES,
       DOCUMENTS,
-      deleteDoc
+      deleteDoc,
+      showDialog
     };
   },
 });
