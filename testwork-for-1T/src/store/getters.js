@@ -60,3 +60,7 @@ export const USER_ID = (state) => {
 export const ALL_TASKS = (state) => {
   return state.allTasks
 }
+
+export const FILES = (state) => {
+  return state.files
+}

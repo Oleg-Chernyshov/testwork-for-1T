@@ -4,6 +4,7 @@ import {
   GetAllTasks,
   GetAllModules,
   allDocuments,
+  getFiles,
 } from 'src/api/main/queryes'
 
 export const GET_MODULES = ({ commit }) => {
@@ -127,6 +128,23 @@ export const GET_DOCUMENTS = ({ commit }) => {
       onResult((queryResult) => {
         commit('setDocuments', {
           documents: queryResult.data['paginate_document'].data,
+          refetch: refetch,
+        })
+      })
+    } catch (e) {
+      console.log('Ошибка:', e)
+    }
+  }
+  fetching()
+}
+
+export const GET_FILES = ({ commit }) => {
+  const fetching = async () => {
+    try {
+      const { onResult, refetch } = useQuery(getFiles)
+      onResult((queryResult) => {
+        commit('setFiles', {
+          files: queryResult.data['paginate_file'].data,
           refetch: refetch,
         })
       })

@@ -57,25 +57,52 @@
         </q-btn-dropdown>
       </template>
     </q-editor>
-    <q-btn @click="saveHtmlFile">Сохранить</q-btn>
+    <div style="cursor: pointer" @click="createHtmlFile($event)">Создать</div>
   </div>
 </template>
 
 <script setup>
-import { useRoute } from "vue-router";
+import { useRoute, onBeforeRouteUpdate } from "vue-router";
 import { ref, onMounted, computed, watch, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
 import { useQuasar } from "quasar";
-import { loadFile } from "../api/main/mutations";
 import { useMutation } from "@vue/apollo-composable";
+import filesApi from "../sdk/file";
 
 const route = useRoute();
 const id = ref(route.params.id);
 const store = useStore();
-const DOCUMENTS = computed(() => store.getters.DOCUMENTS);
+const edit = ref(null);
+const editor = ref("");
+const token = ref(null);
+const foreColor = ref("#000000");
+const highlight = ref("#ffff00aa");
+const color = (cmd, name) => {
+  token._value.hide();
+  edit._value.caret.restore();
+  edit._value.runCmd(cmd, name);
+  edit._value.focus();
+};
+const FILES = computed(() => store.getters.FILES);
 
 watch(route, () => {
   updateId();
+
+  fetch(
+    `https://cdn.stud.druid.1t.ru/${FILES.value[id.value].path}/${
+      FILES.value[id.value].id
+    }.html?n=${FILES.value[id.value].name}`
+  )
+    .then((response) => {
+      response.text().then((html) => {
+        editor.value = html;
+        console.log(html);
+      });
+    })
+
+    .catch((err) => console.log("Ошибка", err));
+
+  console.log(FILES.value[id.value]);
   console.log(id.value);
 });
 
@@ -107,6 +134,7 @@ const lightPalette = [
   "#8000ffaa",
   "#ff00ffaa",
 ];
+
 const textPalette = [
   "#ff0000",
   "#ff8000",
@@ -119,6 +147,7 @@ const textPalette = [
   "#8000ff",
   "#ff00ff",
 ];
+
 const toolbar = [
   ["undo", "redo"],
   [
@@ -146,61 +175,39 @@ const toolbar = [
   ["removeFormat", "link", "hr"],
   ["print"],
 ];
-const edit = ref(null);
-const editor = ref("");
 
-const saveHtmlFile = function () {
+const upload = async (files) => {
+  try {
+    console.log(files);
+    await filesApi.uploadFiles(files);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const createHtmlFile = async function () {
   const blob = new Blob([editor.value], { type: "text/html" });
 
   const formData = new FormData();
-  formData.append("files", blob);
-  console.log(formData.getAll("files"));
+  formData.append("files", blob, "new.html");
+  const file = formData.getAll("files");
 
-  // const url = window.URL.createObjectURL(blob);
-  // const reader = new FileReader();
-  // reader.readAsText(formData.getAll("files")[0]);
-  // reader.onload = () => {
-  //   const text = reader.result;
-  //   console.log(text);
-  //   // editor.value = editor.value + text;
-  // };
-
-  const { mutate } = useMutation(loadFile, () => ({
-    variables: {
-      input: {
-        files: formData.getAll("files"),
-      },
-    },
-  }));
-  mutate().then((result) => {
-    console.log(result);
-  });
-  // const link = document.createElement("a");
-  // link.href = url;
-  // link.download = "doc1";
-  // link.click();
+  upload(file);
 };
-
-const token = ref(null);
-const foreColor = ref("#000000");
-const highlight = ref("#ffff00aa");
-const color = (cmd, name) => {
-  token._value.hide();
-  edit._value.caret.restore();
-  edit._value.runCmd(cmd, name);
-  edit._value.focus();
-};
-
-// onBeforeRouteUpdate((to, from, next) => {
-//   next();
-// });
 
 setTimeout(() => {
   console.log("Документ обновлен через интервал времени");
+  // createHtmlFile();
 }, 5000 * 60);
 
 onBeforeUnmount(() => {
+  // createHtmlFile();
   console.log("Документ обновлен при переходе на другие страницы");
+});
+
+onBeforeRouteUpdate((to, from, next) => {
+  // createHtmlFile();
+  next();
 });
 </script>
 

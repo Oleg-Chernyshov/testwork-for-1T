@@ -6,6 +6,7 @@ import * as mutations from './mutations'
 export const state = {
   module_index: -1,
   modules: [],
+  files: [],
   documents: [],
   subjects: [],
   allTasks: [],
